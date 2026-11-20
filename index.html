@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keelnat Iyengar Nitya &amp; Naimittika Vidhi Companion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #faf7f2;
+      --card: #ffffff;
+      --content: #f4efe6;
+      --border: #e5dccb;
+      --foreground: #1f1b16;
+      --muted-foreground: #6b5f52;
+      --primary: #9a3412;
+      --primary-foreground: #ffffff;
+      --success: #15803d;
+      --warning: #b45309;
+      --error: #b91c1c;
+    }
+    html.dark {
+      --background: #141210;
+      --card: #1d1916;
+      --content: #26211c;
+      --border: #3a322a;
+      --foreground: #f5efe6;
+      --muted-foreground: #a89b8c;
+      --primary: #ea580c;
+      --primary-foreground: #ffffff;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+
+    .mantra-deva {
+      font-family: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", system-ui, sans-serif;
+      line-height: 1.85;
+    }
+    .mantra-tamil {
+      font-family: "Noto Sans Tamil", "Tamil Sangam MN", system-ui, sans-serif;
+      line-height: 1.75;
+    }
+    .mantra-iast {
+      line-height: 1.7;
+    }
+    .font-scale-sm .mantra-text { font-size: 0.95rem; }
+    .font-scale-md .mantra-text { font-size: 1.125rem; }
+    .font-scale-lg .mantra-text { font-size: 1.325rem; }
+    .font-scale-xl .mantra-text { font-size: 1.55rem; }
+
+    .poonool-upavitam { border-left: 4px solid var(--success); }
+    .poonool-nivitam { border-left: 4px solid var(--warning); }
+    .poonool-pracinavitam { border-left: 4px solid var(--error); }
+
+    .highlight-var {
+      background: color-mix(in srgb, var(--primary) 16%, transparent);
+      color: var(--foreground);
+      padding: 0.05rem 0.3rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+      border-bottom: 1px dashed var(--primary);
+    }
+    @keyframes pulseSoft {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+    .speaking-pulse { animation: pulseSoft 1.2s ease-in-out infinite; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased m-0 p-0 font-scale-md">
+  <div id="app" class="min-h-screen flex flex-col">
+    <!-- Top Header -->
+    <header class="no-print sticky top-0 z-30 bg-[var(--card)] border-b border-[var(--border)] px-4 py-3">
+      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div id="thiruman-emblem" class="w-9 h-9 rounded-lg bg-[var(--content)] border border-[var(--border)] flex items-center justify-center shrink-0"></div>
+          <div>
+            <h1 class="text-base font-semibold tracking-tight leading-tight">Keelnat Iyengar Vidhi Companion</h1>
+            <p id="sampradaya-subtitle" class="text-xs text-[var(--muted-foreground)]"></p>
+          </div>
+        </div>
+
+        <!-- Global Controls -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <div class="inline-flex rounded-md border border-[var(--border)] bg-[var(--content)] p-0.5" title="Switch between Vadakalai and Thenkalai Sampradāya">
+            <button data-kalai="vadakalai" class="kalai-btn px-2.5 py-1 rounded text-xs font-semibold transition">Vadakalai</button>
+            <button data-kalai="thenkalai" class="kalai-btn px-2.5 py-1 rounded text-xs font-semibold transition">Thenkalai</button>
+          </div>
+          <div class="inline-flex rounded-md border border-[var(--border)] bg-[var(--content)] p-0.5">
+            <button data-script="both" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">Both</button>
+            <button data-script="deva" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">देवनागरी</button>
+            <button data-script="iast" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">English</button>
+          </div>
+          <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] cursor-pointer select-none">
+            <input id="toggle-tamil" type="checkbox" checked class="accent-[var(--primary)]" />
+            <span>தமிழ் Notes</span>
+          </label>
+          <div class="inline-flex items-center rounded-md border border-[var(--border)] bg-[var(--content)]">
+            <button id="font-dec" class="px-2 py-1 hover:bg-[var(--card)] rounded-l" title="Decrease mantra font size">A-</button>
+            <span id="font-label" class="px-1.5 text-[var(--muted-foreground)] font-mono">M</span>
+            <button id="font-inc" class="px-2 py-1 hover:bg-[var(--card)] rounded-r" title="Increase mantra font size">A+</button>
+          </div>
+          <button id="theme-toggle" class="px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] hover:bg-[var(--card)] font-medium" title="Toggle Light/Dark theme">🌓</button>
+          <button id="open-quickref" class="px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] hover:bg-[var(--card)] font-medium">
+            Ācamanam &amp; Prāṇāyāmam
+          </button>
+        </div>
+      </div>
+
+      <!-- Audio & Shruti Toolbar -->
+      <div class="max-w-6xl mx-auto mt-2.5 pt-2 border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-semibold text-[var(--muted-foreground)]">🔊 Audio Chanting:</span>
+          <select id="audio-lang" class="px-2 py-1 rounded-md bg-[var(--content)] border border-[var(--border)] text-xs">
+            <option value="deva">Sanskrit / Devanagari (sa-IN / hi-IN)</option>
+            <option value="iast">English Transliteration (en-IN)</option>
+            <option value="tamil">Tamil Instructions (ta-IN)</option>
+          </select>
+          <select id="audio-rate" class="px-2 py-1 rounded-md bg-[var(--content)] border border-[var(--border)] text-xs" title="Chanting Speed">
+            <option value="0.65">0.65× Slow (Learning)</option>
+            <option value="0.8" selected>0.80× Traditional</option>
+            <option value="0.95">0.95× Normal</option>
+          </select>
+          <button id="audio-stop-all" class="hidden px-2.5 py-1 rounded-md bg-[var(--error)]/15 text-[var(--error)] border border-[var(--error)]/30 font-semibold">
+            ■ Stop Audio
+          </button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="shruti-toggle" class="px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] hover:bg-[var(--card)] font-medium flex items-center gap-1.5" title="Gentle synthesized Tambura Shruti drone (Sa-Pa-Sa)">
+            <span id="shruti-dot" class="w-2 h-2 rounded-full bg-[var(--muted-foreground)]/40"></span>
+            <span id="shruti-label">Tambura Śruti: Off</span>
+          </button>
+          <label class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] cursor-pointer select-none" title="Soft temple bell chime when reaching Japa target">
+            <input id="toggle-chime" type="checkbox" checked class="accent-[var(--primary)]" />
+            <span>🔔 Japa Chime</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Primary Navigation Tabs -->
+      <nav class="max-w-6xl mx-auto mt-2.5 flex flex-wrap items-center gap-1.5 border-t border-[var(--border)] pt-2.5">
+        <button data-tab="sandhya" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5">
+          <span>☀</span> Sandhyāvandanam
+        </button>
+        <button data-tab="tharpanam" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5">
+          <span>🪔</span> Darśādi Tarpaṇam <span class="opacity-70">(Keezhanatham)</span>
+        </button>
+        <button data-tab="upakarma" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5">
+          <span>🧵</span> Yajur Upākarma <span class="opacity-70">(Āvaṇi Aviṭṭam)</span>
+        </button>
+        <button data-tab="profile" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 ml-auto">
+          <span>⚙</span> Family Profile &amp; Saṅkalpam
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-5">
+      <div id="tab-content"></div>
+    </main>
+
+    <!-- Quick Reference Modal (Achamanam & Pranayamam) -->
+    <div id="quickref-modal" class="no-print hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-xl">
+        <div class="sticky top-0 bg-[var(--card)] border-b border-[var(--border)] px-5 py-3.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-semibold">Quick Reference: Ācamanam &amp; Prāṇāyāmam</h2>
+            <p class="text-xs text-[var(--muted-foreground)]">Yajurveda Vadakalai Sampradāya</p>
+          </div>
+          <button id="close-quickref" class="px-2.5 py-1 rounded-md border border-[var(--border)] text-xs hover:bg-[var(--content)]">Close</button>
+        </div>
+        <div class="p-5 space-y-5">
+          <section>
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">1. Ācamanam (आचमनम्)</h3>
+            <p class="text-xs text-[var(--muted-foreground)] mb-3">Sip water from the base of the right thumb (Brāhma Tīrtham) three times for the first three names, then wipe lips and touch each body part with the right hand (RH):</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>अच्युताय नमः</strong> (Acyutāya namaḥ)</span><span class="text-[var(--muted-foreground)]">Sip water (1)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>अनन्ताय नमः</strong> (Anantāya namaḥ)</span><span class="text-[var(--muted-foreground)]">Sip water (2)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>गोविन्दाय नमः</strong> (Govindāya namaḥ)</span><span class="text-[var(--muted-foreground)]">Sip water (3)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>केशवाय नमः</strong> (Keśavāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Thumb → Right Cheek</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>नारायणाय नमः</strong> (Nārāyaṇāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Thumb → Left Cheek</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>माधवाय नमः</strong> (Mādhavāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Ring → Right Eye</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>गोविन्दाय नमः</strong> (Govindāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Ring → Left Eye</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>विष्णवे नमः</strong> (Viṣṇave namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Index → Right Nostril</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>मधुसूदनाय नमः</strong> (Madhusūdanāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Index → Left Nostril</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>त्रिविक्रमाय नमः</strong> (Trivikramāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Little → Right Ear</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>वामनाय नमः</strong> (Vāmanāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Little → Left Ear</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>श्रीधराय नमः</strong> (Śrīdharāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Index → Right Shoulder</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>हृषीकेशाय नमः</strong> (Hṛṣīkeśāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Middle → Left Shoulder</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>पद्मनाभाय नमः</strong> (Padmanābhāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Fingers → Navel</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2 sm:col-span-2"><span><strong>दामोदराय नमः</strong> (Dāmodarāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Fingers → Crown / Scalp</span></div>
+            </div>
+          </section>
+
+          <section>
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">2. Prāṇāyāmam (प्राणायामम्)</h3>
+            <div class="p-3.5 rounded-lg bg-[var(--content)] border border-[var(--border)] space-y-2">
+              <p class="mantra-deva text-sm">
+                ओं भूः । ओं भुवः । ओꣳ सुवः । ओं महः । ओं जनः । ओं तपः । ओꣳ सत्यम् ।<br/>
+                ओं तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् ॥<br/>
+                ओमापो ज्योती रसोऽमृतं ब्रह्म भूर्भुवस्सुवरोम् ॥
+              </p>
+              <p class="mantra-iast text-xs text-[var(--muted-foreground)]">
+                oṁ bhūḥ | oṁ bhuvaḥ | oguṁ suvaḥ | oṁ mahaḥ | oṁ janaḥ | oṁ tapaḥ | oguṁ satyam |<br/>
+                oṁ tatsaviturvareṇyaṁ bhargo devasya dhīmahi | dhiyo yo naḥ pracodayāt ||<br/>
+                omāpo jyotī raso'mṛtaṁ brahma bhūrbhuvassuvarom ||
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. AUDIO ENGINE: TTS CHANTING + TAMBURA SHRUTI + JAPA CHIME + INDEXEDDB RECORDINGS
+    // =========================================================================
+    const AudioEngine = (() => {
+      let audioCtx = null;
+      let shrutiNodes = null;
+      let shrutiOn = false;
+      let activeKey = null;
+      let activeAudioEl = null;
+      let mediaRecorder = null;
+      let recChunks = [];
+      let recordingKey = null;
+      let customAudioCache = {}; // stepKey -> blobUrl
+
+      // IndexedDB for storing authentic elder/Bruhaspati recordings per step
+      const DB_NAME = "keelnat_vidhi_audio_v1";
+      const STORE_NAME = "recordings";
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          if (!window.indexedDB) return resolve(null);
+          const req = indexedDB.open(DB_NAME, 1);
+          req.onupgradeneeded = () => {
+            if (!req.result.objectStoreNames.contains(STORE_NAME)) {
+              req.result.createObjectStore(STORE_NAME);
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        });
+      }
+
+      async function loadAllRecordings() {
+        const db = await openDB();
+        if (!db) return;
+        return new Promise(resolve => {
+          const tx = db.transaction(STORE_NAME, "readonly");
+          const store = tx.objectStore(STORE_NAME);
+          const keysReq = store.getAllKeys();
+          keysReq.onsuccess = () => {
+            const keys = keysReq.result || [];
+            let pending = keys.length;
+            if (!pending) return resolve();
+            keys.forEach(k => {
+              const g = store.get(k);
+              g.onsuccess = () => {
+                if (g.result) customAudioCache[k] = URL.createObjectURL(g.result);
+                if (--pending === 0) resolve();
+              };
+            });
+          };
+          keysReq.onerror = () => resolve();
+        });
+      }
+
+      async function saveRecording(key, blob) {
+        const db = await openDB();
+        if (customAudioCache[key]) URL.revokeObjectURL(customAudioCache[key]);
+        customAudioCache[key] = URL.createObjectURL(blob);
+        if (!db) return;
+        return new Promise(resolve => {
+          const tx = db.transaction(STORE_NAME, "readwrite");
+          tx.objectStore(STORE_NAME).put(blob, key);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => resolve();
+        });
+      }
+
+      async function deleteRecording(key) {
+        if (customAudioCache[key]) {
+          URL.revokeObjectURL(customAudioCache[key]);
+          delete customAudioCache[key];
+        }
+        const db = await openDB();
+        if (!db) return;
+        return new Promise(resolve => {
+          const tx = db.transaction(STORE_NAME, "readwrite");
+          tx.objectStore(STORE_NAME).delete(key);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => resolve();
+        });
+      }
+
+      function hasCustom(key) { return Boolean(customAudioCache[key]); }
+
+      function ensureCtx() {
+        if (!audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (Ctx) audioCtx = new Ctx();
+        }
+        if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+        return audioCtx;
+      }
+
+      // Gentle synthesized Tambura Shruti (Sa 130.8Hz + Pa 196Hz + Upper Sa 261.6Hz)
+      function toggleShruti() {
+        const ctx = ensureCtx();
+        if (!ctx) return false;
+        if (shrutiOn && shrutiNodes) {
+          shrutiNodes.master.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.25);
+          const toStop = shrutiNodes;
+          setTimeout(() => {
+            toStop.oscs.forEach(o => { try { o.stop(); } catch(e){} });
+            toStop.master.disconnect();
+          }, 900);
+          shrutiNodes = null;
+          shrutiOn = false;
+          return false;
+        }
+        const master = ctx.createGain();
+        master.gain.setValueAtTime(0.0001, ctx.currentTime);
+        master.gain.setTargetAtTime(0.045, ctx.currentTime, 0.6);
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.value = 620;
+        filter.connect(master);
+        master.connect(ctx.destination);
+
+        const freqs = [130.81, 196.0, 261.63, 262.1]; // Sa, Pa, Sa, detuned Sa shimmer
+        const oscs = freqs.map((f, i) => {
+          const osc = ctx.createOscillator();
+          osc.type = i === 0 ? "sawtooth" : "triangle";
+          osc.frequency.value = f;
+          const g = ctx.createGain();
+          g.gain.value = i === 0 ? 0.35 : (i === 1 ? 0.25 : 0.2);
+          osc.connect(g);
+          g.connect(filter);
+          osc.start();
+          return osc;
+        });
+        shrutiNodes = { oscs, master };
+        shrutiOn = true;
+        return true;
+      }
+
+      // Soft temple bell chime
+      function playChime() {
+        if (!state.chimeEnabled) return;
+        const ctx = ensureCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [523.25, 1046.5, 1567.98].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.08 / (idx + 1), now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4 - idx * 0.25);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 1.5);
+        });
+      }
+
+      function stripHtml(s) {
+        return String(s || "")
+          .replace(/<[^>]+>/g, " ")
+          .replace(/[【】\[\]|॥।]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function pickVoice(mode) {
+        const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+        if (!voices.length) return null;
+        if (mode === "deva") {
+          return voices.find(v => /^sa/i.test(v.lang))
+            || voices.find(v => /^hi-IN/i.test(v.lang))
+            || voices.find(v => /^hi/i.test(v.lang))
+            || voices.find(v => /IN$/i.test(v.lang))
+            || voices[0];
+        }
+        if (mode === "tamil") {
+          return voices.find(v => /^ta-IN/i.test(v.lang))
+            || voices.find(v => /^ta/i.test(v.lang))
+            || voices.find(v => /IN$/i.test(v.lang))
+            || voices[0];
+        }
+        return voices.find(v => /^en-IN/i.test(v.lang))
+          || voices.find(v => /^en/i.test(v.lang))
+          || voices[0];
+      }
+
+      function stopAll(rerender = true) {
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        if (activeAudioEl) {
+          activeAudioEl.pause();
+          activeAudioEl.currentTime = 0;
+          activeAudioEl = null;
+        }
+        activeKey = null;
+        updateStopBanner();
+        if (rerender) render();
+      }
+
+      function updateStopBanner() {
+        const btn = document.getElementById("audio-stop-all");
+        if (btn) btn.classList.toggle("hidden", !activeKey);
+      }
+
+      function playTextOrCustom(key, deva, iast, tamil) {
+        if (activeKey === key) {
+          stopAll(true);
+          return;
+        }
+        stopAll(false);
+        activeKey = key;
+        updateStopBanner();
+
+        // Prefer custom elder/Bruhaspati recording if present
+        if (customAudioCache[key]) {
+          activeAudioEl = new Audio(customAudioCache[key]);
+          activeAudioEl.playbackRate = Number(state.audioRate) || 1;
+          activeAudioEl.onended = () => { activeKey = null; activeAudioEl = null; updateStopBanner(); render(); };
+          activeAudioEl.onerror = () => { activeKey = null; activeAudioEl = null; updateStopBanner(); render(); };
+          activeAudioEl.play().catch(() => stopAll(true));
+          render();
+          return;
+        }
+
+        if (!window.speechSynthesis) {
+          alert("Speech synthesis is not supported in this browser. You can upload or record custom chanting audio instead.");
+          stopAll(true);
+          return;
+        }
+        const mode = state.audioLang;
+        let text = mode === "deva" ? stripHtml(deva) : mode === "tamil" ? stripHtml(tamil || iast) : stripHtml(iast);
+        if (!text) text = stripHtml(iast || deva);
+        const utter = new SpeechSynthesisUtterance(text);
+        const voice = pickVoice(mode);
+        if (voice) {
+          utter.voice = voice;
+          utter.lang = voice.lang;
+        } else {
+          utter.lang = mode === "deva" ? "hi-IN" : mode === "tamil" ? "ta-IN" : "en-IN";
+        }
+        utter.rate = Number(state.audioRate) || 0.8;
+        utter.pitch = 0.95;
+        utter.onend = () => { activeKey = null; updateStopBanner(); render(); };
+        utter.onerror = () => { activeKey = null; updateStopBanner(); render(); };
+        window.speechSynthesis.speak(utter);
+        render();
+      }
+
+      async function toggleRecord(key) {
+        if (recordingKey === key && mediaRecorder) {
+          mediaRecorder.stop();
+          return;
+        }
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          alert("Microphone recording is not available in this browser context. You can upload an MP3/WAV/M4A file instead.");
+          return;
+        }
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          recChunks = [];
+          mediaRecorder = new MediaRecorder(stream);
+          recordingKey = key;
+          mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recChunks.push(e.data); };
+          mediaRecorder.onstop = async () => {
+            stream.getTracks().forEach(t => t.stop());
+            const blob = new Blob(recChunks, { type: mediaRecorder.mimeType || "audio/webm" });
+            recordingKey = null;
+            mediaRecorder = null;
+            await saveRecording(key, blob);
+            render();
+          };
+          mediaRecorder.start();
+          render();
+        } catch (err) {
+          alert("Could not access microphone: " + err.message);
+        }
+      }
+
+      return {
+        loadAllRecordings, saveRecording, deleteRecording, hasCustom,
+        toggleShruti, playChime, stopAll, playTextOrCustom, toggleRecord,
+        getActiveKey: () => activeKey,
+        getRecordingKey: () => recordingKey,
+        isShrutiOn: () => shrutiOn
+      };
+    })();
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+
+    // =========================================================================
+    // 2. AUTHENTIC DATA FROM THE 3 VIDHI PDFS
+    // =========================================================================
+    const GOTRAM_TABLE = [
+      { gotram: "Bhāradvāja", deva: "भारद्वाज", pravaram: "Āṅgirasa, Bārhaspatya, Bhāradvāja", pravaramDeva: "आङ्गिरस, बार्हस्पत्य, भारद्वाज", count: 3 },
+      { gotram: "Ātreya", deva: "आत्रेय", pravaram: "Ātreya, Ārcanānasa, Śyāvāśva", pravaramDeva: "आत्रेय, आर्चननानस, श्यावाश्व", count: 3 },
+      { gotram: "Vādhūla", deva: "वाधूल", pravaram: "Bhārgava, Vītahavya, Sāvetasa", pravaramDeva: "भार्गव, वीतहव्य, सावेतस", count: 3 },
+      { gotram: "Śrīvatsa", deva: "श्रीवत्स", pravaram: "Bhārgava, Cyāvana, Āpnavāna, Aurva, Jāmadagnya", pravaramDeva: "भार्गव, च्यावन, आप्नवान, और्व, जामदग्न्य", count: 5 },
+      { gotram: "Kauśika", deva: "कौशिक", pravaram: "Vaiśvāmitra, Āghamarṣaṇa, Kauśika", pravaramDeva: "वैश्वामित्र, आघमर्षण, कौशिक", count: 3 },
+      { gotram: "Viśvāmitra", deva: "विश्वामित्र", pravaram: "Vaiśvāmitra, Devarāta, Audala", pravaramDeva: "वैश्वामित्र, देवरात, औदल", count: 3 },
+      { gotram: "Kauṇḍinya", deva: "कौण्डिन्य", pravaram: "Vāsiṣṭha, Maitrāvaruṇa, Kauṇḍinya", pravaramDeva: "वासिष्ठ, मैत्रावरुण, कौण्डिन्य", count: 3 },
+      { gotram: "Harita", deva: "हरित", pravaram: "Āṅgirasa, Ambarīṣa, Yauvanāśva", pravaramDeva: "आङ्गिरस, अम्बरीष, यौवनाश्व", count: 3 },
+      { gotram: "Kaṇva", deva: "कण्व", pravaram: "Āṅgirasa, Ajamīḍha, Kāṇva", pravaramDeva: "आङ्गिरस, अजमीढ, काण्व", count: 3 },
+      { gotram: "Parāśara", deva: "पराशर", pravaram: "Vāsiṣṭha, Śāktya, Pārāśarya", pravaramDeva: "वासिष्ठ, शाक्त्य, पाराशर्य", count: 3 },
+      { gotram: "Śāṇḍilya", deva: "शाण्डिल्य", pravaram: "Kāśyapa, Āvatsāra, Śāṇḍilya", pravaramDeva: "काश्यप, आवत्सार, शाण्डिल्य", count: 3 },
+      { gotram: "Kāśyapa", deva: "काश्यप", pravaram: "Kāśyapa, Āvatsāra, Daivala", pravaramDeva: "काश्यप, आवत्सार, दैवल", count: 3 },
+      { gotram: "Maudgalya", deva: "मौद्गल्य", pravaram: "Āṅgirasa, Pāramyaśva, Maudgalya", pravaramDeva: "आङ्गिरस, पारम्यश्व, मौद्गल्य", count: 3 },
+      { gotram: "Naidruva Kāśyapa", deva: "नैद्रुव काश्यप", pravaram: "Kāśyapa, Āvatsāra, Naidruva", pravaramDeva: "काश्यप, आवत्सार, नैद्रुव", count: 3 },
+      { gotram: "Saṅkṛti", deva: "सङ्कृति", pravaram: "Āṅgirasa, Kauravīta, Sāṅkṛtya", pravaramDeva: "आङ्गिरस, कौरवीत, साङ्कृत्य", count: 3 },
+      { gotram: "Kutsa", deva: "कुत्स", pravaram: "Āṅgirasa, Māndhātra, Kautsa", pravaramDeva: "आङ्गिरस, मान्धात्र, कौत्स", count: 3 },
+      { gotram: "Śaṭhamarṣaṇa", deva: "शठमर्षण", pravaram: "Āṅgirasa, Paurakutsa, Trāsatasya", pravaramDeva: "आङ्गिरस, पौरकुत्स, त्रासतस्य", count: 3 },
+      { gotram: "Āgastya", deva: "अगस्त्य", pravaram: "Āgatya, Tārdhyacyuta, Saumavāha", pravaramDeva: "आगत्य, तार्ढ्यच्युत, सौमवाह", count: 3 },
+      { gotram: "Bādarāyaṇa", deva: "बादरायण", pravaram: "Āṅgirasa, Pārśadaśva, Rādhītara", pravaramDeva: "आङ्गिरस, पार्षदश्व, राधीतर", count: 3 },
+      { gotram: "Gārgya", deva: "गार्ग्य", pravaram: "Āṅgirasa, Bārhaspatya, Bhāradvāja, Śainya, Gārgya", pravaramDeva: "आङ्गिरस, बार्हस्पत्य, भारद्वाज, शैन्य, गार्ग्य", count: 5 }
+    ];
+
+    const VEDA_SUTRA = {
+      "Yajur": { deva: "यजुः", sutras: [ { name: "Āpastamba", deva: "आपस्तम्ब" }, { name: "Bodhāyana", deva: "बोधायन" } ] },
+      "Ṛg": { deva: "ऋक्", sutras: [ { name: "Āśvalāyana", deva: "आश्वलायन" }, { name: "Kātyāyana", deva: "कात्यायन" } ] },
+      "Sāma": { deva: "साम", sutras: [ { name: "Drāhyāyaṇa", deva: "द्राह्यायण" }, { name: "Rāṇāyanīya", deva: "राणायनीय" } ] }
+    };
+
+    const DEFAULT_PROFILE = {
+      sampradaya: "vadakalai", // vadakalai | thenkalai
+      name: "Sudarsana",
+      gotram: "Bhāradvāja",
+      veda: "Yajur",
+      sutra: "Āpastamba",
+      ashramam: "grihastha",
+      talaiUpakarma: false,
+      samasrayanam: true,
+      desha: "india",
+      sankalpaPhrase: "Śrīman-Nārāyaṇa prītyartham",
+      sankalpaPhraseDeva: "श्रीमन्नारायण प्रीत्यर्थं",
+      samvatsara: "Parābhava", samvatsaraDeva: "पराभव",
+      ayanam: "Dakṣiṇāyane", ayanamDeva: "दक्षिणायने",
+      ritu: "Śarad", rituDeva: "शरद्",
+      masam: "Vṛścika", masamDeva: "वृश्चिक",
+      paksham: "Kṛṣṇa", pakshamDeva: "कृष्ण",
+      tithi: "Amāvāsyāyāṁ", tithiDeva: "अमावास्यायां",
+      vasaram: "Guru", vasaramDeva: "गुरु",
+      nakshatram: "Viśākhā", nakshatramDeva: "विशाखा",
+      punyakalam: "Darśa", punyakalamDeva: "दर्श",
+      pitruGotram: "Bhāradvāja", pitruGotramDeva: "भारद्वाज",
+      pMale1: "Narayana", pMale2: "Raghava", pMale3: "Srinivasa",
+      motherAlive: false,
+      pFemale1: "Lakshmi", pFemale2: "Janaki", pFemale3: "Alamelu",
+      mataGotram: "Śrīvatsa", mataGotramDeva: "श्रीवत्स",
+      mMale1: "Venkata", mMale2: "Krishnamachari", mMale3: "Varadachari",
+      mFemale1: "Padmavati", mFemale2: "Rukmini", mFemale3: "Sita"
+    };
+
+    const STORAGE_KEY = "keelnat_iyengar_vidhi_v1";
+    function loadProfile() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return { ...DEFAULT_PROFILE, ...JSON.parse(raw) };
+      } catch (e) {}
+      return { ...DEFAULT_PROFILE };
+    }
+    function saveProfile(p) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {}
+    }
+
+    const hour = new Date().getHours();
+    const autoKala = hour < 11 ? "pratah" : (hour < 16 ? "madhyahnika" : "sayam");
+
+    const state = {
+      tab: "sandhya",
+      script: "both",
+      showTamil: true,
+      fontScaleIdx: 1,
+      audioLang: "deva",
+      audioRate: 0.8,
+      chimeEnabled: true,
+      profile: loadProfile(),
+      sandhyaKala: autoKala,
+      sandhyaView: "guided",
+      sandhyaStep: 0,
+      gayatriCount: 0,
+      gayatriTarget: 28,
+      ashtaksharaCount: 0,
+      tharpView: "guided",
+      tharpStep: 0,
+      tharpChecks: {},
+      tharpSamagri: {},
+      upakView: "guided",
+      upakStep: 0,
+      kamoCount: 0,
+      kamoTarget: 108,
+      rishiCounts: {},
+      upakSamagri: {}
+    };
+
+    const FONT_SCALES = [
+      { cls: "font-scale-sm", label: "S" },
+      { cls: "font-scale-md", label: "M" },
+      { cls: "font-scale-lg", label: "L" },
+      { cls: "font-scale-xl", label: "XL" }
+    ];
+
+    function esc(s) {
+      return String(s || "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+    }
+    function hv(val) {
+      return `<span class="highlight-var">${esc(val)}</span>`;
+    }
+
+    function getAbhivadanam(p) {
+      const g = GOTRAM_TABLE.find(x => x.gotram === p.gotram) || GOTRAM_TABLE[0];
+      const vObj = VEDA_SUTRA[p.veda] || VEDA_SUTRA["Yajur"];
+      const sObj = vObj.sutras.find(x => x.name === p.sutra) || vObj.sutras[0];
+      const rishiWord = g.count === 5 ? "Pañcārṣeya" : "Trayārṣeya";
+      const rishiWordDeva = g.count === 5 ? "पञ्चार्षेय" : "त्र्यार्षेय";
+      return {
+        deva: `अभिवादये ${hv(g.pravaramDeva)} ${rishiWordDeva} प्रवरान्वित ${hv(g.deva)} गोत्रः ${hv(sObj.deva)} सूत्रः ${hv(vObj.deva)} शाखाध्यायी ${hv(p.name)} शर्मा नामाहम् अस्मिभोः ॥`,
+        iast: `Abhivādaye ${hv(g.pravaram)} ${rishiWord} pravarānvita ${hv(g.gotram)} gotraḥ ${hv(sObj.name)} sūtraḥ ${hv(p.veda)} śākhādhyāyī ${hv(p.name)} śarmā nāmāham asmibhoḥ ||`
+      };
+    }
+
+    function getDesha(p) {
+      if (p.desha === "usa") {
+        return { deva: "क्रौञ्चद्वीपे रमणकवर्षे उत्तर/गोतीर्थखण्डे", iast: "krauñcadvīpe ramaṇakavarṣe uttara / gotīrthakhaṇḍe" };
+      }
+      return { deva: "जम्बूद्वीपे भारतवर्षे भरतखण्डे", iast: "jambūdvīpe bhāratavarṣe bharatakhaṇḍe" };
+    }
+
+    function getSampradaya(p) {
+      const isT = p.sampradaya === "thenkalai";
+      if (isT) {
+        return {
+          isThenkalai: true,
+          label: "Thenkalai",
+          subtitle: "Yajurveda Thenkalai Sampradāya • Śrīśaileśa Dayāpātram • Śrīmate Rāmānujāya Namaḥ",
+          emblemSvg: `<svg viewBox="0 0 36 36" class="w-7 h-7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 6 L9 21 Q9 25 18 25 Q27 25 27 21 L27 6" stroke="var(--foreground)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M18 25 L18 32" stroke="var(--foreground)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M18 6 L18 23" stroke="var(--error)" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>`,
+          sankPhrase: "Bhagavat-kaiṅkarya rūpam",
+          sankPhraseDeva: "भगवत्कैङ्कर्य रूपं",
+          guruDeva: "| श्रीमते रामानुजाय नमः |\n| श्रीशैलेश दयापात्रं धीभक्त्यादि गुणार्णवम् । यतीन्द्रप्रवणं वन्दे रम्यजामातरं मुनिम् ॥\nलक्ष्मीनाथ समारम्भां नाथयामुन मध्यमाम् । अस्मदाचार्य पर्यन्तां वन्दे गुरुपरम्पराम् ॥",
+          guruIast: "| Śrīmate Rāmānujāya namaḥ |\n| Śrīśaileśa dayāpātraṁ dhībhaktyādi guṇārṇavam | Yatīndrapravaṇaṁ vande Ramyajāmātaraṁ munim ||\nLakṣmīnātha samārambhāṁ Nāthayāmuna madhyamām | Asmadācārya paryantāṁ vande Guruparamparām ||",
+          prostrationNote: "Thenkalai tradition: prostrate ONCE (Eka-namaskāram) with humble surrender.",
+          concludingSlokaDeva: "श्रीशैलेश दयापात्रं धीभक्त्यादि गुणार्णवम् । यतीन्द्रप्रवणं वन्दे रम्यजामातरं मुनिम् ॥\nकायेन वाचा मनसेन्द्रियैर्वा बुद्ध्याऽऽत्मना वा प्रकृतेः स्वभावात् ।\nकरोमि यद्यत् सकलं परस्मै नारायणायेति समर्पयामि ॥\nसर्वं श्रीकृष्णार्पणमस्तु ॥",
+          concludingSlokaIast: "śrīśaileśa dayāpātraṁ dhībhaktyādi guṇārṇavam | yatīndrapravaṇaṁ vande ramyajāmātaraṁ munim ||\nkāyena vācā manasendriyairvā buddhyā''tmanā vā prakṛteḥ svabhāvāt |\nkaromi yadyat sakalaṁ parasmai nārāyaṇāyeti samarpayāmi ||\nsarvaṁ śrīkṛṣṇārpaṇamastu ||"
+        };
+      }
+      return {
+        isThenkalai: false,
+        label: "Vadakalai",
+        subtitle: "Yajurveda Vadakalai Sampradāya • Śrīmate Rāmānujāya Namaḥ • Śrīmate Nigamānta Mahādeśikāya Namaḥ",
+        emblemSvg: `<svg viewBox="0 0 36 36" class="w-7 h-7" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 7 L9 24 Q9 29 18 29 Q27 29 27 24 L27 7" stroke="var(--foreground)" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M18 6 L18 26" stroke="var(--error)" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>`,
+        sankPhrase: "Śrīman-Nārāyaṇa prītyartham",
+        sankPhraseDeva: "श्रीमन्नारायण प्रीत्यर्थं",
+        guruDeva: "| श्रीमते रामानुजाय नमः |\n| श्रीमते लक्ष्मी हयवदनं परब्रह्मणे नमः |\nअस्मद् गुरुभ्यो नमः ।\nश्रीमान्वेङ्कटनाथार्यः कवितार्किककेसरी । वेदान्ताचार्यवर्यो मे सन्निधत्तां सदा हृदि ॥\nगुरुभ्यस्तद्गुरुभ्यश्च नमोवाकमधीमहे । वृणीमहे च तत्राद्यौ दम्पती जगतां पती ॥\nस्वशेषभूतेन मया स्वीयैः सर्वपरिच्छदैः । विधातुं प्रीतमात्मानं देवः प्रक्रमते स्वयम् ॥",
+        guruIast: "| Śrīmate Rāmānujāya namaḥ |\n| Śrīmate Lakṣmī Hayavadanaṁ Parabrahmaṇe namaḥ |\nasmad gurubhyo namaḥ |\nśrīmān veṅkaṭanāthāryaḥ kavitārkikakesarī | vedāntācāryavaryo me sannidhattāṁ sadā hṛdi ||\ngurubhyastadgurubhyaśca namovākamadhīmahe | vṛṇīmahe ca tatrādyau dampatī jagatāṁ patī ||\nsvaśeṣabhūtena mayā svīyaiḥ sarvaparicchadaiḥ | vidhātuṁ prītamātmānaṁ devaḥ prakramate svayam ||",
+        prostrationNote: "Vadakalai tradition: prostrate (typically 4 times in traditional observance).",
+        concludingSlokaDeva: "श्रीरङ्ग मङ्गलमणिं करुणा निवासम् । श्री वेङ्कटाद्रि शिखरालय कालमेघम् ।\nश्री हस्तिशैल शिखरोज्ज्वल पारिजातम् । श्रीशं नमामि शिरसा यदुशैलदीपम् ॥\nकायेन वाचा मनसेन्द्रियैर्वा बुद्ध्याऽऽत्मना वा प्रकृतेः स्वभावात् ।\nकरोमि यद्यत् सकलं परस्मै नारायणायेति समर्पयामि ॥",
+        concludingSlokaIast: "śrīraṅga maṅgalamaṇiṁ karuṇā nivāsam | śrī veṅkaṭādri śikharālaya kālamegham |\nśrī hastiśaila śikharojvala pārijātam | śrīśaṁ namāmi śirasā yaduśailadīpam ||\nkāyena vācā manasendriyairvā buddhyā''tmanā vā prakṛteḥ svabhāvāt |\nkaromi yadyat sakalaṁ parasmai nārāyaṇāyeti samarpayāmi ||"
+      };
+    }
+
+    // =========================================================================
+    // 3. RITUAL BUILDERS (SANDHYA, THARPANAM, UPAKARMA)
+    // =========================================================================
+    function buildSandhyaSteps(kala, p) {
+      const samp = getSampradaya(p);
+      const isP = kala === "pratah", isM = kala === "madhyahnika";
+      const kalaName = isP ? "Prātaḥ" : isM ? "Mādhyāhnika" : "Sāyam";
+      const kalaDeva = isP ? "प्रातः" : isM ? "माध्याह्निक" : "सायं";
+      const kalaSank = isP ? "प्रातः सन्ध्याम् उपासिष्ये" : isM ? "माध्याह्निकं करिष्ये" : "सायं सन्ध्याम् उपासिष्ये";
+      const kalaSankIast = isP ? "prātaḥ sandhyām upāsiṣye" : isM ? "mādhyāhnikam kariṣye" : "sāyaṁ sandhyām upāsiṣye";
+      const kalaFace = isP ? "Face East (पूर्वमुखम्)" : isM ? "Face East or North (पूर्व/उत्तरमुखम्)" : "Face West (पश्चिममुखम्)";
+      const abhi = getAbhivadanam(p);
+
+      const prasanam = isP ? {
+        nyasaDeva: "सूर्यश्चेत्यनुवाकस्य अग्निरृषिः । देवी गायत्री छन्दः । सूर्यो देवता । अपां प्राशने विनियोगः ॥",
+        nyasaIast: "sūryaścetyanuvākasya agnir ṛṣiḥ | devī gāyatrī chandaḥ | sūryo devatā | apāṁ prāśane viniyogaḥ ||",
+        deva: "सूर्यश्च मा मन्युश्च मन्युपतयश्च मन्युकृतेभ्यः पापेभ्यो रक्षन्ताम् । यद्रात्र्या पापमकार्षम् । मनसा वाचा हस्ताभ्याम् । पद्भ्यामुदरेण शिश्ना । रात्रिस्तदवलुम्पतु । यत्किञ्च दुरितं मयि । इदमहं माममृतयोनौ । सूर्ये ज्योतिषि जुहोमि स्वाहा ॥",
+        iast: "sūryaśca mā manyuśca manyupatayaśca manyukṛtebhyaḥ pāpebhyo rakṣantām | yadrātryā pāpamakārṣam | manasā vācā hastābhyām | padbhyāmudareṇa śiśnā | rātristadavalumpatu | yatkiñca duritaṁ mayi | idamahaṁ māmamṛtayonau | sūrye jyotiṣi juhomi svāhā ||"
+      } : isM ? {
+        nyasaDeva: "आपः पुनन्त्वित्यनुवाकस्य आप ऋषिः । अनुष्टुप् छन्दः । ब्रह्मणस्पतिर्देवता । अपां प्राशने विनियोगः ॥",
+        nyasaIast: "āpaḥ punantu ityanuvākasya āpa ṛṣiḥ | anuṣṭup chandaḥ | brahmaṇaspatir devatā | apāṁ prāśane viniyogaḥ ||",
+        deva: "आपः पुनन्तु पृथिवीं पृथिवी पूता पुनातु माम् । पुनन्तु ब्रह्मणस्पतिर्ब्रह्मपूता पुनातु माम् । यदुच्छिष्टमभोज्यं यद्वा दुश्चरितं मम । सर्वं पुनन्तु मामापोऽसतां च प्रतिग्रहꣳ स्वाहा ॥",
+        iast: "āpaḥ punantu pṛthivīṁ pṛthivī pūtā punātu mām | punantu brahmaṇaspatir brahmapūtā punātu mām | yaducchiṣṭamabhojyaṁ yadvā duścaritaṁ mama | sarvaṁ punantu māmāpo'satāṁ ca pratigrahaguṁ svāhā ||"
+      } : {
+        nyasaDeva: "अग्निश्चेत्यनुवाकस्य सूर्य ऋषिः । देवी गायत्री छन्दः । अग्निर्देवता । अपां प्राशने विनियोगः ॥",
+        nyasaIast: "agniścetyanuvākasya sūrya ṛṣiḥ | devī gāyatrī chandaḥ | agnir devatā | apāṁ prāśane viniyogaḥ ||",
+        deva: "अग्निश्च मा मन्युश्च मन्युपतयश्च मन्युकृतेभ्यः पापेभ्यो रक्षन्ताम् । यदह्ना पापमकार्षम् । मनसा वाचा हस्ताभ्याम् । पद्भ्यामुदरेण शिश्ना । अहस्तदवलुम्पतु । यत्किञ्च दुरितं मयि । इदमहं माममृतयोनौ । सत्ये ज्योतिषि जुहोमि स्वाहा ॥",
+        iast: "agniśca mā manyuśca manyupatayaśca manyukṛtebhyaḥ pāpebhyo rakṣantām | yadahnā pāpamakārṣam | manasā vācā hastābhyām | padbhyāmudareṇa śiśnā | ahastadavalumpatu | yatkiñca duritaṁ mayi | idamahaṁ māmamṛtayonau | satye jyotiṣi juhomi svāhā ||"
+      };
+
+      const dhyanam = isP ? {
+        deva: "प्रातर्ध्यायामि गायत्रीं रविमण्डलमध्यगाम् । ऋग्वेदमुच्चारयन्तीं रक्तवर्णां कुमारिकाम् । अक्षमालाकरां ब्रह्मदैवत्यां हंसवाहनाम् ॥",
+        iast: "prātardhyāyāmi gāyatrīṁ ravimaṇḍala madhyagām | ṛgvedamuccārayantīṁ raktavarṇāṁ kumārikām | akṣamālākarāṁ brahmadaivatyāṁ haṁsavāhanām ||"
+      } : isM ? {
+        deva: "मध्याह्ने विष्णुदेवीं च तार्क्ष्यस्थां पीतवाससाम् । युवतीं च यजुर्वेदां सूर्यमण्डलसंस्थिताम् ॥",
+        iast: "madhyāhne viṣṇudevīṁ ca tārkṣyasthāṁ pītavāsasām | yuvatīṁ ca yajurvedāṁ sūryamaṇḍala saṁsthitām ||"
+      } : {
+        deva: "सायं सरस्वतीं श्यामां वृद्धां वृषभवाहनाम् । सामवेदं समुच्चार्यं रुद्रदैवत्यमाश्रये ॥",
+        iast: "sāyaṁ sarasvatīṁ śyāmāṁ vṛddhāṁ vṛṣabhavāhanām | sāmavedaṁ samuccāryaṁ rudradaivatyamāśraye ||"
+      };
+
+      const upasthanam = isP ? {
+        nyasaDeva: "मित्रस्येति उपस्थान मन्त्रस्य विश्वामित्र ऋषिः । भीरुड् गायत्री त्रिष्टुप् छन्दांसि । मित्रो देवता । प्रातःसन्ध्योपस्थाने विनियोगः ॥",
+        nyasaIast: "mitrasyeti upasthāna mantrasya viśvāmitra ṛṣiḥ | bhīruḍh gāyatrī triṣṭup chandāṁsi | mitro devatā | prātassandhyopasthāne viniyogaḥ ||",
+        action: "Stand facing East with hands in Añjali Mudrā.",
+        deva: "मित्रस्य चर्षणीधृतः श्रवो देवस्य सानसिम् । सत्यं चित्रश्रवस्तमम् ॥\nमित्रो जनान् यातयति प्रजानन् मित्रो दाधार पृथिवीमुत द्याम् । मित्रः कृष्टीरनिमिषाभिचष्टे सत्याय हव्यं घृतवद्विधेम ॥\nप्र स मित्र मर्तो अस्तु प्रयस्वान् यस्त आदित्य शिक्षति व्रतेन । न हन्यते न जीयते त्वोतो नैनमꣳहो अश्नोत्यन्तितो न दूरात् ॥",
+        iast: "mitrasya carṣaṇīdhṛtaḥ śravo devasya sānasim | satyaṁ citraśravastamam ||\nmitro janān yātayati prajānan mitro dādhāra pṛthivīmuta dyām | mitraḥ kṛṣṭīranimiṣābhicaṣṭe satyāya havyaṁ ghṛtavadvidhema ||\npra sa mitra marto astu prayasvān yasta āditya śikṣati vratena | na hanyate na jīyate tvoto nainamaguṁho aśnotyantito na dūrāt ||"
+      } : isM ? {
+        nyasaDeva: "आसत्येनेत्यादि मन्त्राणां हिरण्यस्तूप विश्वामित्र कुत्स वसिष्ठा ऋषयः । त्रिष्टुप् गायत्री जगती उष्णिक् त्रिष्टुप् छन्दांसि । आदित्यो देवता । माध्याह्निक सन्ध्योपस्थाने विनियोगः ॥",
+        nyasaIast: "āsatyenetyādi mantrāṇāṁ hiraṇyastūpa viśvāmitra kutsa vasiṣṭhā ṛṣayaḥ | triṣṭup gāyatrī jagatī uṣṇik triṣṭup chandāṁsi | ādityo devatā | mādhyāhnika sandhyopasthāne viniyogaḥ ||",
+        action: "Stand facing the Sun with Añjali Mudrā; for 'tac-cakṣuḥ' form Vyoma Mudrā.",
+        deva: "आसत्येन रजसा वर्तमानो निवेशयन्नमृतं मर्त्यं च । हिरण्ययेन सविता रथेना देवो याति भुवना विपश्यन् ॥\nउद्वयं तमसस्परि पश्यन्तो ज्योतिरुत्तरम् । देवं देवत्रा सूर्यमगन्म ज्योतिरुत्तमम् ॥\nउदु त्यं जातवेदसं देवं वहन्ति केतवः । दृशे विश्वाय सूर्यम् ॥\nचित्रं देवानामुदगादनीकं चक्षुर्मित्रस्य वरुणस्याग्नेः । आ प्रा द्यावापृथिवी अन्तरिक्षꣳ सूर्य आत्मा जगतस्तस्थुषश्च ॥\nतच्चक्षुर्देवहितं पुरस्ताच्छुक्रमुच्चरत् । पश्येम शरदः शतं जीवेम शरदः शतं नन्दाम शरदः शतं मोदाम शरदः शतं भवाम शरदः शतं शृणवाम शरदः शतं प्रब्रवाम शरदः शतमजीताः स्याम शरदः शतं ज्योक् च सूर्यं दृशे ॥",
+        iast: "āsatyena rajasā vartamāno niveśayannamṛtaṁ martyañca | hiraṇyayena savitā rathenā devo yāti bhuvanā vipaśyan ||\nudvayaṁ tamasaspari paśyanto jyotiruttaram | devaṁ devatrā sūryamaganma jyotiruttamam ||\nudu tyaṁ jātavedasaṁ devaṁ vahanti ketavaḥ | dṛśe viśvāya sūryam ||\ncitraṁ devānāmudagādanīkaṁ cakṣurmitrasya varuṇasyāgneḥ | ā prā dyāvāpṛthivī antarikṣaguṁ sūrya ātmā jagatastasthuṣaśca ||\ntaccakṣurdevahitaṁ purastācchukramuccarat | paśyema śaradaḥ śataṁ jīvema śaradaḥ śataṁ nandāma śaradaḥ śataṁ modāma śaradaḥ śataṁ bhavāma śaradaḥ śataṁ śṛṇavāma śaradaḥ śataṁ prabravāma śaradaḥ śatamajītāḥ syāma śaradaḥ śataṁ jyok ca sūryaṁ dṛśe ||"
+      } : {
+        nyasaDeva: "इमं मे वरुण इत्यादि मन्त्राणां देवरात ऋषिः । गायत्री त्रिष्टुप् जगत्यः छन्दांसि । सविता देवता । सायं सन्ध्योपस्थाने विनियोगः ॥",
+        nyasaIast: "imaṁ me varuṇa ityādi mantrāṇāṁ devarāta ṛṣiḥ | gāyatrī triṣṭup jagatyaḥ chandāṁsi | savitā devatā | sāyaṁ sandhyopasthāne viniyogaḥ ||",
+        action: "Stand facing West with hands in Añjali Mudrā.",
+        deva: "इमं मे वरुण श्रुधी हवमद्या च मृडय । त्वामवस्युराचके ॥\nतत्त्वा यामि ब्रह्मणा वन्दमानस्तदाशास्ते यजमानो हविर्भिः । अहेडमानो वरुणेह बोध्युरुशꣳस मा न आयुः प्रमोषीः ॥\nयच्चिद्धि ते विशो यथा प्र देव वरुण व्रतम् । मिनीमसि द्यविद्यवि ॥\nयत्किञ्चेदं वरुण दैव्ये जनेऽभिद्रोहं मनुष्याश्चरामसि । अचित्ती यत्तव धर्मा युयोपिम मा नस्तस्मादेनसो देव रीरिषः ॥\nकितवासो यद्रिरिपुर्न दीवि यद्वा घा सत्यमुत यन्न विद्म । सर्वा ता विष्य शिथिरेव देवाथा ते स्याम वरुण प्रियासः ॥",
+        iast: "imaṁ me varuṇa śrudhī havamadyā ca mṛḍaya | tvāmavasyurācake ||\ntattvā yāmi brahmaṇā vandamānastadāśāste yajamāno havirbhiḥ | aheḍamāno varuṇeha bodhyuruśaguṁsa mā na āyuḥ pramoṣīḥ ||\nyacciddhi te viśo yathā pradeva varuṇa vratam | minīmasi dyavi dyavi ||\nyatkiñcedaṁ varuṇa daivye jane'bhidrohaṁ manuṣyāścarāmasi | acittī yattava dharmā yuyopima mā nastasmādenaso deva rīriṣaḥ ||\nkitavāso yadriripurna dīvi yadvā ghā satyamuta yanna vidma | sarvā tā viṣya śithireva devāthā te syāma varuṇa priyāsaḥ ||"
+      };
+
+      const raw = [
+        { num: 1, title: "Ācamanam (आचमनम्)", poonool: "upavitam", action: `${kalaFace}. Sit on a maṇai/āsana and perform Ācamanam. Open Quick Reference above for all 12 Keśavādi touch points.`, tamil: "ஆசமனம் செய்யவும் (அச்யுதாய, அனந்தாய, கோவிந்தாய — 3 முறை தீர்த்தம் உட்கொண்டு, கேசவாதி 12 நாமங்களைச் சொல்லி அங்கங்களைத் தொடவும்).", deva: "अच्युताय नमः । अनन्ताय नमः । गोविन्दाय नमः ॥\nकेशवाय नमः । नारायणाय नमः । माधवाय नमः । गोविन्दाय नमः । विष्णवे नमः । मधुसूदनाय नमः । त्रिविक्रमाय नमः । वामनाय नमः । श्रीधराय नमः । हृषीकेशाय नमः । पद्मनाभाय नमः । दामोदराय नमः ॥", iast: "acyutāya namaḥ | anantāya namaḥ | govindāya namaḥ ||\nkeśavāya namaḥ | nārāyaṇāya namaḥ | mādhavāya namaḥ | govindāya namaḥ | viṣṇave namaḥ | madhusūdanāya namaḥ | trivikramāya namaḥ | vāmanāya namaḥ | śrīdharāya namaḥ | hṛṣīkeśāya namaḥ | padmanābhāya namaḥ | dāmodarāya namaḥ ||" },
+        { num: 2, title: "Prāṇāyāmam (प्राणायामम्)", poonool: "upavitam", action: "Recite Śuklāmbaradharam, then perform Prāṇāyāmam reciting the Vyāhṛtis, Gāyatrī, and Śiras.", tamil: "ஶுக்லாம்பரதரம் சொல்லி, ப்ராணாயாமம் செய்யவும்.", deva: "शुक्लाम्बरधरं विष्णुं शशिवर्णं चतुर्भुजम् । प्रसन्नवदनं ध्यायेत् सर्वविघ्नोपशान्तये ॥\nओं भूः । ओं भुवः । ओꣳ सुवः । ओं महः । ओं जनः । ओं तपः । ओꣳ सत्यम् ।\nओं तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् ॥\nओमापो ज्योती रसोऽमृतं ब्रह्म भूर्भुवस्सुवरोम् ॥", iast: "śuklāmbaradharaṁ viṣṇuṁ śaśivarṇaṁ caturbhujam | prasannavadanaṁ dhyāyet sarvavighnopaśāntaye ||\noṁ bhūḥ | oṁ bhuvaḥ | oguṁ suvaḥ | oṁ mahaḥ | oṁ janaḥ | oṁ tapaḥ | oguṁ satyam |\noṁ tatsaviturvareṇyaṁ bhargo devasya dhīmahi | dhiyo yo naḥ pracodayāt ||\nomāpo jyotī raso'mṛtaṁ brahma bhūrbhuvassuvarom ||" },
+        { num: 3, title: "Saṅkalpam (सङ्कल्पम्)", poonool: "upavitam", action: "Place left palm facing up on right thigh, and cover it with right palm facing down.", tamil: "வலது தொடையில் இடது உள்ளங்கையை மேல்நோக்கி வைத்து, அதன் மேல் வலது உள்ளங்கையை மூடி ஸங்கல்பம் செய்யவும்.", deva: `श्री भगवदाज्ञया ${hv(samp.sankPhraseDeva)} ${kalaDeva} ${isM ? "माध्याह्निकं करिष्ये" : kalaSank} ॥`, iast: `śrī bhagavadājñayā ${hv(samp.sankPhrase)} ${kalaSankIast} ||` },
+        { num: 4, title: samp.isThenkalai ? "Kaiṅkarya Anusandhānam (Thenkalai)" : "Sāttvika Tyāgam (सात्त्विक त्यागम्)", poonool: "upavitam", action: samp.isThenkalai ? "Thenkalai tradition does not recite the separate Vadakalai 'Bhagavāneva svaniyāmya...' Sāttvika Tyāgam formula; contemplate that this ritual is performed solely as Bhagavat-kaiṅkaryam by the Lord's grace." : "Join both palms in Añjali Mudrā and dedicate the karma to Śrīman Nārāyaṇa.", tamil: samp.isThenkalai ? "தென்கலை ஸம்ப்ரதாயத்தில் தனியாக ஸாத்விக த்யாகம் சொல்வதில்லை; பகவத் கைங்கர்யமாக அனுஸந்திக்கவும்." : "கைகூப்பி ஸாத்விக த்யாகம் செய்யவும்.", deva: samp.isThenkalai ? `श्री भगवदाज्ञया भगवत्कैङ्कर्य रूपं ${kalaDeva} सन्ध्यावन्दनं करिष्ये ॥\n(सर्वं श्रीकृष्णार्पणमस्तु)` : `भगवानेव स्वनियाम्य स्वरूपस्थिति प्रवृत्ति स्वशेषतैकरसेन अनेन आत्मना कर्त्रा स्वकीयैश्च उपकरणैः स्वाराधनैक प्रयोजनाय परमपुरुषः सर्वशेषी श्रियः पतिः स्वशेषभूतम् इदं ${kalaDeva} सन्ध्यावन्दनाख्यं कर्म स्वस्मै स्वप्रीतये स्वयमेव कारयति ॥`, iast: samp.isThenkalai ? `śrī bhagavadājñayā bhagavat-kaiṅkarya rūpaṁ ${kalaName.toLowerCase()} sandhyāvandanaṁ kariṣye ||\n(Contemplate pure kaiṅkaryam without separate Sāttvika Tyāgam)` : `bhagavāneva svaniyāmya svarūpasthiti pravṛtti svaśeṣataikarasena anena ātmanā kartrā svakīyaiśca upakaraṇaiḥ svārādhanaika prayojanāya paramapuruṣaḥ sarvaśeṣī śriyaḥ patiḥ svaśeṣabhūtam idaṁ ${kalaName.toLowerCase()} sandhyāvandanākhyaṁ karma svasmai svaprītaye svayameva kārayati ||` },
+        { num: 5, title: "Prokṣaṇam / Mārjanam (प्रोक्षणम्)", poonool: "upavitam", action: "Perform Nyāsam, sprinkle water on head for each line; on 'yasya kṣayāya jinvatha' sprinkle on feet/knees; on 'āpo janayathā' on head; on final 'oṁ bhūrbhuvassuvaḥ' around head.", tamil: "ந்யாஸம் செய்து, ஒவ்வொரு வரிக்கும் தலையில் தீர்த்தம் ப்ரோக்ஷிக்கவும் ('யஸ்ய க்ஷயாய ஜின்வத' பாதங்களில்).", deva: "आपोहिष्ठेति मन्त्रस्य सिन्धुद्वीप ऋषिः । देवी गायत्री छन्दः । आपो देवता । अपां प्रोक्षणे विनियोगः ॥\nओं भूर्भुवस्सुवः । तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् ॥\nआपो हिष्ठा मयोभुवः । ता न ऊर्जे दधातन । महे रणाय चक्षसे ।\nयो वः शिवतमो रसः । तस्य भाजयतेह नः । उशतीरिव मातरः ।\nतस्मा अरङ्गमाम वः । यस्य क्षयाय जिन्वथ । आपो जनयथा च नः ॥\nओं भूर्भुवस्सुवः ॥", iast: "āpohiṣṭheti mantrasya sindhudvīpa ṛṣiḥ | devī gāyatrī chandaḥ | āpo devatā | apāṁ prokṣaṇe viniyogaḥ ||\noṁ bhūrbhuvassuvaḥ | tatsaviturvareṇyaṁ bhargo devasya dhīmahi | dhiyo yo naḥ pracodayāt ||\nāpo hiṣṭhā mayo bhuvaḥ | tā na ūrje dadhātana | mahe raṇāya cakṣase |\nyo vaḥ śivatamo rasaḥ | tasya bhājayateha naḥ | uśatīriva mātaraḥ |\ntasmā araṅgamāma vaḥ | yasya kṣayāya jinvatha | āpo janayathā ca naḥ ||\noṁ bhūrbhuvassuvaḥ ||" },
+        { num: 6, title: "Prāśanam (प्राशनम्)", poonool: "upavitam", action: "Perform Nyāsam, take water in hollow of right palm, recite the mantra, swallow water, and perform Ācamanam once.", tamil: "வலது உள்ளங்கையில் தீர்த்தம் எடுத்து மந்திரம் சொல்லி உட்கொண்டு, ஒரு ஆசமனம் செய்யவும்.", deva: `${prasanam.nyasaDeva}\n\n${prasanam.deva}`, iast: `${prasanam.nyasaIast}\n\n${prasanam.iast}` },
+        { num: 7, title: "Punaḥ Prokṣaṇam (पुनः प्रोक्षणम्)", poonool: "upavitam", action: "Sprinkle water on head reciting 'dadhikrāviṇṇo' and repeat 'āpo hiṣṭhā'.", tamil: "ததிக்ராவிண்ணோ சொல்லி மீண்டும் ப்ரோக்ஷணம் செய்யவும்.", deva: "दधिक्राविण्णो अकारिषं जिष्णोरश्वस्य वाजिनः । सुरभि नो मुखा करत् प्र ण आयूꣳषि तारिषत् ॥", iast: "dadhikrāviṇṇo akāriṣaṁ jiṣṇoraśvasya vājinaḥ | surabhi no mukhā karat pra ṇa āyūguṁṣi tāriṣat ||" },
+        { num: 8, title: "Arghya Pradānam (अर्घ्य प्रदानम्)", poonool: "upavitam", action: isP ? "Face East. Cup hands with water, recite Gāyatrī and offer Arghyam 3 times." : isM ? "Stand facing Sun. Offer Arghyam 2 times." : "Face West. Offer Arghyam 3 times.", tamil: isM ? "சூரியனை நோக்கி நின்று இரண்டு முறை அர்க்யம் விடவும்." : "கிழக்கு/மேற்கு நோக்கி மூன்று முறை அர்க்யம் விடவும்.", deva: "ओं भूर्भुवस्सुवः । तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् ॥", iast: "oṁ bhūrbhuvassuvaḥ | tatsaviturvareṇyaṁ bhargo devasya dhīmahi | dhiyo yo naḥ pracodayāt ||" },
+        { num: 9, title: "Prāyaścitta Arghyam & Aikya Anusandhānam", poonool: "upavitam", action: "If past time, offer 1 Prāyaścitta Arghyam. Turn clockwise sprinkling water reciting 'asāvādityo brahma', then Ācamanam.", tamil: "காலாதீத ப்ராயச்சித்த அர்க்யம் (தேவையானால்) விட்டு, 'அஸாவாதித்யோ ப்ரஹ்ம' என்று ப்ரதக்ஷிணம் செய்து ஆசமனம் செய்யவும்.", deva: "असावादित्यो ब्रह्म । ब्रह्मैवाहम् अस्मि ॥", iast: "asāvādityo brahma | brahmaivāham asmi ||" },
+        { num: 10, title: "Keśavādi Tarpaṇam (केशवादि तर्पणम्)", poonool: "upavitam", action: "Pour water off finger tips (Deva Tīrtham) for each of the 12 names.", tamil: "விரல் நுனிகள் வழியாக (தேவ தீர்த்தம்) கேசவாதி 12 நாமங்களுக்கு தர்ப்பணம் செய்யவும்.", deva: "केशवं तर्पयामि । नारायणं तर्पयामि । माधवं तर्पयामि । गोविन्दं तर्पयामि ।\nविष्णुं तर्पयामि । मधुसूदनं तर्पयामि । त्रिविक्रमं तर्पयामि । वामनं तर्पयामि ।\nश्रीधरं तर्पयामि । हृषीकेशं तर्पयामि । पद्मनाभं तर्पयामि । दामोदरं तर्पयामि ॥", iast: "keśavaṁ tarpayāmi | nārāyaṇaṁ tarpayāmi | mādhavaṁ tarpayāmi | govindaṁ tarpayāmi |\nviṣṇuṁ tarpayāmi | madhusūdanaṁ tarpayāmi | trivikramaṁ tarpayāmi | vāmanaṁ tarpayāmi |\nśrīdharaṁ tarpayāmi | hṛṣīkeśaṁ tarpayāmi | padmanābhaṁ tarpayāmi | dāmodaraṁ tarpayāmi ||" },
+        { num: 11, title: "Japasthala Prokṣaṇam (जपस्थल प्रोक्षणम्)", poonool: "upavitam", action: "Sprinkle water around your seat and sit facing East/North.", tamil: "ஜபம் செய்யும் இடத்தை ப்ரோக்ஷித்து அமரவும்.", deva: "अपवित्रः पवित्रो वा सर्वावस्थां गतोऽपि वा । यः स्मरेत् पुण्डरीकाक्षं स बाह्याभ्यन्तरः शुचिः ॥\nओं भूर्भुवस्सुवः ॥", iast: "apavitraḥ pavitro vā sarvāvasthāṁ gato'pi vā | yaḥ smaret puṇḍarīkākṣaṁ sa bāhyābhyantaraḥ śuciḥ ||\noṁ bhūrbhuvassuvaḥ ||" },
+        { num: 12, title: "Japa Saṅkalpam & Nyāsam (जप सङ्कल्पं न्यासम्)", poonool: "upavitam", action: "Perform Prāṇāyāmam thrice, Saṅkalpam for Gāyatrī Japam, and Praṇava & Vyāhṛti Nyāsam.", tamil: "மூன்று ப்ராணாயாமம் செய்து, காயத்ரீ மஹாமந்த்ர ஜப ஸங்கல்பம் & ந்யாஸம் செய்யவும்.", deva: `श्री भगवदाज्ञया ${hv(samp.sankPhraseDeva)} ${kalaDeva} सन्ध्या गायत्री महामन्त्र जपं करिष्ये ॥\nप्रणवस्य ऋषिर्ब्रह्मा । देवी गायत्री छन्दः । परमात्मा देवता ।\nभूर्भुवस्सुवरिति महाव्याहृतीनां अत्रि भृगु कुत्सा ऋषयः । गायत्री उष्णिक् अनुष्टुप् छन्दांसि । अग्नि वायु अर्का देवताः ॥`, iast: `śrī bhagavadājñayā ${hv(samp.sankPhrase)} ${kalaName.toLowerCase()} sandhyā gāyatrī mahāmantra japaṁ kariṣye ||\npraṇavasya ṛṣirbrahmā | devī gāyatrī chandaḥ | paramātmā devatā |\nbhūrbhuvassuvariti mahāvyāhṛtīnāṁ atri bhṛgu kutsā ṛṣayaḥ | gāyatrī uṣṇik anuṣṭup chandāṁsi | agni vāyu arkā devatāḥ ||` },
+        { num: 13, title: "Gāyatrī Āvāhanam & Dhyānam (गायत्री आवाहनम्)", poonool: "upavitam", action: "Invoke Gāyatrī Devī moving open palms toward heart, then meditate on the kāla-specific dhyānam.", tamil: "இரு கைகளையும் மார்பை நோக்கி அசைத்து காயத்ரீ தேவியை ஆவாஹனம் செய்து த்யானிக்கவும்.", deva: `आयातु वरदा देवी अक्षरं ब्रह्मसम्मितम् । गायत्रीं छन्दसां मातेदं ब्रह्म जुषस्व नः । ओजोऽसि सहोऽसि बलमसि भ्राजोऽसि देवानां धाम नामासि विश्वमसि विश्वायुः सर्वमसि सर्वायुरभिभूरोम् ॥\nगायत्रीम् आवाहयामि । सावित्रीम् आवाहयामि । सरस्वतीम् आवाहयामि ॥\n\n${dhyanam.deva}`, iast: `āyātu varadā devī akṣaraṁ brahmasammitam | gāyatrīṁ chandasāṁ mātedaṁ brahma juṣasva naḥ | ojo'si saho'si balamasi bhrājo'si devānāṁ dhāma nāmāsi viśvamasi viśvāyuḥ sarvamasi sarvāyurabhibhūrom ||\ngāyatrīm āvāhayāmi | sāvitrīm āvāhayāmi | sarasvatīm āvāhayāmi ||\n\n${dhyanam.iast}` },
+        { num: 14, title: "Gāyatrī Japam (गायत्री जपम्)", poonool: "upavitam", hasGayatriCounter: true, action: "Cover hands with uttarīyam and chant Gāyatrī Mantra silently (108, 28, or 10 times).", tamil: "வஸ்த்ரத்தால் கைகளை மூடி, காயத்ரீ மஹாமந்திரத்தை (108 / 28 / 10 முறை) மனதிற்குள் ஜபிக்கவும்.", deva: "यो देवः सविताऽस्माकं धियो धर्मादि गोचराः । प्रेरयेत्तस्य यद्भर्गस्तद्वरेण्यम् उपास्महे ॥\n\nओं भूर्भुवस्सुवः । तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् ॥", iast: "yo devaḥ savitā'smākaṁ dhiyo dharmādi gocarāḥ | prerayettasya yadbhargastadvareṇyam upāsmahe ||\n\noṁ bhūrbhuvassuvaḥ | tatsaviturvareṇyaṁ bhargo devasya dhīmahi | dhiyo yo naḥ pracodayāt ||" },
+        { num: 15, title: "Aṣṭākṣara Japam (अष्टाक्षर जपम्)", poonool: "upavitam", hasAshtaksharaCounter: true, optionalNote: p.samasrayanam ? "Enabled (Samāśrayaṇam completed)" : "Optional (For those initiated via Samāśrayaṇam)", action: "Recite Ācārya Taniyans, 3 Prāṇāyāmams with Aṣṭākṣara, Nyāsam, Vaikuṇṭhanātha dhyānam, and Tirumantram.", tamil: "ஸமாச்ரயணம் செய்தவர்கள் ஆசார்ய தனியன் சொல்லி, த்யான ஸ்லோகம் சொல்லி அஷ்டாக்ஷர ஜபம் செய்யவும்.", deva: "सव्यं पादं प्रसार्य श्रितदुरितहरं दक्षिणं कुञ्चयित्वा\nजानुन्‍याधाय सव्येतरमितरभुजं नागभोगे निधाय ।\nपश्चाद्बाहुद्वयेन प्रतिभटशमने धारयन् शङ्खचक्रे\nदेवीभूषादिजुष्टो जनयतु जगतां शर्म वैकुण्ठनाथः ॥", iast: "savyaṁ pādaṁ prasārya śritaduritaharaṁ dakṣiṇaṁ kuñcayitvā\njānunyādhāya savyetaramitarabhujaṁ nāgabhoge nidhāya |\npaścādbāhudvayena pratibhaṭaśamane dhārayan śaṅkhacakre\ndevībhūṣādijuṣṭo janayatu jagatāṁ śarma vaikuṇṭhanāthaḥ ||" },
+        { num: 16, title: "Gāyatrī Udvāsanam (गायत्री उद्वासनम्)", poonool: "upavitam", action: "Perform Prāṇāyāmam thrice, Saṅkalpam for Upasthānam, then stand up and recite Udvāsanam.", tamil: "மூன்று ப்ராணாயாமம் செய்து, எழுந்து நின்று காயத்ரீ உத்வாஸனம் செய்யவும்.", deva: `श्री भगवदाज्ञया ${hv(samp.sankPhraseDeva)} ${kalaDeva} सन्ध्या उपस्थानं करिष्ये ॥\nउत्तमे शिखरे देवि भूम्यां पर्वतमूर्धनि । ब्राह्मणेभ्यो ह्यनुज्ञानं गच्छ देवि यथा सुखम् ॥`, iast: `śrī bhagavadājñayā ${hv(samp.sankPhrase)} ${kalaName.toLowerCase()} sandhyā upasthānaṁ kariṣye ||\nuttame śikhare devi bhūmyāṁ parvatamūrdhani | brāhmaṇebhyo hyanujñānaṁ gaccha devi yathā sukham ||` },
+        { num: 17, title: `${kalaName} Upasthānam (${kalaDeva} उपस्थानम्)`, poonool: "upavitam", action: upasthanam.action, tamil: "கைகூப்பி நின்று உபஸ்தான மந்திரங்களைச் சொல்லவும்.", deva: `${upasthanam.nyasaDeva}\n\n${upasthanam.deva}`, iast: `${upasthanam.nyasaIast}\n\n${upasthanam.iast}` },
+        { num: 18, title: "Sandhyādi Devatā Vandanam", poonool: "upavitam", action: "Offer salutations with Añjali Mudrā.", tamil: "கைகூப்பி ஸந்த்யாதி தேவதா வந்தனம் செய்யவும்.", deva: "ओं सन्ध्यायै नमः । ओं सावित्र्यै नमः । ओं गायत्र्यै नमः । ओं सरस्वत्यै नमः ।\nओं सर्वाभ्यो देवताभ्यो नमो नमः । ओं कामोऽकार्षीत् मन्युरकार्षीत् नमो नमः ॥", iast: "oṁ sandhyāyai namaḥ | oṁ sāvitryai namaḥ | oṁ gāyatryai namaḥ | oṁ sarasvatyai namaḥ |\noṁ sarvābhyo devatābhyo namo namaḥ | oṁ kāmo'kārṣīt manyurakārṣīt namo namaḥ ||" },
+        { num: 19, title: "Abhivādanam (अभिवादनम्)", poonool: "upavitam", action: `Recite your personalized Pravaram, Gotram, Sūtram, Veda, and Name. ${samp.prostrationNote}`, tamil: samp.isThenkalai ? "உங்கள் கோத்ரம், ப்ரவரம், ஸூத்ரம், வேதம் மற்றும் பெயரைச் சொல்லி அபிவாதனம் செய்து ஒருமுறை ஸேவிக்கவும் (தென்கலை)." : "உங்கள் கோத்ரம், ப்ரவரம், ஸூத்ரம், வேதம் மற்றும் பெயரைச் சொல்லி அபிவாதனம் செய்து ஸேவிக்கவும்.", deva: abhi.deva, iast: abhi.iast },
+        { num: 20, title: "Dik Vandanam & Śrī Kṛṣṇa Smaraṇam", poonool: "upavitam", action: "Salute directions, recite concluding ślokas, Abhivādanam, Ācamanam, sprinkle water with 'oṁ bhūrbhuvassuvaḥ', and chant 'Śrī Kṛṣṇāya namaḥ' 10 times.", tamil: "திக்கு வந்தனம், த்யேயஸ்ஸதா, சங்கசக்ர, நமோ ப்ரஹ்மண்ய தேவாய ஸ்லோகங்களைச் சொல்லி, ஆசமனம் செய்து 'ஸ்ரீ க்ருஷ்ணாய நம:' 10 முறை சொல்லவும்.", deva: "ओं प्राच्यै दिशे नमः । ओं दक्षिणायै दिशे नमः । ओं प्रतीच्यै दिशे नमः । ओं उदीच्यै दिशे नमः ।\nओं ऊर्ध्वाय नमः । ओं अधराय नमः । ओं अन्तरिक्षाय नमः । ओं भूम्यै नमः । ओं विष्णवे नमः ॥\n\nध्येयः सदा सवितृमण्डलमध्यवर्ती नारायणः सरसिजासनसन्निविष्टः ।\nकेयूरवान् मकरकुण्डलवान् किरीटी हारी हिरण्मयवपुर्धृतशङ्खचक्रः ॥\nशङ्खचक्रगदापाणे द्वारकानिलयाच्युत । गोविन्द पुण्डरीकाक्ष रक्ष मां शरणागतम् ॥\nनमो ब्रह्मण्यदेवाय गोब्राह्मणहिताय च । जगद्धिताय कृष्णाय गोविन्दाय नमो नमः ॥", iast: "oṁ prācyai diśe namaḥ | oṁ dakṣiṇāyai diśe namaḥ | oṁ pratīcyai diśe namaḥ | oṁ udīcyai diśe namaḥ |\noṁ ūrdhvāya namaḥ | oṁ adharāya namaḥ | oṁ antarikṣāya namaḥ | oṁ bhūmyai namaḥ | oṁ viṣṇave namaḥ ||\n\ndhyeyaḥ sadā savitṛmaṇḍala madhyavartī nārāyaṇaḥ sarasijāsana sanniviṣṭaḥ |\nkeyūravān makarakuṇḍalavān kirīṭī hārī hiraṇmayavapurdhr̥taśaṅkhacakraḥ ||\nśaṅkhacakra gadāpāṇe dvārakā nilayācyuta | govinda puṇḍarīkākṣa rakṣa māṁ śaraṇāgatam ||\nnamo brahmaṇyadevāya gobrāhmaṇahitāya ca | jagaddhitāya kṛṣṇāya govindāya namo namaḥ ||" },
+        { num: 21, title: samp.isThenkalai ? "Concluding Samarpaṇam (Thenkalai)" : "Concluding Sāttvika Tyāgam (सात्त्विक त्यागम्)", poonool: "upavitam", action: "Join palms in Añjali Mudrā and offer the completed karma to Śrīman Nārāyaṇa.", tamil: "கைகூப்பி நிறைவு ஸ்லோகங்கள் சொல்லி பகவானுக்கு ஸமர்ப்பிக்கவும்.", deva: (samp.isThenkalai ? "" : `भगवानेव स्वनियाम्य स्वरूपस्थिति प्रवृत्ति स्वशेषतैकरसेन अनेन आत्मना कर्त्रा स्वकीयैश्च उपकरणैः स्वाराधनैक प्रयोजनाय परमपुरुषः सर्वशेषी श्रियः पतिः स्वशेषभूतम् इदं ${kalaDeva} सन्ध्यावन्दनाख्यं कर्म स्वस्मै स्वप्रीतये स्वयमेव कारितवान् ॥\n\n`) + samp.concludingSlokaDeva, iast: (samp.isThenkalai ? "" : `bhagavāneva svaniyāmya svarūpasthiti pravṛtti svaśeṣataikarasena anena ātmanā kartrā svakīyaiśca upakaraṇaiḥ svārādhanaika prayojanāya paramapuruṣaḥ sarvaśeṣī śriyaḥ patiḥ svaśeṣabhūtam idaṁ ${kalaName.toLowerCase()} sandhyāvandanākhyaṁ karma svasmai svaprītaye svayameva kāritavān ||\n\n`) + samp.concludingSlokaIast }
+      ];
+      return raw.map(s => ({ ...s, audioKey: `sandhya_${kala}_${s.num}` }));
+    }
+
+    function buildTharpanamSteps(p) {
+      const samp = getSampradaya(p);
+      const desha = getDesha(p);
+      const abhi = getAbhivadanam(p);
+      const pFemRelDeva = p.motherAlive ? "पितामही पितुःपितामही पितुःप्रपितामहीनां" : "मातृपितामहीप्रपितामहीनां";
+      const pFemRelIast = p.motherAlive ? "pitāmahī pituḥ pitāmahī pituḥ prapitāmahīnāṁ" : "mātṛ-pitāmahī-prapitāmahīnāṁ";
+      const pFemAvahDeva = p.motherAlive ? "पितामही पितुःपितामही पितुःप्रपितामहीश्च" : "मातृपितामहीप्रपितामहीश्च";
+      const pFemAvahIast = p.motherAlive ? "pitāmahī pituḥ pitāmahī pituḥ prapitāmahīśca" : "mātṛ-pitāmahī-prapitāmahīśca";
+      const pFemLabelsDeva = p.motherAlive ? ["पितामहीः", "पितुःपितामहीः", "पितुःप्रपितामहीः"] : ["मातृः", "पितामहीः", "प्रपितामहीः"];
+      const pFemLabelsIast = p.motherAlive ? ["pitāmahīḥ", "pituḥ pitāmahīḥ", "pituḥ prapitāmahīḥ"] : ["mātṛḥ", "pitāmahīḥ", "prapitāmahīḥ"];
+
+      const pG = hv(p.pitruGotram), pGD = hv(p.pitruGotramDeva);
+      const mG = hv(p.mataGotram), mGD = hv(p.mataGotramDeva);
+      const pM1 = hv(p.pMale1), pM2 = hv(p.pMale2), pM3 = hv(p.pMale3);
+      const pF1 = hv(p.pFemale1), pF2 = hv(p.pFemale2), pF3 = hv(p.pFemale3);
+      const mM1 = hv(p.mMale1), mM2 = hv(p.mMale2), mM3 = hv(p.mMale3);
+      const mF1 = hv(p.mFemale1), mF2 = hv(p.mFemale2), mF3 = hv(p.mFemale3);
+
+      const raw = [
+        {
+          num: 1, title: `Prelude, Ācamanam & Guru Paramparā (${samp.label})`, poonool: "upavitam",
+          action: "Perform Ācamanam twice, wear 3-blade Darbha Pavitram on right ring finger, place darbhas on seat, tuck darbhas with pavitram, and perform Prāṇāyāmam.",
+          tamil: "இரண்டு ஆசமனம் செய்து மூன்று பில் பவித்ரம் தரித்துக் கொண்டு தர்பங்களை ஆசனமாகப் போட்டுக் கொண்டு தர்பங்களை பவித்ரத்துடன் இடுக்கிக் கொண்டு ப்ராணாயாமம் செய்யவும்.",
+          deva: `${samp.guruDeva}\n\nशुक्लाम्बरधरं विष्णुं शशिवर्णं चतुर्भुजम् । प्रसन्नवदनं ध्यायेत् सर्वविघ्नोपशान्तये ॥\nयस्य द्विरदवक्त्राद्याः पारिषद्याः परः शतम् । विघ्नं निघ्नन्ति सततं विष्वक्सेनं तमाश्रये ॥`,
+          iast: `${samp.guruIast}\n\nśuklāmbaradharaṁ viṣṇuṁ śaśivarṇaṁ caturbhujam | prasannavadanaṁ dhyāyet sarvavighnopaśāntaye ||\nyasya dviradavaktrādyāḥ pāriṣadyāḥ paraḥ śatam | vighnaṁ nighnanti satataṁ viṣvaksenaṁ tamāśraye ||`
+        },
+        {
+          num: 2, title: "Prācīnāvītam & Mahā-Saṅkalpam (सङ्कल्पम्)", poonool: "pracinavitam",
+          action: "Switch to PRĀCĪNĀVĪTAM (over RIGHT shoulder). Recite Saṅkalpam with your family's Pitru & Matamaha Varga names substituted below. Afterwards, drop tucked darbhas to the South.",
+          tamil: "ப்ராசீனாவீதம் செய்து கொள்ளவும். ஸங்கல்பம் முடிந்ததும் இடுக்கு தர்பங்களை தெற்கு திசையில் போடவும்.",
+          deva: `हरिः ओं तत्सत् श्रीगोविन्द गोविन्द गोविन्द ।\nअस्य श्रीभगवतः महापुरुषस्य श्रीविष्णोः आज्ञया प्रवर्तमानस्य अद्यब्रह्मणः द्वितीयपरार्धे श्रीश्वेतवराहकल्पे वैवस्वतमन्वन्तरे कलियुगे प्रथमपादे ${desha.deva} शकाब्दे मेरोः दक्षिणपार्श्वे अस्मिन् वर्तमानानां व्यावहारिकाणां प्रभवादि षष्टि सम्वत्सराणां मध्ये ${hv(p.samvatsaraDeva)} नाम सम्वत्सरे ${hv(p.ayanamDeva)} ${hv(p.rituDeva)} ऋतौ ${hv(p.masamDeva)} मासे ${hv(p.pakshamDeva)} पक्षे ${hv(p.tithiDeva)} पुण्यतिथौ ${hv(p.vasaramDeva)} वासरे ${hv(p.nakshatramDeva)} नक्षत्र युक्तायां श्रीविष्णुयोग श्रीविष्णुकराण एवङ्गुणविशेषणविशिष्टायां अस्यां ${hv(p.tithiDeva)} पुण्यतिथौ श्रीभगवदाज्ञया ${hv(samp.sankPhraseDeva)}\n\n${pGD} गोत्राणां ${pM1}, ${pM2}, ${pM3} शर्मणां वसुरुद्रादित्यस्वरूपाणां अस्मत्पितृपितामहप्रपितामहानां, ${pGD} गोत्राणां ${pF1}, ${pF2}, ${pF3} नाम्नीनां वसुरुद्रादित्यस्वरूपाणां अस्मत् ${pFemRelDeva},\n\n${mGD} गोत्राणां ${mM1}, ${mM2}, ${mM3} शर्मणां वसुरुद्रादित्यस्वरूपाणां अस्मत् मातामह मातुःपितामह मातुःप्रपितामहानां, ${mGD} गोत्राणां ${mF1}, ${mF2}, ${mF3} नाम्नीनां वसुरुद्रादित्यस्वरूपाणां अस्मत् मातामही मातुःपितामही मातुःप्रपितामहीनां वर्गद्वयपितॄणां अक्षय्यतृप्त्यर्थं ${hv(p.punyakalamDeva)} पुण्यकाले ${hv(p.punyakalamDeva)} श्राद्धं तिलतर्पण रूपेण अद्य करिष्ये ॥`,
+          iast: `hariḥ oṁ tatsat śrīgovinda govinda govinda |\nasya śrībhagavataḥ mahāpuruṣasya śrīviṣṇoḥ ājñayā pravartamānasya adyabrahmaṇaḥ dvitīyaparārdhe śrīśvetavarāhakalpe vaivasvatamanvantare kaliyuge prathamapāde ${desha.iast} śakābde meroḥ dakṣiṇapārśve asmin vartamānānāṁ vyāvahārikāṇāṁ prabhavādi ṣaṣṭi samvatsarāṇāṁ madhye ${hv(p.samvatsara)} nāma samvatsare ${hv(p.ayanam)} ${hv(p.ritu)} ṛtau ${hv(p.masam)} māse ${hv(p.paksham)} pakṣe ${hv(p.tithi)} puṇyatithau ${hv(p.vasaram)} vāsare ${hv(p.nakshatram)} nakṣatra yuktāyāṁ śrīviṣṇuyoga śrīviṣṇukaraṇa evaṅguṇaviśeṣaṇaviśiṣṭāyāṁ asyāṁ ${hv(p.tithi)} puṇyatithau śrībhagavadājñayā ${hv(samp.sankPhrase)}\n\n${pG} gotrāṇāṁ ${pM1}, ${pM2}, ${pM3} śarmaṇāṁ vasurudrādityasvarūpāṇāṁ asmat pitṛ-pitāmaha-prapitāmahānāṁ, ${pG} gotrāṇāṁ ${pF1}, ${pF2}, ${pF3} nāmnīnāṁ vasurudrādityasvarūpāṇāṁ asmat ${pFemRelIast},\n\n${mG} gotrāṇāṁ ${mM1}, ${mM2}, ${mM3} śarmaṇāṁ vasurudrādityasvarūpāṇāṁ asmat mātāmaha mātuḥpitāmaha mātuḥprapitāmahānāṁ, ${mG} gotrāṇāṁ ${mF1}, ${mF2}, ${mF3} nāmnīnāṁ vasurudrādityasvarūpāṇāṁ asmat mātāmahī mātuḥpitāmahī mātuḥprapitāmahīnāṁ vargadvayapitṝṇāṁ akṣayyatṛptyarthaṁ ${hv(p.punyakalam)} puṇyakāle ${hv(p.punyakalam)} śrāddhaṁ tilatarpaṇa rūpeṇa adya kariṣye ||`
+        },
+        {
+          num: 3, title: samp.isThenkalai ? "Prokṣaṇam (प्रोक्षणम् — Prācīnāvītam)" : "Sāttvika Tyāgam (Upavītam) & Prokṣaṇam (Prācīnāvītam)", poonool: samp.isThenkalai ? "pracinavitam" : "upavitam",
+          action: samp.isThenkalai ? "Remaining in PRĀCĪNĀVĪTAM (Thenkalai skips the separate Sāttvika Tyāgam switch here), sprinkle sesame-water on the tāmbālam reciting Prokṣaṇam." : "1) Switch to UPAVĪTAM for Sāttvika Tyāgam. 2) Switch back to PRĀCĪNĀVĪTAM and sprinkle sesame-water on the tāmbālam reciting Prokṣaṇam.",
+          tamil: samp.isThenkalai ? "ப்ராசீனாவீதத்திலேயே இருந்து, தர்ப்பணம் செய்யும் தாம்பாளத்தை எள்ளுடன் கூடிய ஜலத்தினால் ப்ரோக்ஷிக்கவும்." : "1) உபவீதம் செய்து கொண்டு ஸாத்விகத்யாகம் சொல்லவும். 2) ப்ராசீனாவீதம் செய்து கொண்டு தர்ப்பணம் செய்யும் தாம்பாளத்தை எள்ளுடன் கூடிய ஜலத்தினால் ப்ரோக்ஷிக்கவும்.",
+          deva: (samp.isThenkalai ? "" : `【 उपवीती — सात्त्विकत्यागम् 】\nभगवानेव स्वनियाम्य स्वरूपस्थिति प्रवृत्ति स्वशेषतैकरसेन अनेन आत्मना कर्त्रा स्वकीयैश्च उपकरणैः स्वाराधनैक प्रयोजनाय परमपुरुषः सर्वशेषी श्रियः पतिः स्वशेषभूतम् इदं वर्गद्वय पितॄन् उद्दिश्य तिलतर्पण रूप ${hv(p.punyakalamDeva)} श्राद्धाख्यं कर्म स्वस्मै स्वप्रीतये स्वयमेव कारयति ॥\n\n`) + `【 प्राचीनावीती — प्रोक्षणम् 】\nअपहता असुरा रक्षांसि पिशाचा ये क्षयन्ति पृथिवीमनु । अन्यत्रेते गच्छन्तु यत्रैषां गतं मनः ।\nउदीरतामवर उत्परास उन्मध्यमाः पितरः सोम्यासः । असुं य ईयुरवृका ऋतज्ञास्ते नोऽवन्तु पितरो हवेषु ॥\nअपवित्रः पवित्रो वा सर्वावस्थां गतोऽपि वा । यः स्मरेत् पुण्डरीकाक्षं स बाह्याभ्यन्तरः शुचिः ॥\nओं भूर्भुवस्सुवो भूर्भुवस्सुवो भूर्भुवस्सुवः ॥`,
+          iast: (samp.isThenkalai ? "" : `[ UPAVĪTAM — Sāttvika Tyāgam ]\nbhagavāneva svaniyāmya svarūpasthiti pravṛtti svaśeṣataikarasena anena ātmanā kartrā svakīyaiśca upakaraṇaiḥ svārādhanaika prayojanāya paramapuruṣaḥ sarvaśeṣī śriyaḥ patiḥ svaśeṣabhūtam idaṁ vargadvaya pitṝn uddiśya tilatarpaṇa rūpa ${hv(p.punyakalam)} śrāddhākhyaṁ karma svasmai svaprītaye svayameva kārayati ||\n\n`) + `[ PRĀCĪNĀVĪTAM — Prokṣaṇam ]\napahatā asurā rakṣāṁsi piśācā ye kṣayanti pṛthivīmanu | anyatrete gacchantu yatraiṣāṁ gataṁ manaḥ |\nudīratāmavara utparāsa unmadhyamāḥ pitaraḥ somyāsaḥ | asuṁ ya īyuravṛkā ṛtajñāste no'vantu pitaro haveṣu ||\napavitraḥ pavitro vā sarvāvasthāṁ gato'pi vā | yaḥ smaret puṇḍarīkākṣaṁ sa bāhyābhyantaraḥ śuciḥ ||\noṁ bhūrbhuvassuvo bhūrbhuvassuvo bhūrbhuvassuvaḥ ||`
+        },
+        {
+          num: 4, title: "Pitṛ Varga Āvāhanam & Āsanam (पितृवर्ग आवाहनम्)", poonool: "pracinavitam",
+          action: "Spread darbhas east-facing on tāmbālam. Place one Kūrcam facing South on UPPER side (Pitru) and one on LOWER side (Matamaha). Offer sesame on upper kūrcam, place Āsanam kūrcam, offer sesame, pour sesame-water.",
+          tamil: "தாம்பாளத்தில் கிழக்கு நுனியாக தர்பங்களை பரப்பி மேற்புறத்தில் தெற்கு நுனியாக ஒரு புக்னத்தையும் கீழ்ப்புறத்தில் ஒரு புக்னத்தையும் வைத்துக் கொள்ளவும். மேற்புற புக்னத்தில் ஆவாஹனம், ஆஸனம், அர்ச்சனம் செய்து எள் ஜலம் விடவும்.",
+          deva: `आयात पितरः सोम्या गम्भीरैः पथिभिः पूर्व्यैः । प्रजामस्मभ्यं ददतो रयिं च दीर्घायुत्वं च शतशारदं च ॥\n${pGD} गोत्रान् ${pM1}, ${pM2}, ${pM3} शर्मणः वसुरुद्रादित्यस्वरूपान् अस्मत् पितृपितामहप्रपितामहान्, ${pGD} गोत्राः ${pF1}, ${pF2}, ${pF3} नाम्नीः वसुरुद्रादित्यस्वरूपाः अस्मत् ${pFemAvahDeva} आवाहयामि ॥\n\n【 आसनम् 】\nसकृदाच्छिन्नं बर्हिरूर्णामृदु स्योनं पितृभ्यस्त्वा भराम्यहम् । अस्मिन् सीदन्तु मे पितरः सोम्याः पितामहाः प्रपितामहाश्च अनुगैः सह ॥\n${pGD} गोत्राणां ${pM1}, ${pM2}, ${pM3} शर्मणां ... ${pF1}, ${pF2}, ${pF3} नाम्नीनां ... इदमासनम् ॥ इदमर्चनम् ॥\nऊर्जं वहन्तीरमृतं घृतं पयः कीलालं परिस्रुतं स्वधास्थ तर्पयत मे पितॄन् ॥`,
+          iast: `āyāta pitaraḥ somyā gambhīraiḥ pathibhiḥ pūrvyaiḥ | prajāmasmabhyaṁ dadato rayiṁ ca dīrghāyutvaṁ ca śataśāradaṁ ca ||\n${pG} gotrān ${pM1}, ${pM2}, ${pM3} śarmaṇaḥ vasurudrādityasvarūpān asmat pitṛ-pitāmaha-prapitāmahān, ${pG} gotrāḥ ${pF1}, ${pF2}, ${pF3} nāmnīḥ vasurudrādityasvarūpāḥ asmat ${pFemAvahIast} āvāhayāmi ||\n\n[ Āsanam ]\nsakṛdācchinnaṁ barhirūrṇāmṛdu syonaṁ pitṛbhyastvā bharāmyaham | asmin sīdantu me pitaraḥ somyāḥ pitāmahāḥ prapitāmahāśca anugaiḥ saha ||\n${pG} gotrāṇāṁ ${pM1}, ${pM2}, ${pM3} śarmaṇāṁ ... ${pF1}, ${pF2}, ${pF3} nāmnīnāṁ ... idamāsanam || idamarcanam ||\nūrjaṁ vahantīramṛtaṁ ghṛtaṁ payaḥ kīlālaṁ parisrutaṁ svadhāstha tarpayata me pitṝn ||`
+        },
+        {
+          num: 5, title: "Mātāmaha Varga Āvāhanam & Āsanam (मातामह वर्ग आवाहनम्)", poonool: "pracinavitam",
+          action: "Offer black sesame on LOWER kūrcam (Matamaha Varga), place Āsanam kūrcam, offer sesame, and pour sesame-water.",
+          tamil: "கீழ்ப்புறம் உள்ள புக்னத்தில் எள்ளைச் சேர்த்து ஆவாஹனம், ஆஸனம், அர்ச்சனம் செய்து எள் ஜலம் விடவும்.",
+          deva: `आयात पितरः सोम्या गम्भीरैः पथिभिः पूर्व्यैः । प्रजामस्मभ्यं ददतो रयिं च दीर्घायुत्वं च शतशारदं च ॥\n${mGD} गोत्रान् ${mM1}, ${mM2}, ${mM3} शर्मणः वसुरुद्रादित्यस्वरूपान् अस्मत् मातामह मातुःपितामह मातुःप्रपितामहान्, ${mGD} गोत्राः ${mF1}, ${mF2}, ${mF3} नाम्नीः वसुरुद्रादित्यस्वरूपाः अस्मत् मातामही मातुःपितामही मातुःप्रपितामहीश्च आवाहयामि ॥\n\n【 आसनम् 】\nसकृदाच्छिन्नं बर्हिरूर्णामृदु स्योनं पितृभ्यस्त्वा भराम्यहम् । अस्मिन् सीदन्तु मे पितरः सोम्याः पितामहाः प्रपितामहाश्च अनुगैः सह ॥\n${mGD} गोत्राणां ${mM1}, ${mM2}, ${mM3} शर्मणां ... ${mF1}, ${mF2}, ${mF3} नाम्नीनां ... इदमासनम् ॥ इदमर्चनम् ॥\nऊर्जं वहन्तीरमृतं घृतं पयः कीलालं परिस्रुतं स्वधास्थ तर्पयत मे पितॄन् ॥`,
+          iast: `āyāta pitaraḥ somyā gambhīraiḥ pathibhiḥ pūrvyaiḥ | prajāmasmabhyaṁ dadato rayiṁ ca dīrghāyutvaṁ ca śataśāradaṁ ca ||\n${mG} gotrān ${mM1}, ${mM2}, ${mM3} śarmaṇaḥ vasurudrādityasvarūpān asmat mātāmaha mātuḥpitāmaha mātuḥprapitāmahān, ${mG} gotrāḥ ${mF1}, ${mF2}, ${mF3} nāmnīḥ vasurudrādityasvarūpāḥ asmat mātāmahī mātuḥpitāmahī mātuḥprapitāmahīśca āvāhayāmi ||\n\n[ Āsanam ]\nsakṛdācchinnaṁ barhirūrṇāmṛdu syonaṁ pitṛbhyastvā bharāmyaham | asmin sīdantu me pitaraḥ somyāḥ pitāmahāḥ prapitāmahāśca anugaiḥ saha ||\n${mG} gotrāṇāṁ ${mM1}, ${mM2}, ${mM3} śarmaṇāṁ ... ${mF1}, ${mF2}, ${mF3} nāmnīnāṁ ... idamāsanam || idamarcanam ||\nūrjaṁ vahantīramṛtaṁ ghṛtaṁ payaḥ kīlālaṁ parisrutaṁ svadhāstha tarpayata me pitṝn ||`
+        },
+        {
+          num: 6, title: "Pitṛ Varga Tarpaṇam (पितृवर्ग तर्पणम्)", poonool: "pracinavitam",
+          action: "Pour sesame-water through Pitṛ Tīrtham onto the UPPER kūrcam. Tap 🔊 on any offering to listen, and tap Offer Tilodakam to track completion.",
+          tamil: "மேற்புறம் உள்ள புக்னத்தில் எள் ஜலம் விடவும்.",
+          offerings: [
+            { id: "p1", rep: 1, tag: `Pitṛ (Vasu) — ${p.pMale1}`, deva: `उदीरतामवर उत्परास उन्मध्यमाः पितरः सोम्यासः । असुं य ईयुरवृका ऋतज्ञास्ते नोऽवन्तु पितरो हवेषु । ${pGD} गोत्रान् ${pM1} शर्मणः वसुरूपान् अस्मत् पितॄन् स्वधा नमस्तर्पयामि ॥`, iast: `udīratāmavara utparāsa unmadhyamāḥ pitaraḥ somyāsaḥ | asuṁ ya īyuravṛkā ṛtajñāste no'vantu pitaro haveṣu | ${pG} gotrān ${pM1} śarmaṇaḥ vasurūpān asmat pitṝn svadhā namastarpayāmi ||` },
+            { id: "p2", rep: 1, tag: `Pitṛ (Vasu) — ${p.pMale1}`, deva: `अङ्गिरसो नः पितरो नवग्वा अथर्वाणो भृगवः सोम्यासः । तेषां वयं सुमतौ यज्ञियानामपि भद्रे सौमनसे स्याम । ${pGD} गोत्रान् ${pM1} शर्मणः वसुरूपान् अस्मत् पितॄन् स्वधा नमस्तर्पयामि ॥`, iast: `aṅgiraso naḥ pitaro navagvā atharvāṇo bhṛgavaḥ somyāsaḥ | teṣāṁ vayaṁ sumatau yajñiyānāmapi bhadre saumanase syāma | ${pG} gotrān ${pM1} śarmaṇaḥ vasurūpān asmat pitṝn svadhā namastarpayāmi ||` },
+            { id: "p3", rep: 1, tag: `Pitṛ (Vasu) — ${p.pMale1}`, deva: `आयन्तु नः पितरो मनोजवसोऽग्निष्वात्ताः पथिभिर्देवयानैः । अस्मिन् यज्ञे स्वधया मदन्तोऽधिब्रुवन्तु तेऽवन्त्वस्मान् । ${pGD} गोत्रान् ${pM1} शर्मणः वसुरूपान् अस्मत् पितॄन् स्वधा नमस्तर्पयामि ॥`, iast: `āyantu naḥ pitaro manojavaso'gniṣvāttāḥ pathibhirdevayānaiḥ | asmin yajñe svadhayā madanto'dhibruvantu te'vantvasmān | ${pG} gotrān ${pM1} śarmaṇaḥ vasurūpān asmat pitṝn svadhā namastarpayāmi ||` },
+            { id: "p4", rep: 1, tag: `Pitāmaha (Rudra) — ${p.pMale2}`, deva: `ऊर्जं वहन्तीरमृतं घृतं पयः कीलालं परिस्रुतं स्वधास्थ तर्पयत मे पितॄन् । ${pGD} गोत्रान् ${pM2} शर्मणः रुद्ररूपान् अस्मत् पितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `ūrjaṁ vahantīramṛtaṁ ghṛtaṁ payaḥ kīlālaṁ parisrutaṁ svadhāstha tarpayata me pitṝn | ${pG} gotrān ${pM2} śarmaṇaḥ rudrarūpān asmat pitāmahān svadhā namastarpayāmi ||` },
+            { id: "p5", rep: 1, tag: `Pitāmaha (Rudra) — ${p.pMale2}`, deva: `पितृभ्यः स्वधाविभ्यः स्वधा नमः पितामहेभ्यः स्वधाविभ्यः स्वधा नमः प्रपितामहेभ्यः स्वधाविभ्यः स्वधा नमः अक्षन् पितरः । ${pGD} गोत्रान् ${pM2} शर्मणः रुद्ररूपान् अस्मत् पितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `pitṛbhyaḥ svadhāvibhyaḥ svadhā namaḥ pitāmahebhyaḥ svadhāvibhyaḥ svadhā namaḥ prapitāmahebhyaḥ svadhāvibhyaḥ svadhā namaḥ akṣan pitaraḥ | ${pG} gotrān ${pM2} śarmaṇaḥ rudrarūpān asmat pitāmahān svadhā namastarpayāmi ||` },
+            { id: "p6", rep: 1, tag: `Pitāmaha (Rudra) — ${p.pMale2}`, deva: `ये चेह पितरो ये च नेह याँश्च विद्म याँ उ च न प्रविद्म । अग्ने तान् वेत्थ यदि ते जातवेदस्तया प्रत्तं स्वधया मदन्ति । ${pGD} गोत्रान् ${pM2} शर्मणः रुद्ररूपान् अस्मत् पितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `ye ceha pitaro ye ca neha yāguṁśca vidma yāguṁ u ca na pravidma | agne tān vettha yadi te jātavedastayā prattaṁ svadhayā madanti | ${pG} gotrān ${pM2} śarmaṇaḥ rudrarūpān asmat pitāmahān svadhā namastarpayāmi ||` },
+            { id: "p7", rep: 1, tag: `Prapitāmaha (Āditya) — ${p.pMale3}`, deva: `मधु वाता ऋतायते मधु क्षरन्ति सिन्धवः । माध्वीर्नः सन्त्वोषधीः । ${pGD} गोत्रान् ${pM3} शर्मणः आदित्यरूपान् अस्मत् प्रपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `madhu vātā ṛtāyate madhu kṣaranti sindhavaḥ | mādhvīrnaḥ santvoṣadhīḥ | ${pG} gotrān ${pM3} śarmaṇaḥ ādityarūpān asmat prapitāmahān svadhā namastarpayāmi ||` },
+            { id: "p8", rep: 1, tag: `Prapitāmaha (Āditya) — ${p.pMale3}`, deva: `मधु नक्तमुतोषसि मधुमत्पार्थिवꣳ रजः । मधु द्यौरस्तु नः पिता । ${pGD} गोत्रान् ${pM3} शर्मणः आदित्यरूपान् अस्मत् प्रपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `madhu naktamutoṣasi madhumatpārthivaguṁ rajaḥ | madhu dyaurastu naḥ pitā | ${pG} gotrān ${pM3} śarmaṇaḥ ādityarūpān asmat prapitāmahān svadhā namastarpayāmi ||` },
+            { id: "p9", rep: 1, tag: `Prapitāmaha (Āditya) — ${p.pMale3}`, deva: `मधुमान्नो वनस्पतिर्मधुमाँ अस्तु सूर्यः । माध्वीर्गावो भवन्तु नः । ${pGD} गोत्रान् ${pM3} शर्मणः आदित्यरूपान् अस्मत् प्रपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `madhumānno vanaspatirmadhumāguṁ astu sūryaḥ | mādhvīrgāvo bhavantu naḥ | ${pG} gotrān ${pM3} śarmaṇaḥ ādityarūpān asmat prapitāmahān svadhā namastarpayāmi ||` },
+            { id: "pf1", rep: 3, tag: `Female 1 (Vasupatnī) — ${p.pFemale1} [×3]`, deva: `${pGD} गोत्राः ${pF1} नाम्नीः वसुपत्नीरूपाः अस्मत् ${pFemLabelsDeva[0]} स्वधा नमस्तर्पयामि ॥ [त्रिः]`, iast: `${pG} gotrāḥ ${pF1} nāmnīḥ vasupatnīrūpāḥ asmat ${pFemLabelsIast[0]} svadhā namastarpayāmi || [3 times]` },
+            { id: "pf2", rep: 3, tag: `Female 2 (Rudrapatnī) — ${p.pFemale2} [×3]`, deva: `${pGD} गोत्राः ${pF2} नाम्नीः रुद्रपत्नीरूपाः अस्मत् ${pFemLabelsDeva[1]} स्वधा नमस्तर्पयामि ॥ [त्रिः]`, iast: `${pG} gotrāḥ ${pF2} nāmnīḥ rudrapatnīrūpāḥ asmat ${pFemLabelsIast[1]} svadhā namastarpayāmi || [3 times]` },
+            { id: "pf3", rep: 3, tag: `Female 3 (Ādityapatnī) — ${p.pFemale3} [×3]`, deva: `${pGD} गोत्राः ${pF3} नाम्नीः आदित्यपत्नीरूपाः अस्मत् ${pFemLabelsDeva[2]} स्वधा नमस्तर्पयामि ॥ [त्रिः]`, iast: `${pG} gotrāḥ ${pF3} nāmnīḥ ādityapatnīrūpāḥ asmat ${pFemLabelsIast[2]} svadhā namastarpayāmi || [3 times]` },
+            { id: "pj1", rep: 3, tag: "Jñātājñāta Pitṝn [×3]", deva: "ज्ञाताज्ञातपितॄन् स्वधा नमस्तर्पयामि ॥ [त्रिः]", iast: "jñātājñātapitṝn svadhā namastarpayāmi || [3 times]" },
+            { id: "pj2", rep: 3, tag: "Jñātājñāta Pitṛpatnīḥ [×3]", deva: "ज्ञाताज्ञातपितृपत्नीः स्वधा नमस्तर्पयामि ॥ [त्रिः]", iast: "jñātājñātapitṛpatnīḥ svadhā namastarpayāmi || [3 times]" },
+            { id: "pj3", rep: 3, tag: "Tṛpyata [×3]", deva: "ऊर्जं वहन्तीरमृतं घृतं पयः कीलालं परिस्रुतं स्वधास्थ तर्पयत मे पितॄन् । तृप्यत ॥ [त्रिः]", iast: "ūrjaṁ vahantīramṛtaṁ ghṛtaṁ payaḥ kīlālaṁ parisrutaṁ svadhāstha tarpayata me pitṝn | tṛpyata || [3 times]" }
+          ]
+        },
+        {
+          num: 7, title: "Mātāmaha Varga Tarpaṇam (मातामहवर्ग तर्पणम्)", poonool: "pracinavitam",
+          action: "Pour sesame-water through Pitṛ Tīrtham onto the LOWER kūrcam for your maternal ancestors.",
+          tamil: "கீழ்ப்புறம் உள்ள புக்னத்தில் எள் ஜலம் விடவும்.",
+          offerings: [
+            { id: "m1", rep: 1, tag: `Mātāmaha (Vasu) — ${p.mMale1}`, deva: `उदीरतामवर उत्परास उन्मध्यमाः पितरः सोम्यासः । असुं य ईयुरवृका ऋतज्ञास्ते नोऽवन्तु पितरो हवेषु । ${mGD} गोत्रान् ${mM1} शर्मणः वसुरूपान् अस्मत् मातामहान् स्वधा नमस्तर्पयामि ॥`, iast: `udīratāmavara utparāsa unmadhyamāḥ pitaraḥ somyāsaḥ | asuṁ ya īyuravṛkā ṛtajñāste no'vantu pitaro haveṣu | ${mG} gotrān ${mM1} śarmaṇaḥ vasurūpān asmat mātāmahān svadhā namastarpayāmi ||` },
+            { id: "m2", rep: 1, tag: `Mātāmaha (Vasu) — ${p.mMale1}`, deva: `अङ्गिरसो नः पितरो नवग्वा अथर्वाणो भृगवः सोम्यासः । तेषां वयं सुमतौ यज्ञियानामपि भद्रे सौमनसे स्याम । ${mGD} गोत्रान् ${mM1} शर्मणः वसुरूपान् अस्मत् मातामहान् स्वधा नमस्तर्पयामि ॥`, iast: `aṅgiraso naḥ pitaro navagvā atharvāṇo bhṛgavaḥ somyāsaḥ | teṣāṁ vayaṁ sumatau yajñiyānāmapi bhadre saumanase syāma | ${mG} gotrān ${mM1} śarmaṇaḥ vasurūpān asmat mātāmahān svadhā namastarpayāmi ||` },
+            { id: "m3", rep: 1, tag: `Mātāmaha (Vasu) — ${p.mMale1}`, deva: `आयन्तु नः पितरो मनोजवसोऽग्निष्वात्ताः पथिभिर्देवयानैः । अस्मिन् यज्ञे स्वधया मदन्तोऽधिब्रुवन्तु तेऽवन्त्वस्मान् । ${mGD} गोत्रान् ${mM1} शर्मणः वसुरूपान् अस्मत् मातामहान् स्वधा नमस्तर्पयामि ॥`, iast: `āyantu naḥ pitaro manojavaso'gniṣvāttāḥ pathibhirdevayānaiḥ | asmin yajñe svadhayā madanto'dhibruvantu te'vantvasmān | ${mG} gotrān ${mM1} śarmaṇaḥ vasurūpān asmat mātāmahān svadhā namastarpayāmi ||` },
+            { id: "m4", rep: 1, tag: `Mātuḥ Pitāmaha (Rudra) — ${p.mMale2}`, deva: `ऊर्जं वहन्तीरमृतं घृतं पयः कीलालं परिस्रुतं स्वधास्थ तर्पयत मे पितॄन् । ${mGD} गोत्रान् ${mM2} शर्मणः रुद्ररूपान् अस्मत् मातुःपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `ūrjaṁ vahantīramṛtaṁ ghṛtaṁ payaḥ kīlālaṁ parisrutaṁ svadhāstha tarpayata me pitṝn | ${mG} gotrān ${mM2} śarmaṇaḥ rudrarūpān asmat mātuḥpitāmahān svadhā namastarpayāmi ||` },
+            { id: "m5", rep: 1, tag: `Mātuḥ Pitāmaha (Rudra) — ${p.mMale2}`, deva: `पितृभ्यः स्वधाविभ्यः स्वधा नमः पितामहेभ्यः स्वधाविभ्यः स्वधा नमः प्रपितामहेभ्यः स्वधाविभ्यः स्वधा नमः अक्षन् पितरः । ${mGD} गोत्रान् ${mM2} शर्मणः रुद्ररूपान् अस्मत् मातुःपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `pitṛbhyaḥ svadhāvibhyaḥ svadhā namaḥ pitāmahebhyaḥ svadhāvibhyaḥ svadhā namaḥ prapitāmahebhyaḥ svadhāvibhyaḥ svadhā namaḥ akṣan pitaraḥ | ${mG} gotrān ${mM2} śarmaṇaḥ rudrarūpān asmat mātuḥpitāmahān svadhā namastarpayāmi ||` },
+            { id: "m6", rep: 1, tag: `Mātuḥ Pitāmaha (Rudra) — ${p.mMale2}`, deva: `ये चेह पितरो ये च नेह याँश्च विद्म याँ उ च न प्रविद्म । अग्ने तान् वेत्थ यदि ते जातवेदस्तया प्रत्तं स्वधया मदन्ति । ${mGD} गोत्रान् ${mM2} शर्मणः रुद्ररूपान् अस्मत् मातुःपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `ye ceha pitaro ye ca neha yāguṁśca vidma yāguṁ u ca na pravidma | agne tān vettha yadi te jātavedastayā prattaṁ svadhayā madanti | ${mG} gotrān ${mM2} śarmaṇaḥ rudrarūpān asmat mātuḥpitāmahān svadhā namastarpayāmi ||` },
+            { id: "m7", rep: 1, tag: `Mātuḥ Prapitāmaha (Āditya) — ${p.mMale3}`, deva: `मधु वाता ऋतायते मधु क्षरन्ति सिन्धवः । माध्वीर्नः सन्त्वोषधीः । ${mGD} गोत्रान् ${mM3} शर्मणः आदित्यरूपान् अस्मत् मातुःप्रपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `madhu vātā ṛtāyate madhu kṣaranti sindhavaḥ | mādhvīrnaḥ santvoṣadhīḥ | ${mG} gotrān ${mM3} śarmaṇaḥ ādityarūpān asmat mātuḥprapitāmahān svadhā namastarpayāmi ||` },
+            { id: "m8", rep: 1, tag: `Mātuḥ Prapitāmaha (Āditya) — ${p.mMale3}`, deva: `मधु नक्तमुतोषसि मधुमत्पार्थिवꣳ रजः । मधु द्यौरस्तु नः पिता । ${mGD} गोत्रान् ${mM3} शर्मणः आदित्यरूपान् अस्मत् मातुःप्रपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `madhu naktamutoṣasi madhumatpārthivaguṁ rajaḥ | madhu dyaurastu naḥ pitā | ${mG} gotrān ${mM3} śarmaṇaḥ ādityarūpān asmat mātuḥprapitāmahān svadhā namastarpayāmi ||` },
+            { id: "m9", rep: 1, tag: `Mātuḥ Prapitāmaha (Āditya) — ${p.mMale3}`, deva: `मधुमान्नो वनस्पतिर्मधुमाँ अस्तु सूर्यः । माध्वीर्गावो भवन्तु नः । ${mGD} गोत्रान् ${mM3} शर्मणः आदित्यरूपान् अस्मत् मातुःप्रपितामहान् स्वधा नमस्तर्पयामि ॥`, iast: `madhumānno vanaspatirmadhumāguṁ astu sūryaḥ | mādhvīrgāvo bhavantu naḥ | ${mG} gotrān ${mM3} śarmaṇaḥ ādityarūpān asmat mātuḥprapitāmahān svadhā namastarpayāmi ||` },
+            { id: "mf1", rep: 3, tag: `Mātāmahī (Vasupatnī) — ${p.mFemale1} [×3]`, deva: `${mGD} गोत्राः ${mF1} नाम्नीः वसुपत्नीरूपाः अस्मत् मातामहीः स्वधा नमस्तर्पयामि ॥ [त्रिः]`, iast: `${mG} gotrāḥ ${mF1} nāmnīḥ vasupatnīrūpāḥ asmat mātāmahīḥ svadhā namastarpayāmi || [3 times]` },
+            { id: "mf2", rep: 3, tag: `Mātuḥ Pitāmahī (Rudrapatnī) — ${p.mFemale2} [×3]`, deva: `${mGD} गोत्राः ${mF2} नाम्नीः रुद्रपत्नीरूपाः अस्मत् मातुःपितामहीः स्वधा नमस्तर्पयामि ॥ [त्रिः]`, iast: `${mG} gotrāḥ ${mF2} nāmnīḥ rudrapatnīrūpāḥ asmat mātuḥpitāmahīḥ svadhā namastarpayāmi || [3 times]` },
+            { id: "mf3", rep: 3, tag: `Mātuḥ Prapitāmahī (Ādityapatnī) — ${p.mFemale3} [×3]`, deva: `${mGD} गोत्राः ${mF3} नाम्नीः आदित्यपत्नीरूपाः अस्मत् मातुःप्रपितामहीः स्वधा नमस्तर्पयामि ॥ [त्रिः]`, iast: `${mG} gotrāḥ ${mF3} nāmnīḥ ādityapatnīrūpāḥ asmat mātuḥprapitāmahīḥ svadhā namastarpayāmi || [3 times]` },
+            { id: "mj1", rep: 3, tag: "Jñātājñāta Mātuḥ Pitṝn [×3]", deva: "ज्ञाताज्ञातमातुःपितॄन् स्वधा नमस्तर्पयामि ॥ [त्रिः]", iast: "jñātājñātamātuḥpitṝn svadhā namastarpayāmi || [3 times]" },
+            { id: "mj2", rep: 3, tag: "Jñātājñāta Mātuḥ Pitṛpatnīḥ [×3]", deva: "ज्ञाताज्ञातमातुःपितृपत्नीः स्वधा नमस्तर्पयामि ॥ [त्रिः]", iast: "jñātājñātamātuḥpitṛpatnīḥ svadhā namastarpayāmi || [3 times]" },
+            { id: "mj3", rep: 3, tag: "Tṛpyata [×3]", deva: "ऊर्जं वहन्तीरमृतं घृतं पयः कीलालं परिस्रुतं स्वधास्थ तर्पयत मे पितॄन् । तृप्यत ॥ [त्रिः]", iast: "ūrjaṁ vahantīramṛtaṁ ghṛtaṁ payaḥ kīlālaṁ parisrutaṁ svadhāstha tarpayata me pitṝn | tṛpyata || [3 times]" }
+          ]
+        },
+        {
+          num: 8, title: "Upasthānam, Pradakṣiṇam & Abhivādanam", poonool: "upavitam",
+          action: "1) Stand up (Prācīnāvītam) and recite Upasthānam. 2) Switch to UPAVĪTAM, circumambulate tāmbālam 3× reciting 'Vāje vāje...', then prostrate and perform Abhivādanam.",
+          tamil: "எழுந்திருந்து உபஸ்தானம் சொல்லவும். பிறகு உபவீதம் செய்து கொண்டு தாம்பாளத்தை மூன்று தடவை கீழுள்ள மந்திரத்தைச் சொல்லி ப்ரதக்ஷிணம் செய்யவும். ஸேவித்து அபிவாதனம் செய்யவும்.",
+          deva: `【 उपस्थानम् 】\nनमो वः पितरो रसाय नमो वः पितरः शुष्माय नमो वः पितरो जीवाय नमो वः पितरः स्वधायै नमो वः पितरो मन्यवे नमो वः पितरो घोराय पितरो नमो वो य एतस्मिन् लोके स्थ युष्मांस्तेऽनु येऽस्मिँल्लोके मां तेऽनु य एतस्मिन् लोके स्थ यूयं तेषां वसिष्ठा भूयास्त येऽस्मिँल्लोके अहं तेषां वसिष्ठो भूयासम् ॥\n\n【 उपवीती — प्रदक्षिणम् (×3) 】\nवाजेवाजेऽवत वाजिनो नो धनेषु विप्रा अमृता ऋतज्ञाः । अस्य मध्वः पिबत मादयध्वं तृप्ता यात पथिभिर्देवयानैः ॥\n\n【 अभिवादनम् 】\n${abhi.deva}`,
+          iast: `[ Upasthānam ]\nnamo vaḥ pitaro rasāya namo vaḥ pitaraḥ śuṣmāya namo vaḥ pitaro jīvāya namo vaḥ pitaraḥ svadhāyai namo vaḥ pitaro manyave namo vaḥ pitaro ghorāya pitaro namo vo ya etasmin loke stha yuṣmāṁste'nu ye'smiguṁlloke māṁ te'nu ya etasmin loke stha yūyaṁ teṣāṁ vasiṣṭhā bhūyāsta ye'smiguṁlloke ahaṁ teṣāṁ vasiṣṭho bhūyāsam ||\n\n[ UPAVĪTAM — Pradakṣiṇam (×3) ]\nvājevāje'vata vājino no dhaneṣu viprā amṛtā ṛtajñāḥ | asya madhvaḥ pibata mādayadhvaṁ tṛptā yāta pathibhirdevayānaiḥ ||\n\n[ Abhivādanam ]\n${abhi.iast}`
+        },
+        {
+          num: 9, title: samp.isThenkalai ? "Yathāsthānam, Untying Kūrcams & Concluding Samarpaṇam" : "Yathāsthānam, Untying Kūrcams & Final Sāttvika Tyāgam", poonool: "pracinavitam",
+          action: "1) PRĀCĪNĀVĪTAM: offer sesame on upper & lower kūrcams for Yathāsthānam, untie kūrcams facing South, pour sesame-water with 'Yeṣāṁ na pitā...'. 2) UPAVĪTAM: tuck pavitram behind ear, Ācamanam twice, wear pavitram, recite concluding offering & 'Śrī Kṛṣṇa' (10×), discard pavitram.",
+          tamil: "ப்ராசீனாவீதம் செய்து யதாஸ்தானம் சொல்லி எள்ளைச் சேர்க்கவும். புக்னங்களை அவிழ்த்து தெற்கு நுனியாக வைத்து 'யேஷாம் ந பிதா' சொல்லி எள் ஜலம் விடவும். உபவீதம் செய்து இருமுறை ஆசமனம் செய்து நிறைவு செய்யவும்.",
+          deva: `【 प्राचीनावीती — यथास्थानम् 】\n${pGD} गोत्रान् ${pM1}, ${pM2}, ${pM3} शर्मणः वसुरुद्रादित्यस्वरूपान् अस्मत् पितृपितामहप्रपितामहान् ${pGD} गोत्राः ${pF1}, ${pF2}, ${pF3} नाम्नीः वसुरुद्रादित्यस्वरूपाः अस्मत् ${pFemAvahDeva} यथास्थानं प्रतिष्ठापयामि ॥\n\n${mGD} गोत्रान् ${mM1}, ${mM2}, ${mM3} शर्मणः वसुरुद्रादित्यस्वरूपान् अस्मत् मातामह मातुःपितामह मातुःप्रपितामहान् ${mGD} गोत्राः ${mF1}, ${mF2}, ${mF3} नाम्नीः वसुरुद्रादित्यस्वरूपाः अस्मत् मातामही मातुःपितामही मातुःप्रपितामहीश्च यथास्थानं प्रतिष्ठापयामि ॥\n\nयेषां न पिता न भ्राता न बन्धुर्नान्यगोत्रिणः । ते सर्वे तृप्तिमायान्तु मया त्यक्तैः कुशैस्तिलैः ॥\n\n【 उपवीती — द्विः आचमनम् 】\n` + (samp.isThenkalai ? `कायेन वाचा मनसेन्द्रियैर्वा बुद्ध्याऽऽत्मना वा प्रकृतेः स्वभावात् । करोमि यद्यत् सकलं परस्मै नारायणायेति समर्पयामि ॥\nसर्वं श्रीकृष्णार्पणमस्तु । कृष्ण । [१०]` : `भगवानेव स्वनियाम्य स्वरूपस्थिति प्रवृत्ति स्वशेषतैकरसेन अनेन आत्मना कर्त्रा स्वकीयैश्च उपकरणैः स्वाराधनैक प्रयोजनाय परमपुरुषः सर्वशेषी श्रियः पतिः स्वशेषभूतम् इदं वर्गद्वय पितॄन् उद्दिश्य तिलतर्पण रूप ${hv(p.punyakalamDeva)} श्राद्धाख्यं कर्म स्वस्मै स्वप्रीतये स्वयमेव कारितवान् ॥\nसर्वं श्रीकृष्णार्पणमस्तु । कृष्ण । [१०]\n(शुभम् — கீழநத்தம் ஸ்ரீ. ஸுதர்சன சர்மா)`),
+          iast: `[ PRĀCĪNĀVĪTAM — Yathāsthānam ]\n${pG} gotrān ${pM1}, ${pM2}, ${pM3} śarmaṇaḥ vasurudrādityasvarūpān asmat pitṛ-pitāmaha-prapitāmahān ${pG} gotrāḥ ${pF1}, ${pF2}, ${pF3} nāmnīḥ vasurudrādityasvarūpāḥ asmat ${pFemAvahIast} yathāsthānaṁ pratiṣṭhāpayāmi ||\n\n${mG} gotrān ${mM1}, ${mM2}, ${mM3} śarmaṇaḥ vasurudrādityasvarūpān asmat mātāmaha mātuḥpitāmaha mātuḥprapitāmahān ${mG} gotrāḥ ${mF1}, ${mF2}, ${mF3} nāmnīḥ vasurudrādityasvarūpāḥ asmat mātāmahī mātuḥpitāmahī mātuḥprapitāmahīśca yathāsthānaṁ pratiṣṭhāpayāmi ||\n\nyeṣāṁ na pitā na bhrātā na bandhurnānyagotriṇaḥ | te sarve tṛptimāyāntu mayā tyaktaiḥ kuśaistilaiḥ ||\n\n[ UPAVĪTAM — Ācamanam twice ]\n` + (samp.isThenkalai ? `kāyena vācā manasendriyairvā buddhyā''tmanā vā prakṛteḥ svabhāvāt | karomi yadyat sakalaṁ parasmai nārāyaṇāyeti samarpayāmi ||\nsarvaṁ śrīkṛṣṇārpaṇamastu | kṛṣṇa | [10 times]` : `bhagavāneva svaniyāmya svarūpasthiti pravṛtti svaśeṣataikarasena anena ātmanā kartrā svakīyaiśca upakaraṇaiḥ svārādhanaika prayojanāya paramapuruṣaḥ sarvaśeṣī śriyaḥ patiḥ svaśeṣabhūtam idaṁ vargadvaya pitṝn uddiśya tilatarpaṇa rūpa ${hv(p.punyakalam)} śrāddhākhyaṁ karma svasmai svaprītaye svayameva kāritavān ||\nsarvaṁ śrīkṛṣṇārpaṇamastu | kṛṣṇa | [10 times]`)
+        }
+      ];
+      return raw.map(s => ({ ...s, audioKey: `tharp_${s.num}` }));
+    }
+
+    function buildUpakarmaSteps(p) {
+      const samp = getSampradaya(p);
+      const desha = getDesha(p);
+      const isBrahma = p.ashramam === "brahmachari";
+      const steps = [];
+      if (!p.talaiUpakarma) {
+        steps.push({
+          num: 1, audioKey: "upak_kamo", title: "Part 1: Kāmo'kārṣīt Japam — Saṅkalpam & Japa Counter", poonool: "upavitam",
+          hasKamoCounter: true,
+          action: "After morning Sandhyāvandanam, Ācamanam twice, sit facing East, Pavitram + 2 folded darbhas, 3 Prāṇāyāmams, Guru-Paramparā, Mahā-Saṅkalpam. Chant 'Kāmo'kārṣīt manyur akārṣīt' 1008 or 108 times.",
+          tamil: "காலை ஸந்த்யாவந்தனம் முடிந்த பின், 'காமோ'கார்ஷீத் மன்யுரகார்ஷீத்' மஹாமந்திரத்தை 1008 (அல்லது 108) முறை ஜபிக்கவும்.",
+          deva: `${samp.guruDeva}\n\nहरिः ओं तत्सत् श्रीगोविन्द गोविन्द गोविन्द । अस्य श्रीभगवतो महापुरुषस्य श्रीविष्णोः आज्ञया प्रवर्तमानस्य अद्य ब्रह्मणः द्वितीयपरार्धे श्रीश्वेतवराहकल्पे वैवस्वतमन्वन्तरे कलियुगे प्रथमपादे ${desha.deva} शकाब्दे मेरोर्दक्षिणे पार्श्वे अस्मिन् वर्तमानानां व्यावहारिकाणां प्रभवादि षष्टि संवत्सराणां मध्ये ${hv(p.samvatsaraDeva)} नाम संवत्सरे ${hv(p.ayanamDeva)} ${hv(p.rituDeva)} ऋतौ ${hv(p.masamDeva)} मासे शुक्ल पक्षे पौर्णमास्यां शुभतिथौ ${hv(p.vasaramDeva)} वासर ${hv(p.nakshatramDeva)} नक्षत्र युक्तायां श्रीविष्णुयोग श्रीविष्णुकराण शुभयोग शुभकरण एवं गुणविशेषण विशिष्टायां अस्यां पौर्णमास्यां शुभतिथौ श्रीभगवदाज्ञया ${hv(samp.sankPhraseDeva)}\nतैष्यां पौर्णमास्यां अध्यायोत्सर्जन अकरण प्रायश्चित्तार्थं अष्टोत्तर सहस्र (१००८) / अष्टोत्तर शत (१०८) संख्यया "कामोऽकार्षीत् मन्युरकार्षीत्" महामन्त्र जपं करिष्ये ॥`,
+          iast: `${samp.guruIast}\n\nhariḥ oṁ tatsat śrīgovinda govinda govinda | asya śrībhagavato mahāpuruṣasya śrīviṣṇoḥ ājñayā pravartamānasya adya brahmaṇaḥ dvitīyaparārdhe śrīśvetavarāhakalpe vaivasvatamanvantare kaliyuge prathamapāde ${desha.iast} śakābde meror dakṣiṇe pārśve asmin vartamānānāṁ vyāvahārikāṇāṁ prabhavādi ṣaṣṭi saṁvatsarāṇāṁ madhye ${hv(p.samvatsara)} nāma saṁvatsare ${hv(p.ayanam)} ${hv(p.ritu)} ṛtau ${hv(p.masam)} māse śukla pakṣe paurṇamāsyāṁ śubhatithau ${hv(p.vasaram)} vāsara ${hv(p.nakshatram)} nakṣatra yuktāyāṁ śrīviṣṇuyoga śrīviṣṇukaraṇa śubhayoga śubhakaraṇa evaṁ guṇaviśeṣaṇa viśiṣṭāyāṁ asyāṁ paurṇamāsyāṁ śubhatithau śrībhagavadājñayā ${hv(samp.sankPhrase)}\ntaiṣyāṁ paurṇamāsyāṁ adhyāya-utsarjana-akaraṇa-prāyaścittārthaṁ aṣṭottara-sahasra (1008) / aṣṭottara-śata (108) saṅkhyayā "kāmo'kārṣīt manyur akārṣīt" mahāmantra-japaṁ kariṣye ||`
+        });
+      }
+      steps.push({
+        num: steps.length + 1, audioKey: "upak_sankalpam", title: "Part 2: Upākarma Mahā-Saṅkalpam & Mānasika Snānam", poonool: "upavitam",
+        action: "After Mādhyāhnikam & Bhagavad-Ārādhanam, sit facing East, Ācamanam twice, Pavitram, 3 Prāṇāyāmams, Mahā-Saṅkalpam, and sprinkle water (Mānasika Snānam).",
+        tamil: "மாத்யாஹ்னிகம் மற்றும் பெருமாள் திருவாராதனம் முடிந்தபின், கிழக்கு நோக்கி அமர்ந்து உபாகர்மா மஹாஸங்கல்பம், மானஸிக ஸ்நானம் செய்யவும்.",
+        deva: `... अस्यां पौर्णमास्यां शुभतिथौ श्रीभगवदाज्ञया ${hv(samp.sankPhraseDeva)}\nश्रावण्यां पौर्णमास्यां अध्यायोपाकर्म करिष्ये । तदङ्गं काण्डर्षि तर्पणं करिष्ये । तदङ्गं यज्ञोपवीत धारणं करिष्ये । तदङ्गं स्नानं करिष्ये ।${isBrahma ? "\nतदङ्गतया मौञ्जी अजिन दण्ड धारणानि करिष्ये ॥" : ""}\n\nअपवित्रः पवित्रो वा सर्वावस्थां गतोऽपि वा । यः स्मरेत् पुण्डरीकाक्षं स बाह्याभ्यन्तरः शुचिः ॥ श्री हरिर्हरिः पुण्डरीकाक्षाय नमः ॥`,
+        iast: `... asyāṁ paurṇamāsyāṁ śubhatithau śrībhagavadājñayā ${hv(samp.sankPhrase)}\nśrāvaṇyāṁ paurṇamāsyāṁ adhyāya-upākarma kariṣye | tad aṅgaṁ kāṇḍarṣi tarpaṇaṁ kariṣye | tad aṅgaṁ yajñopavīta dhāraṇaṁ kariṣye | tad aṅgaṁ snānaṁ kariṣye |${isBrahma ? "\ntad aṅgatayā mauñjī-ajina-daṇḍa-dhāraṇāni kariṣye ||" : ""}\n\napavitraḥ pavitro vā sarvāvasthāṁ gato'pi vā | yaḥ smaret puṇḍarīkākṣaṁ sa bāhyābhyantaraḥ śuciḥ || śrī harirhariḥ puṇḍarīkākṣāya namaḥ ||`
+      });
+      steps.push({
+        num: steps.length + 1, audioKey: "upak_poonool", title: `Part 3: Yajñopavīta Dhāraṇam (${isBrahma ? "Brahmachari — 1 Set" : "Grihastha — 2 Sets"})`, poonool: "upavitam",
+        action: "Squat facing East. Hold new Poonool (Brahma-muḍi facing right on right palm over head). Nyāsam, wear 1st Poonool, Ācamanam." + (isBrahma ? " Recite Maunji, Ajina & Danda mantras." : " Grihasthas repeat for 2nd Poonool & Ācamanam.") + " Discard old Poonool(s) naturally, Ācamanam & Sāttvika Tyāgam.",
+        tamil: "கிழக்கு நோக்கி உட்கார்ந்து, மந்திரம் சொல்லி புதிய பூணூல் தரிக்கவும் (க்ருஹஸ்தர்கள் 2 பூணூல்). பழைய பூணூலை கழற்றி ஆசமனம் செய்யவும்.",
+        deva: `यज्ञोपवीत धारण मन्त्रस्य ब्रह्मा ऋषिः । त्रिष्टुप् छन्दः । त्रयीविद्या देवता यज्ञोपवीत धारणे विनियोगः ॥\nयज्ञोपवीतं परमं पवित्रं प्रजापतेर्यत्सहजं पुरस्तात् । आयुष्यमग्र्यं प्रतिमुञ्च शुभ्रं यज्ञोपवीतं बलमस्तु तेजः ॥${!isBrahma ? "\n\n【 गार्हस्थ्यार्हं द्वितीय यज्ञोपवीतम् — उपर्युक्त मन्त्रेणैव द्वितीयं धारयेत् 】" : "\n\n【 मौञ्जी 】 इयं दुरुक्तात् परिबाधमाना शर्म वरूथं पुनती न आगात् ।\n【 अजिन 】 मित्रस्य चक्षुर्धरुणं बलीयस्तेजो यशस्वि स्थविरं समिद्धम् ।\n【 दण्ड 】 सुश्रवः सुश्रवसं मा कुरु यथा त्वं सुश्रवः सुश्रवा अस्येवमहं सुश्रवः सुश्रवा भूयासम् ॥"}\n\nउपवीतं छिन्नन्तु जीर्णं कश्मलदूषितम् । विसृजामि पुनर्ब्रह्मन् वर्चो दीर्घायुरस्तु मे ॥`,
+        iast: `yajñopavīta-dhāraṇa-mantrasya brahmā ṛṣiḥ | triṣṭup chandaḥ | trayīvidyā devatā yajñopavīta dhāraṇe viniyogaḥ ||\nyajñopavītaṁ paramaṁ pavitraṁ prajāpater yat sahajaṁ purastāt | āyuṣyam agryaṁ pratimuñca śubhraṁ yajñopavītaṁ balamastu tejaḥ ||${!isBrahma ? "\n\n[ Grihasthas: repeat Saṅkalpam ('gārhasthyārhaṁ dvitīya yajñopavīta-dhāraṇaṁ kariṣye') + mantra for 2nd Poonool ]" : "\n\n[ Maunji ] iyaṁ duruktāt paribādhamānā śarma varūthaṁ punatī na āgāt |\n[ Ajina ] mitrasya cakṣur dharuṇaṁ balīyas tejo yaśasvi sthaviraṁ samiddham |\n[ Daṇḍa ] suśravas suśravasaṁ mā kuru yathā tvaṁ suśravaḥ suśravā asyevamahaṁ suśravas suśravā bhūyāsam ||"}\n\nupavītaṁ chinnantu jīrṇaṁ kaśmala-dūṣitam | visṛjāmi punar brahman varco dīrghāyur astu me ||`
+      });
+      steps.push({
+        num: steps.length + 1, audioKey: "upak_rishi", title: "Part 4: Nava Kāṇḍa Ṛṣi Tarpaṇam (नवकाण्ड ऋषि तर्पणम्)", poonool: "nivitam",
+        action: "Stand facing NORTH with Poonool as garland (NIVĪTAM). Offer rice + black sesame + water THREE times for each rishi using the indicated Tīrtham. Return to UPAVĪTAM, Ācamanam, Sāttvika Tyāgam.",
+        tamil: "வடக்கு நோக்கி நின்று, பூணூலை மாலை போல (நிவீதம்) அணிந்து, அரிசி + எள் + ஜலம் சேர்த்து ஒவ்வொரு ரிஷிக்கும் 3 முறை தர்ப்பணம் செய்யவும்.",
+        rishis: [
+          { id: "r1", tirtham: "Ṛṣi Tīrtham (base of little fingers)", deva: "प्रजापतिं काण्डर्षिं तर्पयामि", iast: "prajāpatiṁ kāṇḍarṣiṁ tarpayāmi" },
+          { id: "r2", tirtham: "Ṛṣi Tīrtham (base of little fingers)", deva: "सोमं काण्डर्षिं तर्पयामि", iast: "somaṁ kāṇḍarṣiṁ tarpayāmi" },
+          { id: "r3", tirtham: "Ṛṣi Tīrtham (base of little fingers)", deva: "अग्निं काण्डर्षिं तर्पयामि", iast: "agniṁ kāṇḍarṣiṁ tarpayāmi" },
+          { id: "r4", tirtham: "Ṛṣi Tīrtham (base of little fingers)", deva: "विश्वान् देवान् काण्डर्षीन् तर्पयामि", iast: "viśvān devān kāṇḍarṣīn tarpayāmi" },
+          { id: "r5", tirtham: "Ṛṣi Tīrtham (base of little fingers)", deva: "सांहितीर्देवता उपनिषदस्तर्पयामि", iast: "sāṁhitīr devatā upaniṣadas tarpayāmi" },
+          { id: "r6", tirtham: "Ṛṣi Tīrtham (base of little fingers)", deva: "याज्ञिकीर्देवता उपनिषदस्तर्पयामि", iast: "yājñikīr devatā upaniṣadas tarpayāmi" },
+          { id: "r7", tirtham: "Ṛṣi Tīrtham (base of little fingers)", deva: "वारुणीर्देवता उपनिषदस्तर्पयामि", iast: "vāruṇīr devatā upaniṣadas tarpayāmi" },
+          { id: "r8", tirtham: "Brāhma Tīrtham (base of palms toward you)", deva: "ब्रह्माणं स्वयम्भुवं तर्पयामि", iast: "brahmāṇaṁ svayambhuvaṁ tarpayāmi" },
+          { id: "r9", tirtham: "Deva Tīrtham (tips of fingers)", deva: "सदसस्पतिं तर्पयामि", iast: "sadasaspatiṁ tarpayāmi" }
+        ],
+        deva: "ऋग्वेदं तर्पयामि । यजुर्वेदं तर्पयामि । सामवेदं तर्पयामि । अथर्वणवेदं तर्पयामि । इतिहासं तर्पयामि । पुराणं तर्पयामि । कल्पं तर्पयामि ॥",
+        iast: "ṛg-vedaṁ tarpayāmi | yajur-vedaṁ tarpayāmi | sāma-vedaṁ tarpayāmi | atharvaṇa-vedaṁ tarpayāmi | itihāsaṁ tarpayāmi | purāṇaṁ tarpayāmi | kalpaṁ tarpayāmi ||"
+      });
+      return steps;
+    }
+
+    // =========================================================================
+    // 4. UI RENDERING
+    // =========================================================================
+    function poonoolBadge(mode) {
+      if (mode === "pracinavitam") return `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--error)]/15 text-[var(--error)] border border-[var(--error)]/30">⇄ PRĀCĪNĀVĪTAM (Right Shoulder)</span>`;
+      if (mode === "nivitam") return `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--warning)]/15 text-[var(--warning)] border border-[var(--warning)]/30">◎ NIVĪTAM (Garland)</span>`;
+      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--success)]/15 text-[var(--success)] border border-[var(--success)]/30">✓ UPAVĪTAM (Left Shoulder)</span>`;
+    }
+
+    function renderMantraBlock(deva, iast, tamil) {
+      let html = `<div class="space-y-3">`;
+      if (state.showTamil && tamil) {
+        html += `<div class="p-3 rounded-lg bg-[var(--content)] border border-[var(--border)] text-xs mantra-tamil text-[var(--muted-foreground)]"><span class="font-semibold text-[var(--foreground)] mr-1">தமிழ் குறிப்பு:</span> ${tamil}</div>`;
+      }
+      if (state.script === "both" || state.script === "deva") {
+        html += `<div class="p-4 rounded-lg bg-[var(--content)] border border-[var(--border)] mantra-deva mantra-text whitespace-pre-line">${deva}</div>`;
+      }
+      if (state.script === "both" || state.script === "iast") {
+        html += `<div class="p-4 rounded-lg bg-[var(--content)]/60 border border-[var(--border)] mantra-iast mantra-text text-[var(--foreground)]/90 whitespace-pre-line">${iast}</div>`;
+      }
+      html += `</div>`;
+      return html;
+    }
+
+    // Store step payloads in a map for clean click playback
+    let playableMap = {};
+
+    function renderStepCard(step) {
+      const poonoolCls = step.poonool === "pracinavitam" ? "poonool-pracinavitam" : step.poonool === "nivitam" ? "poonool-nivitam" : "poonool-upavitam";
+      const isPlaying = AudioEngine.getActiveKey() === step.audioKey;
+      const isRec = AudioEngine.getRecordingKey() === step.audioKey;
+      const hasCustom = AudioEngine.hasCustom(step.audioKey);
+
+      playableMap[step.audioKey] = {
+        deva: step.deva || (step.offerings ? step.offerings.map(o => o.deva).join(" ") : step.rishis ? step.rishis.map(r => r.deva).join(" ") : ""),
+        iast: step.iast || (step.offerings ? step.offerings.map(o => o.iast).join(" ") : step.rishis ? step.rishis.map(r => r.iast).join(" ") : ""),
+        tamil: step.tamil || ""
+      };
+
+      let extraHtml = "";
+
+      if (step.hasGayatriCounter) {
+        const pct = Math.min(100, Math.round((state.gayatriCount / state.gayatriTarget) * 100));
+        extraHtml += `
+          <div class="mt-4 p-4 rounded-xl bg-[var(--content)] border border-[var(--border)] flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Gāyatrī Japa Counter</div>
+              <div class="text-2xl font-bold font-mono tabular-nums mt-0.5">${state.gayatriCount} <span class="text-sm font-normal text-[var(--muted-foreground)]">/ ${state.gayatriTarget}</span></div>
+              <div class="flex gap-1.5 mt-2">
+                ${[10, 28, 108].map(t => `<button data-gtarget="${t}" class="px-2 py-0.5 rounded text-xs border ${state.gayatriTarget===t ? 'bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]' : 'border-[var(--border)]'}">${t}</button>`).join("")}
+                <button id="gayatri-reset" class="px-2 py-0.5 rounded text-xs border border-[var(--border)] text-[var(--muted-foreground)] ml-1">Reset</button>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-28 h-2 rounded-full bg-[var(--border)] overflow-hidden"><div class="h-full bg-[var(--primary)] transition-all" style="width:${pct}%"></div></div>
+              <button id="gayatri-inc" class="px-5 py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold text-sm active:scale-95 transition">+1 Chant</button>
+            </div>
+          </div>`;
+      }
+
+      if (step.hasAshtaksharaCounter) {
+        extraHtml += `
+          <div class="mt-4 p-3.5 rounded-xl bg-[var(--content)] border border-[var(--border)] flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div class="text-xs font-semibold text-[var(--muted-foreground)]">Aṣṭākṣara Japa Counter</div>
+              <div class="text-xl font-bold font-mono tabular-nums">${state.ashtaksharaCount}</div>
+            </div>
+            <div class="flex gap-2">
+              <button id="ashta-reset" class="px-2.5 py-1.5 rounded-md border border-[var(--border)] text-xs">Reset</button>
+              <button id="ashta-inc" class="px-4 py-1.5 rounded-md bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold">+1 Chant</button>
+            </div>
+          </div>`;
+      }
+
+      if (step.hasKamoCounter) {
+        const pct = Math.min(100, Math.round((state.kamoCount / state.kamoTarget) * 100));
+        extraHtml += `
+          <div class="mt-4 p-4 rounded-xl bg-[var(--content)] border border-[var(--border)] flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Kāmo'kārṣīt Japa Counter</div>
+              <div class="text-2xl font-bold font-mono tabular-nums mt-0.5">${state.kamoCount} <span class="text-sm font-normal text-[var(--muted-foreground)]">/ ${state.kamoTarget}</span></div>
+              <div class="flex gap-1.5 mt-2">
+                ${[108, 1008].map(t => `<button data-ktarget="${t}" class="px-2 py-0.5 rounded text-xs border ${state.kamoTarget===t ? 'bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]' : 'border-[var(--border)]'}">${t}</button>`).join("")}
+                <button id="kamo-reset" class="px-2 py-0.5 rounded text-xs border border-[var(--border)] text-[var(--muted-foreground)] ml-1">Reset</button>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-28 h-2 rounded-full bg-[var(--border)] overflow-hidden"><div class="h-full bg-[var(--primary)] transition-all" style="width:${pct}%"></div></div>
+              <button id="kamo-inc" class="px-5 py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold text-sm active:scale-95 transition">+1 Chant</button>
+            </div>
+          </div>`;
+      }
+
+      if (step.offerings) {
+        extraHtml += `<div class="mt-4 space-y-2.5">`;
+        step.offerings.forEach((off, idx) => {
+          const cur = state.tharpChecks[off.id] || 0;
+          const done = cur >= off.rep;
+          const oKey = `off_${off.id}`;
+          playableMap[oKey] = { deva: off.deva, iast: off.iast, tamil: "" };
+          const oPlaying = AudioEngine.getActiveKey() === oKey;
+          extraHtml += `
+            <div class="p-3.5 rounded-lg border transition ${done ? 'bg-[var(--success)]/10 border-[var(--success)]/40' : 'bg-[var(--content)] border-[var(--border)]'}">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold text-[var(--muted-foreground)]">${idx + 1}. ${esc(off.tag)}</span>
+                <div class="flex items-center gap-1.5">
+                  <button data-play-key="${oKey}" class="px-2 py-1 rounded-md border border-[var(--border)] bg-[var(--card)] text-xs hover:bg-[var(--content)] ${oPlaying ? 'speaking-pulse border-[var(--primary)] text-[var(--primary)]' : ''}" title="Listen to this mantra">
+                    ${oPlaying ? "■ Stop" : "🔊 Listen"}
+                  </button>
+                  <button data-tharp-id="${off.id}" data-tharp-rep="${off.rep}" class="tharp-tap px-3 py-1 rounded-md text-xs font-semibold transition ${done ? 'bg-[var(--success)] text-white' : 'bg-[var(--primary)] text-[var(--primary-foreground)]'}">
+                    ${done ? `✓ Done (${cur}/${off.rep})` : `Offer Tilodakam (${cur}/${off.rep})`}
+                  </button>
+                </div>
+              </div>
+              ${(state.script === "both" || state.script === "deva") ? `<div class="mantra-deva mantra-text mb-1.5">${off.deva}</div>` : ""}
+              ${(state.script === "both" || state.script === "iast") ? `<div class="mantra-iast mantra-text text-[var(--foreground)]/85">${off.iast}</div>` : ""}
+            </div>`;
+        });
+        extraHtml += `</div>`;
+      }
+
+      if (step.rishis) {
+        extraHtml += `<div class="mt-4 space-y-2.5">`;
+        step.rishis.forEach((r, idx) => {
+          const cur = state.rishiCounts[r.id] || 0;
+          const done = cur >= 3;
+          const rKey = `rishi_${r.id}`;
+          playableMap[rKey] = { deva: r.deva, iast: r.iast, tamil: "" };
+          const rPlaying = AudioEngine.getActiveKey() === rKey;
+          extraHtml += `
+            <div class="p-3.5 rounded-lg border transition ${done ? 'bg-[var(--success)]/10 border-[var(--success)]/40' : 'bg-[var(--content)] border-[var(--border)]'}">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                <span class="text-xs font-medium px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)]">${idx + 1}. ${esc(r.tirtham)}</span>
+                <div class="flex items-center gap-1.5">
+                  <button data-play-key="${rKey}" class="px-2 py-1 rounded-md border border-[var(--border)] bg-[var(--card)] text-xs ${rPlaying ? 'speaking-pulse border-[var(--primary)] text-[var(--primary)]' : ''}">
+                    ${rPlaying ? "■" : "🔊"}
+                  </button>
+                  <button data-rishi-id="${r.id}" class="rishi-tap px-3 py-1 rounded-md text-xs font-semibold transition ${done ? 'bg-[var(--success)] text-white' : 'bg-[var(--primary)] text-[var(--primary-foreground)]'}">
+                    ${done ? `✓ Done (3/3)` : `Offer (${cur}/3)`}
+                  </button>
+                </div>
+              </div>
+              ${(state.script === "both" || state.script === "deva") ? `<div class="mantra-deva mantra-text">${r.deva}</div>` : ""}
+              ${(state.script === "both" || state.script === "iast") ? `<div class="mantra-iast mantra-text text-[var(--foreground)]/85">${r.iast}</div>` : ""}
+            </div>`;
+        });
+        extraHtml += `</div>`;
+      }
+
+      // Authentic Elder/Bruhaspati Audio Attachment Bar
+      const audioControls = `
+        <div class="no-print flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-[var(--border)] text-xs">
+          <button data-play-key="${step.audioKey}" class="px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${isPlaying ? 'bg-[var(--error)]/15 text-[var(--error)] border border-[var(--error)]/40 speaking-pulse' : 'bg-[var(--primary)] text-[var(--primary-foreground)]'}">
+            ${isPlaying ? "■ Stop Chanting" : (hasCustom ? "▶ Play Elder Recording" : "🔊 Listen (TTS)")}
+          </button>
+          <button data-rec-key="${step.audioKey}" class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] hover:bg-[var(--card)] flex items-center gap-1 ${isRec ? 'text-[var(--error)] border-[var(--error)] speaking-pulse' : ''}" title="Record authentic Vedic chanting with microphone">
+            ${isRec ? "⏹ Stop Recording" : "🎙 Record Elder Audio"}
+          </button>
+          <label class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] hover:bg-[var(--card)] cursor-pointer flex items-center gap-1" title="Upload an MP3/WAV/M4A chanting recording for this step">
+            <span>📁 Upload Audio</span>
+            <input type="file" accept="audio/*" data-upload-key="${step.audioKey}" class="hidden" />
+          </label>
+          ${hasCustom ? `<button data-del-audio="${step.audioKey}" class="px-2 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--error)] ml-auto" title="Remove saved recording">✕ Remove Recording</button>` : `<span class="text-[var(--muted-foreground)] ml-auto hidden sm:inline">Tip: Record or upload your family Bruhaspati's chanting</span>`}
+        </div>`;
+
+      return `
+        <article class="bg-[var(--card)] border border-[var(--border)] ${poonoolCls} rounded-xl p-5 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-2 pb-3 mb-3 border-b border-[var(--border)]">
+            <div>
+              <span class="text-xs font-mono text-[var(--muted-foreground)]">STEP ${step.num}</span>
+              <h3 class="text-base font-semibold leading-snug">${step.title}</h3>
+              ${step.optionalNote ? `<p class="text-xs text-[var(--warning)] mt-0.5">${step.optionalNote}</p>` : ""}
+            </div>
+            ${poonoolBadge(step.poonool)}
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)] mb-3.5 leading-relaxed"><strong class="text-[var(--foreground)]">Procedure:</strong> ${step.action}</p>
+          ${step.deva ? renderMantraBlock(step.deva, step.iast, step.tamil) : (state.showTamil && step.tamil ? `<div class="p-3 rounded-lg bg-[var(--content)] border border-[var(--border)] text-xs mantra-tamil text-[var(--muted-foreground)]"><span class="font-semibold text-[var(--foreground)] mr-1">தமிழ் குறிப்பு:</span> ${step.tamil}</div>` : "")}
+          ${extraHtml}
+          ${audioControls}
+        </article>`;
+    }
+
+    function renderGuidedLayout(steps, curIdx, viewMode, keys) {
+      const idx = Math.max(0, Math.min(curIdx, steps.length - 1));
+      if (viewMode === "all") return `<div class="space-y-4">${steps.map(s => renderStepCard(s)).join("")}</div>`;
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+          <aside class="no-print lg:col-span-4 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3 max-h-[70vh] overflow-y-auto">
+            <div class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] px-2 pb-2 mb-1 border-b border-[var(--border)]">
+              Steps (${idx + 1} / ${steps.length})
+            </div>
+            <div class="space-y-1">
+              ${steps.map((s, i) => `
+                <button data-jump-${keys.prefix}="${i}" class="w-full text-left px-2.5 py-2 rounded-lg text-xs transition flex items-center gap-2 ${i === idx ? 'bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold' : 'hover:bg-[var(--content)] text-[var(--foreground)]'}">
+                  <span class="w-5 h-5 rounded-full text-[11px] font-mono flex items-center justify-center shrink-0 ${i === idx ? 'bg-white/20' : 'bg-[var(--content)] border border-[var(--border)]'}">${s.num}</span>
+                  <span class="truncate flex-1">${s.title}</span>
+                  ${AudioEngine.hasCustom(s.audioKey) ? `<span title="Custom elder audio saved">🎙</span>` : ""}
+                </button>`).join("")}
+            </div>
+          </aside>
+          <div class="lg:col-span-8 space-y-4">
+            ${renderStepCard(steps[idx])}
+            <div class="no-print flex items-center justify-between gap-3 pt-1">
+              <button data-nav-${keys.prefix}="prev" ${idx === 0 ? "disabled" : ""} class="px-4 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs font-medium disabled:opacity-40 hover:bg-[var(--content)]">← Previous Step</button>
+              <span class="text-xs font-mono text-[var(--muted-foreground)]">${idx + 1} / ${steps.length}</span>
+              <button data-nav-${keys.prefix}="next" ${idx === steps.length - 1 ? "disabled" : ""} class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold disabled:opacity-40">Next Step →</button>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderSandhyaTab() {
+      const steps = buildSandhyaSteps(state.sandhyaKala, state.profile);
+      return `
+        <div class="space-y-4">
+          <div class="no-print bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-sm font-semibold">Yajurveda Kālatraya Sandhyāvandanam</h2>
+              <p class="text-xs text-[var(--muted-foreground)]">Personalized for <strong>${esc(state.profile.name)}</strong> (${esc(state.profile.gotram)} Gotram, ${esc(state.profile.sutra)} Sūtram)</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="inline-flex rounded-lg border border-[var(--border)] bg-[var(--content)] p-0.5 text-xs">
+                <button data-kala="pratah" class="px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='pratah' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">🌅 Prātaḥ</button>
+                <button data-kala="madhyahnika" class="px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='madhyahnika' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">☀ Mādhyāhnika</button>
+                <button data-kala="sayam" class="px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='sayam' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">🌇 Sāyam</button>
+              </div>
+              <div class="inline-flex rounded-lg border border-[var(--border)] bg-[var(--content)] p-0.5 text-xs">
+                <button data-sview="guided" class="px-2.5 py-1.5 rounded-md ${state.sandhyaView==='guided' ? 'bg-[var(--card)] font-semibold' : ''}">Step-by-Step</button>
+                <button data-sview="all" class="px-2.5 py-1.5 rounded-md ${state.sandhyaView==='all' ? 'bg-[var(--card)] font-semibold' : ''}">Full View</button>
+              </div>
+              <button onclick="window.print()" class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] text-xs hover:bg-[var(--content)]">🖨 Print</button>
+            </div>
+          </div>
+          ${renderGuidedLayout(steps, state.sandhyaStep, state.sandhyaView, { prefix: "sandhya" })}
+        </div>`;
+    }
+
+    function renderTharpanamTab() {
+      const steps = buildTharpanamSteps(state.profile);
+      const samagriList = [
+        "Tāmbālam (brass/copper plate)",
+        "Pañcapātram & Uddhariṇi with clean water",
+        "Black Sesame Seeds (கருப்பு எள் / Tilam)",
+        "3-blade Pavitram + 4 Kūrcams (புக்னங்கள்) + loose darbhas",
+        "Wooden Maṇai / Āsanam facing East"
+      ];
+      return `
+        <div class="space-y-4">
+          <div class="no-print bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="text-sm font-semibold">Yajurvedīya Darśādi Tarpaṇa Prayogaḥ <span class="text-xs font-normal text-[var(--muted-foreground)]">(Keezhanatham Śrī Sudarsana Śarmā Vidhi)</span></h2>
+                <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+                  Pitṛ: <strong>${esc(state.profile.pitruGotram)}</strong> (${esc(state.profile.pMale1)}, ${esc(state.profile.pMale2)}, ${esc(state.profile.pMale3)}) •
+                  Mātāmaha: <strong>${esc(state.profile.mataGotram)}</strong> (${esc(state.profile.mMale1)}, ${esc(state.profile.mMale2)}, ${esc(state.profile.mMale3)})
+                </p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button data-goto="profile" class="px-2.5 py-1.5 rounded-lg border border-[var(--primary)]/50 text-xs font-medium hover:bg-[var(--content)]">✏ Edit Ancestors</button>
+                <div class="inline-flex rounded-lg border border-[var(--border)] bg-[var(--content)] p-0.5 text-xs">
+                  <button data-tview="guided" class="px-2.5 py-1.5 rounded-md ${state.tharpView==='guided' ? 'bg-[var(--card)] font-semibold' : ''}">Step-by-Step</button>
+                  <button data-tview="all" class="px-2.5 py-1.5 rounded-md ${state.tharpView==='all' ? 'bg-[var(--card)] font-semibold' : ''}">Full View</button>
+                </div>
+                <button id="tharp-reset-checks" class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] text-xs text-[var(--muted-foreground)] hover:bg-[var(--content)]">Reset Checks</button>
+              </div>
+            </div>
+            <details class="text-xs border-t border-[var(--border)] pt-2.5">
+              <summary class="cursor-pointer font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] select-none">📋 Sāmagrī Preparation Checklist</summary>
+              <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5">
+                ${samagriList.map((item, i) => `<label class="flex items-center gap-2 p-2 rounded bg-[var(--content)] border border-[var(--border)] cursor-pointer"><input type="checkbox" data-tsamagri="${i}" ${state.tharpSamagri[i] ? "checked" : ""} class="accent-[var(--primary)]" /><span class="${state.tharpSamagri[i] ? 'line-through opacity-60' : ''}">${item}</span></label>`).join("")}
+              </div>
+            </details>
+          </div>
+          ${renderGuidedLayout(steps, state.tharpStep, state.tharpView, { prefix: "tharp" })}
+        </div>`;
+    }
+
+    function renderUpakarmaTab() {
+      const steps = buildUpakarmaSteps(state.profile);
+      const samagriList = [
+        `New Yajñopavītam(s) — ${state.profile.ashramam === "grihastha" ? "2 sets (Grihastha)" : "1 set (Brahmachari)"}`,
+        "3-blade Pavitram & Darbha grass",
+        "Uncooked raw rice + Black sesame seeds",
+        "Pañcapātram, Uddhariṇi & Tāmbālam",
+        "Fresh Veshti & Uttarīyam"
+      ];
+      return `
+        <div class="space-y-4">
+          <div class="no-print bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="text-sm font-semibold">Yajur Veda Upākarma Vidhi (Āvaṇi Aviṭṭam)</h2>
+                <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Mode: <strong>${state.profile.ashramam === "grihastha" ? "Grihastha" : "Brahmachari"}</strong> • Deśa: <strong>${state.profile.desha === "usa" ? "USA" : "India"}</strong></p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 text-xs">
+                <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] cursor-pointer">
+                  <input id="quick-talai" type="checkbox" ${state.profile.talaiUpakarma ? "checked" : ""} class="accent-[var(--primary)]" />
+                  <span>Talai Āvaṇi Aviṭṭam (1st Time)</span>
+                </label>
+                <div class="inline-flex rounded-lg border border-[var(--border)] bg-[var(--content)] p-0.5">
+                  <button data-uview="guided" class="px-2.5 py-1 rounded-md ${state.upakView==='guided' ? 'bg-[var(--card)] font-semibold' : ''}">Step-by-Step</button>
+                  <button data-uview="all" class="px-2.5 py-1 rounded-md ${state.upakView==='all' ? 'bg-[var(--card)] font-semibold' : ''}">Full View</button>
+                </div>
+              </div>
+            </div>
+            <details class="text-xs border-t border-[var(--border)] pt-2.5">
+              <summary class="cursor-pointer font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] select-none">📋 Upākarma Sāmagrī Checklist</summary>
+              <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5">
+                ${samagriList.map((item, i) => `<label class="flex items-center gap-2 p-2 rounded bg-[var(--content)] border border-[var(--border)] cursor-pointer"><input type="checkbox" data-usamagri="${i}" ${state.upakSamagri[i] ? "checked" : ""} class="accent-[var(--primary)]" /><span class="${state.upakSamagri[i] ? 'line-through opacity-60' : ''}">${item}</span></label>`).join("")}
+              </div>
+            </details>
+          </div>
+          ${renderGuidedLayout(steps, state.upakStep, state.upakView, { prefix: "upak" })}
+        </div>`;
+    }
+
+    function renderProfileTab() {
+      const p = state.profile;
+      const abhi = getAbhivadanam(p);
+      const sutras = (VEDA_SUTRA[p.veda] || VEDA_SUTRA["Yajur"]).sutras;
+      return `
+        <div class="space-y-5">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-4 border-b border-[var(--border)]">
+              <div>
+                <h2 class="text-sm font-semibold">Personal &amp; Sampradāya Profile</h2>
+                <p class="text-xs text-[var(--muted-foreground)]">Saved automatically in your browser. Substitutes live across all rituals.</p>
+              </div>
+              <button id="reset-profile" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs text-[var(--muted-foreground)] hover:bg-[var(--content)]">Reset Defaults</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Your Name (Śarmā)</span><input data-pfield="name" value="${esc(p.name)}" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]" /></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Gotram (Auto-fills Pravaram)</span><select data-pfield="gotram" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]">${GOTRAM_TABLE.map(g => `<option value="${esc(g.gotram)}" ${p.gotram===g.gotram ? "selected" : ""}>${esc(g.gotram)} (${g.deva})</option>`).join("")}</select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Veda Śākhā</span><select data-pfield="veda" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]">${Object.keys(VEDA_SUTRA).map(v => `<option value="${v}" ${p.veda===v ? "selected" : ""}>${v} Veda</option>`).join("")}</select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Sūtram</span><select data-pfield="sutra" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]">${sutras.map(s => `<option value="${esc(s.name)}" ${p.sutra===s.name ? "selected" : ""}>${esc(s.name)} (${s.deva})</option>`).join("")}</select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Āśramam</span><select data-pfield="ashramam" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]"><option value="grihastha" ${p.ashramam==="grihastha" ? "selected" : ""}>Grihastha (Married — 2 Poonools)</option><option value="brahmachari" ${p.ashramam==="brahmachari" ? "selected" : ""}>Brahmachari (1 Poonool)</option></select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Location (Deśa)</span><select data-pfield="desha" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]"><option value="india" ${p.desha==="india" ? "selected" : ""}>India (Jambūdvīpa)</option><option value="usa" ${p.desha==="usa" ? "selected" : ""}>USA / North America (Krauñcadvīpa)</option></select></label>
+            </div>
+            <div class="mt-4 p-3.5 rounded-lg bg-[var(--content)] border border-[var(--border)] space-y-1.5">
+              <div class="text-xs font-semibold text-[var(--muted-foreground)]">Live Abhivādanam Preview:</div>
+              <div class="mantra-deva text-sm">${abhi.deva}</div>
+              <div class="mantra-iast text-xs text-[var(--muted-foreground)]">${abhi.iast}</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3 text-xs">
+              <div class="flex items-center justify-between border-b border-[var(--border)] pb-2.5">
+                <h3 class="text-sm font-semibold">Pitṛ Varga (Paternal Ancestors)</h3>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" data-pcheck="motherAlive" ${p.motherAlive ? "checked" : ""} class="accent-[var(--primary)]" /><span>Mother is Living</span></label>
+              </div>
+              <div class="grid grid-cols-2 gap-2.5">
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Pitṛ Gotram (English)</span><input data-pfield="pitruGotram" value="${esc(p.pitruGotram)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Pitṛ Gotram (देवनागरी)</span><input data-pfield="pitruGotramDeva" value="${esc(p.pitruGotramDeva)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Father (Vasu)</span><input data-pfield="pMale1" value="${esc(p.pMale1)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. ${p.motherAlive ? "Pitāmahī" : "Mother (Vasupatnī)"}</span><input data-pfield="pFemale1" value="${esc(p.pFemale1)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Grandfather (Rudra)</span><input data-pfield="pMale2" value="${esc(p.pMale2)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. ${p.motherAlive ? "Pituḥ Pitāmahī" : "Pitāmahī"}</span><input data-pfield="pFemale2" value="${esc(p.pFemale2)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Great-Grandfather</span><input data-pfield="pMale3" value="${esc(p.pMale3)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. ${p.motherAlive ? "Pituḥ Prapitāmahī" : "Prapitāmahī"}</span><input data-pfield="pFemale3" value="${esc(p.pFemale3)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+              </div>
+            </div>
+
+            <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3 text-xs">
+              <div class="border-b border-[var(--border)] pb-2.5"><h3 class="text-sm font-semibold">Mātāmaha Varga (Maternal Ancestors)</h3></div>
+              <div class="grid grid-cols-2 gap-2.5">
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Mātāmaha Gotram (English)</span><input data-pfield="mataGotram" value="${esc(p.mataGotram)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Mātāmaha Gotram (देवनागरी)</span><input data-pfield="mataGotramDeva" value="${esc(p.mataGotramDeva)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Mātāmaha (Vasu)</span><input data-pfield="mMale1" value="${esc(p.mMale1)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Mātāmahī</span><input data-pfield="mFemale1" value="${esc(p.mFemale1)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Mātuḥ Pitāmaha</span><input data-pfield="mMale2" value="${esc(p.mMale2)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Mātuḥ Pitāmahī</span><input data-pfield="mFemale2" value="${esc(p.mFemale2)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Mātuḥ Prapitāmaha</span><input data-pfield="mMale3" value="${esc(p.mMale3)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Mātuḥ Prapitāmahī</span><input data-pfield="mFemale3" value="${esc(p.mFemale3)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3 text-xs">
+            <div class="border-b border-[var(--border)] pb-2.5"><h3 class="text-sm font-semibold">Today's Pañcāṅgam Details</h3></div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+              ${[["samvatsara","Samvatsaram"],["ayanam","Ayanam"],["ritu","Ṛtu"],["masam","Māsam"],["paksham","Pakṣam"],["tithi","Tithi"],["vasaram","Vāsaram"],["nakshatram","Nakṣatram"],["punyakalam","Puṇyakālam"]].map(([k,lbl]) => `<label class="space-y-1"><span class="text-[var(--muted-foreground)]">${lbl}</span><input data-pfield="${k}" value="${esc(p[k])}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>`).join("")}
+            </div>
+          </div>
+
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5">
+            <h3 class="text-sm font-semibold mb-3">Gotram &amp; Pravaram Directory</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead><tr class="border-b border-[var(--border)] text-[var(--muted-foreground)]"><th class="py-2 pr-3">Gotram</th><th class="py-2 pr-3">Pravaram</th><th class="py-2">Ṛṣis</th></tr></thead>
+                <tbody class="divide-y divide-[var(--border)]">
+                  ${GOTRAM_TABLE.map(g => `<tr class="hover:bg-[var(--content)]/60"><td class="py-2 pr-3 font-medium">${esc(g.gotram)} <span class="text-[var(--muted-foreground)]">(${g.deva})</span></td><td class="py-2 pr-3">${esc(g.pravaram)}</td><td class="py-2 font-mono">${g.count === 5 ? "Pañcārṣeya (5)" : "Trayārṣeya (3)"}</td></tr>`).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function render() {
+      playableMap = {};
+      const samp = getSampradaya(state.profile);
+      document.getElementById("thiruman-emblem").innerHTML = samp.emblemSvg;
+      document.getElementById("thiruman-emblem").title = samp.subtitle;
+      document.getElementById("sampradaya-subtitle").textContent = samp.subtitle;
+
+      document.body.classList.remove(...FONT_SCALES.map(f => f.cls));
+      document.body.classList.add(FONT_SCALES[state.fontScaleIdx].cls);
+      document.getElementById("font-label").textContent = FONT_SCALES[state.fontScaleIdx].label;
+
+      document.querySelectorAll(".kalai-btn").forEach(btn => {
+        const active = btn.dataset.kalai === state.profile.sampradaya;
+        btn.className = `kalai-btn px-2.5 py-1 rounded text-xs font-semibold transition ${active ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'}`;
+      });
+      document.querySelectorAll(".script-btn").forEach(btn => {
+        const active = btn.dataset.script === state.script;
+        btn.className = `script-btn px-2.5 py-1 rounded text-xs font-medium transition ${active ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'}`;
+      });
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        const active = btn.dataset.tab === state.tab;
+        btn.className = `tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 ${btn.dataset.tab === 'profile' ? 'ml-auto' : ''} ${active ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--content)] text-[var(--foreground)]'}`;
+      });
+
+      const container = document.getElementById("tab-content");
+      if (state.tab === "sandhya") container.innerHTML = renderSandhyaTab();
+      else if (state.tab === "tharpanam") container.innerHTML = renderTharpanamTab();
+      else if (state.tab === "upakarma") container.innerHTML = renderUpakarmaTab();
+      else container.innerHTML = renderProfileTab();
+
+      bindDynamicEvents();
+    }
+
+    function bindDynamicEvents() {
+      // Audio playback, recording & file upload
+      document.querySelectorAll("[data-play-key]").forEach(b => b.onclick = () => {
+        const k = b.dataset.playKey;
+        const p = playableMap[k] || {};
+        AudioEngine.playTextOrCustom(k, p.deva, p.iast, p.tamil);
+      });
+      document.querySelectorAll("[data-rec-key]").forEach(b => b.onclick = () => AudioEngine.toggleRecord(b.dataset.recKey));
+      document.querySelectorAll("[data-upload-key]").forEach(inp => inp.onchange = async () => {
+        const file = inp.files && inp.files[0];
+        if (!file) return;
+        await AudioEngine.saveRecording(inp.dataset.uploadKey, file);
+        render();
+      });
+      document.querySelectorAll("[data-del-audio]").forEach(b => b.onclick = async () => {
+        await AudioEngine.deleteRecording(b.dataset.delAudio);
+        render();
+      });
+
+      // Sandhya
+      document.querySelectorAll("[data-kala]").forEach(b => b.onclick = () => { AudioEngine.stopAll(false); state.sandhyaKala = b.dataset.kala; render(); });
+      document.querySelectorAll("[data-sview]").forEach(b => b.onclick = () => { state.sandhyaView = b.dataset.sview; render(); });
+      document.querySelectorAll("[data-jump-sandhya]").forEach(b => b.onclick = () => { AudioEngine.stopAll(false); state.sandhyaStep = Number(b.dataset.jumpSandhya); render(); });
+      document.querySelectorAll("[data-nav-sandhya]").forEach(b => b.onclick = () => { AudioEngine.stopAll(false); state.sandhyaStep += b.dataset.navSandhya === "next" ? 1 : -1; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+      const gInc = document.getElementById("gayatri-inc");
+      if (gInc) gInc.onclick = () => { state.gayatriCount++; if (state.gayatriCount === state.gayatriTarget) AudioEngine.playChime(); render(); };
+      const gRes = document.getElementById("gayatri-reset");
+      if (gRes) gRes.onclick = () => { state.gayatriCount = 0; render(); };
+      document.querySelectorAll("[data-gtarget]").forEach(b => b.onclick = () => { state.gayatriTarget = Number(b.dataset.gtarget); render(); });
+
+      const aInc = document.getElementById("ashta-inc");
+      if (aInc) aInc.onclick = () => { state.ashtaksharaCount++; if (state.ashtaksharaCount === 28 || state.ashtaksharaCount === 108) AudioEngine.playChime(); render(); };
+      const aRes = document.getElementById("ashta-reset");
+      if (aRes) aRes.onclick = () => { state.ashtaksharaCount = 0; render(); };
+
+      // Tharpanam
+      document.querySelectorAll("[data-tview]").forEach(b => b.onclick = () => { state.tharpView = b.dataset.tview; render(); });
+      document.querySelectorAll("[data-jump-tharp]").forEach(b => b.onclick = () => { AudioEngine.stopAll(false); state.tharpStep = Number(b.dataset.jumpTharp); render(); });
+      document.querySelectorAll("[data-nav-tharp]").forEach(b => b.onclick = () => { AudioEngine.stopAll(false); state.tharpStep += b.dataset.navTharp === "next" ? 1 : -1; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+      document.querySelectorAll(".tharp-tap").forEach(b => b.onclick = () => {
+        const id = b.dataset.tharpId, rep = Number(b.dataset.tharpRep);
+        const cur = state.tharpChecks[id] || 0;
+        state.tharpChecks[id] = cur >= rep ? 0 : cur + 1;
+        render();
+      });
+      const tRes = document.getElementById("tharp-reset-checks");
+      if (tRes) tRes.onclick = () => { state.tharpChecks = {}; render(); };
+      document.querySelectorAll("[data-tsamagri]").forEach(cb => cb.onchange = () => { state.tharpSamagri[cb.dataset.tsamagri] = cb.checked; render(); });
+      document.querySelectorAll("[data-goto]").forEach(b => b.onclick = () => { state.tab = b.dataset.goto; render(); });
+
+      // Upakarma
+      document.querySelectorAll("[data-uview]").forEach(b => b.onclick = () => { state.upakView = b.dataset.uview; render(); });
+      document.querySelectorAll("[data-jump-upak]").forEach(b => b.onclick = () => { AudioEngine.stopAll(false); state.upakStep = Number(b.dataset.jumpUpak); render(); });
+      document.querySelectorAll("[data-nav-upak]").forEach(b => b.onclick = () => { AudioEngine.stopAll(false); state.upakStep += b.dataset.navUpak === "next" ? 1 : -1; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+      const qTalai = document.getElementById("quick-talai");
+      if (qTalai) qTalai.onchange = () => { state.profile.talaiUpakarma = qTalai.checked; state.upakStep = 0; saveProfile(state.profile); render(); };
+      const kInc = document.getElementById("kamo-inc");
+      if (kInc) kInc.onclick = () => { state.kamoCount++; if (state.kamoCount === state.kamoTarget) AudioEngine.playChime(); render(); };
+      const kRes = document.getElementById("kamo-reset");
+      if (kRes) kRes.onclick = () => { state.kamoCount = 0; render(); };
+      document.querySelectorAll("[data-ktarget]").forEach(b => b.onclick = () => { state.kamoTarget = Number(b.dataset.ktarget); render(); });
+      document.querySelectorAll(".rishi-tap").forEach(b => b.onclick = () => {
+        const id = b.dataset.rishiId, cur = state.rishiCounts[id] || 0;
+        state.rishiCounts[id] = cur >= 3 ? 0 : cur + 1;
+        render();
+      });
+      document.querySelectorAll("[data-usamagri]").forEach(cb => cb.onchange = () => { state.upakSamagri[cb.dataset.usamagri] = cb.checked; render(); });
+
+      // Profile
+      document.querySelectorAll("[data-pfield]").forEach(el => el.onchange = () => {
+        const k = el.dataset.pfield;
+        state.profile[k] = el.value;
+        if (k === "veda") state.profile.sutra = VEDA_SUTRA[el.value].sutras[0].name;
+        if (k === "gotram") {
+          const gObj = GOTRAM_TABLE.find(x => x.gotram === el.value);
+          if (gObj) { state.profile.pitruGotram = gObj.gotram; state.profile.pitruGotramDeva = gObj.deva; }
+        }
+        if (["samvatsara","ayanam","ritu","masam","paksham","tithi","vasaram","nakshatram","punyakalam"].includes(k)) {
+          state.profile[k + "Deva"] = el.value;
+        }
+        saveProfile(state.profile);
+        render();
+      });
+      document.querySelectorAll("[data-pcheck]").forEach(cb => cb.onchange = () => {
+        state.profile[cb.dataset.pcheck] = cb.checked;
+        saveProfile(state.profile);
+        render();
+      });
+      const rProf = document.getElementById("reset-profile");
+      if (rProf) rProf.onclick = () => { state.profile = { ...DEFAULT_PROFILE }; saveProfile(state.profile); render(); };
+    }
+
+    // Header static listeners
+    document.querySelectorAll(".kalai-btn").forEach(btn => btn.onclick = () => {
+      AudioEngine.stopAll(false);
+      state.profile.sampradaya = btn.dataset.kalai;
+      saveProfile(state.profile);
+      render();
+    });
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.onclick = () => { AudioEngine.stopAll(false); state.tab = btn.dataset.tab; render(); });
+    document.querySelectorAll(".script-btn").forEach(btn => btn.onclick = () => { state.script = btn.dataset.script; render(); });
+    document.getElementById("toggle-tamil").onchange = e => { state.showTamil = e.target.checked; render(); };
+    document.getElementById("font-dec").onclick = () => { state.fontScaleIdx = Math.max(0, state.fontScaleIdx - 1); render(); };
+    document.getElementById("font-inc").onclick = () => { state.fontScaleIdx = Math.min(FONT_SCALES.length - 1, state.fontScaleIdx + 1); render(); };
+    document.getElementById("audio-lang").onchange = e => { state.audioLang = e.target.value; };
+    document.getElementById("audio-rate").onchange = e => { state.audioRate = Number(e.target.value); };
+    document.getElementById("audio-stop-all").onclick = () => AudioEngine.stopAll(true);
+    document.getElementById("toggle-chime").onchange = e => { state.chimeEnabled = e.target.checked; };
+    document.getElementById("shruti-toggle").onclick = () => {
+      const on = AudioEngine.toggleShruti();
+      document.getElementById("shruti-label").textContent = on ? "Tambura Śruti: On" : "Tambura Śruti: Off";
+      document.getElementById("shruti-dot").className = `w-2 h-2 rounded-full ${on ? 'bg-[var(--success)] speaking-pulse' : 'bg-[var(--muted-foreground)]/40'}`;
+    };
+
+    const modal = document.getElementById("quickref-modal");
+    document.getElementById("open-quickref").onclick = () => modal.classList.remove("hidden");
+    document.getElementById("close-quickref").onclick = () => modal.classList.add("hidden");
+    modal.onclick = e => { if (e.target === modal) modal.classList.add("hidden"); };
+
+    if (localStorage.getItem("keelnat_theme") === "dark") document.documentElement.classList.add("dark");
+    document.getElementById("theme-toggle").onclick = () => {
+      const isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("keelnat_theme", isDark ? "dark" : "light");
+    };
+    AudioEngine.loadAllRecordings().then(() => render());
+  </script>
+</body>
+</html>
