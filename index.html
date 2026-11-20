@@ -51,6 +51,13 @@
     .mantra-iast {
       line-height: 1.7;
     }
+    .mantra-text {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
     .font-scale-sm .mantra-text { font-size: 0.95rem; }
     .font-scale-md .mantra-text { font-size: 1.125rem; }
     .font-scale-lg .mantra-text { font-size: 1.325rem; }
@@ -74,36 +81,36 @@
     }
   </style>
 </head>
-<body class="bg-[var(--background)] text-[var(--foreground)] antialiased m-0 p-0 font-scale-md">
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased m-0 p-0 font-scale-md overflow-x-hidden">
   <div id="app" class="min-h-screen flex flex-col">
-    <!-- Top Header -->
-    <header class="no-print sticky top-0 z-30 bg-[var(--card)] border-b border-[var(--border)] px-4 py-3">
-      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <div id="thiruman-emblem" class="w-9 h-9 rounded-lg bg-[var(--content)] border border-[var(--border)] flex items-center justify-center shrink-0"></div>
-          <div>
-            <h1 class="text-base font-semibold tracking-tight leading-tight">Keelnat Iyengar Vidhi Companion</h1>
-            <p id="sampradaya-subtitle" class="text-xs text-[var(--muted-foreground)]"></p>
+    <!-- Top Header (sticky on desktop PC, scrolls naturally on mobile for full reading viewport) -->
+    <header class="no-print lg:sticky lg:top-0 z-30 bg-[var(--card)] border-b border-[var(--border)] px-3 sm:px-4 py-2.5 sm:py-3">
+      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
+        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div id="thiruman-emblem" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-[var(--content)] border border-[var(--border)] flex items-center justify-center shrink-0"></div>
+          <div class="min-w-0">
+            <h1 class="text-sm sm:text-base font-semibold tracking-tight leading-tight">Keelnat Iyengar Vidhi Companion</h1>
+            <p id="sampradaya-subtitle" class="text-[11px] sm:text-xs text-[var(--muted-foreground)] truncate sm:whitespace-normal"></p>
           </div>
         </div>
 
         <!-- Global Controls -->
-        <div class="flex flex-wrap items-center gap-2 text-xs">
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
           <div class="inline-flex rounded-md border border-[var(--border)] bg-[var(--content)] p-0.5" title="Switch between Vadakalai and Thenkalai Sampradāya">
             <button data-kalai="vadakalai" class="kalai-btn px-2.5 py-1 rounded text-xs font-semibold transition">Vadakalai</button>
             <button data-kalai="thenkalai" class="kalai-btn px-2.5 py-1 rounded text-xs font-semibold transition">Thenkalai</button>
           </div>
           <div class="inline-flex rounded-md border border-[var(--border)] bg-[var(--content)] p-0.5" title="Choose mantra script(s)">
-            <button data-script="all" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">All</button>
-            <button data-script="deva" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">देवनागरी</button>
-            <button data-script="kannada" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">ಕನ್ನಡ</button>
-            <button data-script="iast" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">English</button>
+            <button data-script="all" class="script-btn px-2 sm:px-2.5 py-1 rounded text-xs font-medium transition">All</button>
+            <button data-script="deva" class="script-btn px-2 sm:px-2.5 py-1 rounded text-xs font-medium transition">देवनागरी</button>
+            <button data-script="kannada" class="script-btn px-2 sm:px-2.5 py-1 rounded text-xs font-medium transition">ಕನ್ನಡ</button>
+            <button data-script="iast" class="script-btn px-2 sm:px-2.5 py-1 rounded text-xs font-medium transition">English</button>
           </div>
-          <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] cursor-pointer select-none">
+          <label class="inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] cursor-pointer select-none">
             <input id="toggle-tamil" type="checkbox" checked class="accent-[var(--primary)]" />
             <span>தமிழ் Notes</span>
           </label>
-          <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] cursor-pointer select-none">
+          <label class="inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] cursor-pointer select-none">
             <input id="toggle-kannada" type="checkbox" checked class="accent-[var(--primary)]" />
             <span>ಕನ್ನಡ Notes</span>
           </label>
@@ -119,59 +126,59 @@
         </div>
       </div>
 
-      <!-- Primary Navigation Tabs -->
-      <nav class="max-w-6xl mx-auto mt-2.5 flex flex-wrap items-center gap-1.5 border-t border-[var(--border)] pt-2.5">
-        <button data-tab="sandhya" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5">
+      <!-- Primary Navigation Tabs (horizontal scroll on mobile, wrapped row on PC) -->
+      <nav class="max-w-6xl mx-auto mt-2.5 flex flex-nowrap sm:flex-wrap items-center gap-1.5 border-t border-[var(--border)] pt-2.5 overflow-x-auto no-scrollbar">
+        <button data-tab="sandhya" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 shrink-0 whitespace-nowrap">
           <span>☀</span> Sandhyāvandanam
         </button>
-        <button data-tab="tharpanam" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5">
-          <span>🪔</span> Darśādi Tarpaṇam <span class="opacity-70">(Keezhanatham)</span>
+        <button data-tab="tharpanam" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 shrink-0 whitespace-nowrap">
+          <span>🪔</span> Darśādi Tarpaṇam <span class="hidden sm:inline opacity-70">(Keezhanatham)</span>
         </button>
-        <button data-tab="upakarma" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5">
-          <span>🧵</span> Yajur Upākarma <span class="opacity-70">(Āvaṇi Aviṭṭam)</span>
+        <button data-tab="upakarma" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 shrink-0 whitespace-nowrap">
+          <span>🧵</span> Yajur Upākarma <span class="hidden sm:inline opacity-70">(Āvaṇi Aviṭṭam)</span>
         </button>
-        <button data-tab="profile" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 ml-auto">
-          <span>⚙</span> Family Profile &amp; Saṅkalpam
+        <button data-tab="profile" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 shrink-0 whitespace-nowrap lg:ml-auto">
+          <span>⚙</span> Family Profile <span class="hidden sm:inline">&amp; Saṅkalpam</span>
         </button>
       </nav>
     </header>
 
     <!-- Main Workspace -->
-    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-5">
+    <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-4 py-4 sm:py-5">
       <div id="tab-content"></div>
     </main>
 
     <!-- Quick Reference Modal (Achamanam & Pranayamam) -->
-    <div id="quickref-modal" class="no-print hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-xl">
-        <div class="sticky top-0 bg-[var(--card)] border-b border-[var(--border)] px-5 py-3.5 flex items-center justify-between">
-          <div>
+    <div id="quickref-modal" class="no-print hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-2.5 sm:p-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl max-w-2xl w-full max-h-[88vh] overflow-y-auto shadow-xl">
+        <div class="sticky top-0 bg-[var(--card)] border-b border-[var(--border)] px-4 sm:px-5 py-3 sm:py-3.5 flex items-center justify-between gap-2">
+          <div class="min-w-0">
             <h2 class="text-sm font-semibold">Quick Reference: Ācamanam &amp; Prāṇāyāmam</h2>
             <p class="text-xs text-[var(--muted-foreground)]">Yajurveda Sampradāya • देवनागरी • ಕನ್ನಡ • English</p>
           </div>
-          <button id="close-quickref" class="px-2.5 py-1 rounded-md border border-[var(--border)] text-xs hover:bg-[var(--content)]">Close</button>
+          <button id="close-quickref" class="px-2.5 py-1 rounded-md border border-[var(--border)] text-xs hover:bg-[var(--content)] shrink-0">Close</button>
         </div>
-        <div class="p-5 space-y-5">
+        <div class="p-4 sm:p-5 space-y-5">
           <section>
             <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">1. Ācamanam (आचमनम् • ಆಚಮನಮ್)</h3>
             <p class="text-xs text-[var(--muted-foreground)] mb-2">Sip water from the base of the right thumb (Brāhma Tīrtham) three times for the first three names, then wipe lips and touch each body part with the right hand (RH):</p>
             <p class="text-xs text-[var(--muted-foreground)] mb-3 mantra-kannada"><strong class="text-[var(--foreground)]">ಕನ್ನಡ ಸೂಚನೆ:</strong> ಬಲ ಹೆಬ್ಬೆರಳಿನ ಬುಡದಿಂದ (ಬ್ರಹ್ಮ ತೀರ್ಥ) ಮೊದಲ ಮೂರು ನಾಮಗಳಿಗೆ 3 ಬಾರಿ ತೀರ್ಥವನ್ನು ಸ್ವೀಕರಿಸಿ, ತುಟಿಗಳನ್ನು ಒರೆಸಿಕೊಂಡು ಬಲಗೈಯಿಂದ ಕೆಳಗಿನ ಅಂಗಗಳನ್ನು ಸ್ಪರ್ಶಿಸಿ:</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>अच्युताय नमः</strong> • <strong class="mantra-kannada">ಅಚ್ಯುತಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Acyutāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (1)</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>अनन्ताय नमः</strong> • <strong class="mantra-kannada">ಅನಂತಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Anantāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (2)</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>गोविन्दाय नमः</strong> • <strong class="mantra-kannada">ಗೋವಿಂದಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Govindāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (3)</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>केशवाय नमः</strong> • <strong class="mantra-kannada">ಕೇಶವಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Keśavāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Thumb → Right Cheek</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>नारायणाय नमः</strong> • <strong class="mantra-kannada">ನಾರಾಯಣಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Nārāyaṇāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Thumb → Left Cheek</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>माधवाय नमः</strong> • <strong class="mantra-kannada">ಮಾಧವಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Mādhavāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Ring → Right Eye</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>गोविन्दाय नमः</strong> • <strong class="mantra-kannada">ಗೋವಿಂದಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Govindāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Ring → Left Eye</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>विष्णवे नमः</strong> • <strong class="mantra-kannada">ವಿಷ್ಣವೇ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Viṣṇave namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Right Nostril</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>मधुसूदनाय नमः</strong> • <strong class="mantra-kannada">ಮಧುಸೂದನಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Madhusūdanāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Left Nostril</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>त्रिविक्रमाय नमः</strong> • <strong class="mantra-kannada">ತ್ರಿವಿಕ್ರಮಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Trivikramāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Little → Right Ear</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>वामनाय नमः</strong> • <strong class="mantra-kannada">ವಾಮನಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Vāmanāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Little → Left Ear</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>श्रीधराय नमः</strong> • <strong class="mantra-kannada">ಶ್ರೀಧರಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Śrīdharāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Right Shoulder</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>हृषीकेशाय नमः</strong> • <strong class="mantra-kannada">ಹೃಷೀಕೇಶಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Hṛṣīkeśāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Middle → Left Shoulder</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>पद्मनाभाय नमः</strong> • <strong class="mantra-kannada">ಪದ್ಮನಾಭಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Padmanābhāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Fingers → Navel</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2 sm:col-span-2"><span><strong>दामोदराय नमः</strong> • <strong class="mantra-kannada">ದಾಮೋದರಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Dāmodarāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Fingers → Crown / Scalp</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>अच्युताय नमः</strong> • <strong class="mantra-kannada">ಅಚ್ಯುತಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Acyutāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (1)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>अनन्ताय नमः</strong> • <strong class="mantra-kannada">ಅನಂತಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Anantāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (2)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>गोविन्दाय नमः</strong> • <strong class="mantra-kannada">ಗೋವಿಂದಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Govindāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (3)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>केशवाय नमः</strong> • <strong class="mantra-kannada">ಕೇಶವಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Keśavāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Thumb → Right Cheek</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>नारायणाय नमः</strong> • <strong class="mantra-kannada">ನಾರಾಯಣಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Nārāyaṇāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Thumb → Left Cheek</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>माधवाय नमः</strong> • <strong class="mantra-kannada">ಮಾಧವಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Mādhavāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Ring → Right Eye</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>गोविन्दाय नमः</strong> • <strong class="mantra-kannada">ಗೋವಿಂದಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Govindāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Ring → Left Eye</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>विष्णवे नमः</strong> • <strong class="mantra-kannada">ವಿಷ್ಣವೇ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Viṣṇave namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Right Nostril</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>मधुसूदनाय नमः</strong> • <strong class="mantra-kannada">ಮಧುಸೂದನಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Madhusūdanāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Left Nostril</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>त्रिविक्रमाय नमः</strong> • <strong class="mantra-kannada">ತ್ರಿವಿಕ್ರಮಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Trivikramāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Little → Right Ear</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>वामनाय नमः</strong> • <strong class="mantra-kannada">ವಾಮನಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Vāmanāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Little → Left Ear</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>श्रीधराय नमः</strong> • <strong class="mantra-kannada">ಶ್ರೀಧರಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Śrīdharāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Right Shoulder</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>हृषीकेशाय नमः</strong> • <strong class="mantra-kannada">ಹೃಷೀಕೇಶಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Hṛṣīkeśāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Middle → Left Shoulder</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2"><span><strong>पद्मनाभाय नमः</strong> • <strong class="mantra-kannada">ಪದ್ಮನಾಭಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Padmanābhāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Fingers → Navel</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2 sm:col-span-2"><span><strong>दामोदराय नमः</strong> • <strong class="mantra-kannada">ದಾಮೋದರಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Dāmodarāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Fingers → Crown / Scalp</span></div>
             </div>
           </section>
 
@@ -701,23 +708,23 @@
     }
 
     function renderMantraBlock(deva, iast, tamil, kannada) {
-      let html = `<div class="space-y-3">`;
+      let html = `<div class="space-y-2.5 sm:space-y-3">`;
       html += renderNotesBlock(tamil, kannada);
       const showLabel = state.script === "all";
       if (state.script === "all" || state.script === "deva") {
-        html += `<div class="p-4 rounded-lg bg-[var(--content)] border border-[var(--border)]">
+        html += `<div class="p-3 sm:p-4 rounded-lg bg-[var(--content)] border border-[var(--border)]">
           ${showLabel ? `<div class="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-1.5">देवनागरी</div>` : ""}
           <div class="mantra-deva mantra-text whitespace-pre-line">${deva}</div>
         </div>`;
       }
       if (state.script === "all" || state.script === "kannada") {
-        html += `<div class="p-4 rounded-lg bg-[var(--content)]/85 border border-[var(--border)]">
+        html += `<div class="p-3 sm:p-4 rounded-lg bg-[var(--content)]/85 border border-[var(--border)]">
           ${showLabel ? `<div class="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-1.5">ಕನ್ನಡ</div>` : ""}
           <div class="mantra-kannada mantra-text whitespace-pre-line">${devaToKannada(deva)}</div>
         </div>`;
       }
       if (state.script === "all" || state.script === "iast") {
-        html += `<div class="p-4 rounded-lg bg-[var(--content)]/60 border border-[var(--border)]">
+        html += `<div class="p-3 sm:p-4 rounded-lg bg-[var(--content)]/60 border border-[var(--border)]">
           ${showLabel ? `<div class="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-1.5">English</div>` : ""}
           <div class="mantra-iast mantra-text text-[var(--foreground)]/90 whitespace-pre-line">${iast}</div>
         </div>`;
@@ -828,9 +835,9 @@
       const notesOnlyHtml = renderNotesBlock(step.tamil, step.kannada);
 
       return `
-        <article class="bg-[var(--card)] border border-[var(--border)] ${poonoolCls} rounded-xl p-5 shadow-sm">
+        <article class="bg-[var(--card)] border border-[var(--border)] ${poonoolCls} rounded-xl p-4 sm:p-5 shadow-sm">
           <div class="flex flex-wrap items-start justify-between gap-2 pb-3 mb-3 border-b border-[var(--border)]">
-            <div>
+            <div class="min-w-0">
               <span class="text-xs font-mono text-[var(--muted-foreground)]">STEP ${step.num}</span>
               <h3 class="text-base font-semibold leading-snug">${step.title}</h3>
               ${step.optionalNote ? `<p class="text-xs text-[var(--warning)] mt-0.5">${step.optionalNote}</p>` : ""}
@@ -847,8 +854,9 @@
       const idx = Math.max(0, Math.min(curIdx, steps.length - 1));
       if (viewMode === "all") return `<div class="space-y-4">${steps.map(s => renderStepCard(s)).join("")}</div>`;
       return `
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-          <aside class="no-print lg:col-span-4 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3 max-h-[70vh] overflow-y-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-start">
+          <!-- Desktop Sidebar (hidden on mobile so mantra appears immediately above the fold) -->
+          <aside class="no-print hidden lg:block lg:col-span-4 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3 max-h-[70vh] overflow-y-auto lg:sticky lg:top-32">
             <div class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] px-2 pb-2 mb-1 border-b border-[var(--border)]">
               Steps (${idx + 1} / ${steps.length})
             </div>
@@ -860,12 +868,20 @@
                 </button>`).join("")}
             </div>
           </aside>
-          <div class="lg:col-span-8 space-y-4">
+          <div class="lg:col-span-8 min-w-0 space-y-3 sm:space-y-4">
+            <!-- Mobile Compact Step Jumper -->
+            <div class="no-print lg:hidden bg-[var(--card)] border border-[var(--border)] rounded-xl p-2.5 flex items-center gap-2">
+              <button data-nav-${keys.prefix}="prev" ${idx === 0 ? "disabled" : ""} class="px-2.5 py-2 rounded-lg border border-[var(--border)] bg-[var(--content)] text-xs font-semibold disabled:opacity-40 shrink-0" aria-label="Previous step">←</button>
+              <select data-select-${keys.prefix} class="flex-1 min-w-0 px-2.5 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)] text-sm sm:text-xs font-medium truncate">
+                ${steps.map((s, i) => `<option value="${i}" ${i === idx ? "selected" : ""}>Step ${s.num}/${steps.length}: ${esc(s.title)}</option>`).join("")}
+              </select>
+              <button data-nav-${keys.prefix}="next" ${idx === steps.length - 1 ? "disabled" : ""} class="px-2.5 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold disabled:opacity-40 shrink-0" aria-label="Next step">→</button>
+            </div>
             ${renderStepCard(steps[idx])}
-            <div class="no-print flex items-center justify-between gap-3 pt-1">
-              <button data-nav-${keys.prefix}="prev" ${idx === 0 ? "disabled" : ""} class="px-4 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs font-medium disabled:opacity-40 hover:bg-[var(--content)]">← Previous Step</button>
+            <div class="no-print flex items-center justify-between gap-2 sm:gap-3 pt-1">
+              <button data-nav-${keys.prefix}="prev" ${idx === 0 ? "disabled" : ""} class="px-3.5 sm:px-4 py-2.5 sm:py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs font-medium disabled:opacity-40 hover:bg-[var(--content)]">← Previous</button>
               <span class="text-xs font-mono text-[var(--muted-foreground)]">${idx + 1} / ${steps.length}</span>
-              <button data-nav-${keys.prefix}="next" ${idx === steps.length - 1 ? "disabled" : ""} class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold disabled:opacity-40">Next Step →</button>
+              <button data-nav-${keys.prefix}="next" ${idx === steps.length - 1 ? "disabled" : ""} class="px-3.5 sm:px-4 py-2.5 sm:py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold disabled:opacity-40">Next Step →</button>
             </div>
           </div>
         </div>`;
@@ -875,22 +891,22 @@
       const steps = buildSandhyaSteps(state.sandhyaKala, state.profile);
       return `
         <div class="space-y-4">
-          <div class="no-print bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
-            <div>
+          <div class="no-print bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="min-w-0">
               <h2 class="text-sm font-semibold">Yajurveda Kālatraya Sandhyāvandanam</h2>
               <p class="text-xs text-[var(--muted-foreground)]">Personalized for <strong>${esc(state.profile.name)}</strong> (${esc(state.profile.gotram)} Gotram, ${esc(state.profile.sutra)} Sūtram)</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
               <div class="inline-flex rounded-lg border border-[var(--border)] bg-[var(--content)] p-0.5 text-xs">
-                <button data-kala="pratah" class="px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='pratah' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">🌅 Prātaḥ</button>
-                <button data-kala="madhyahnika" class="px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='madhyahnika' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">☀ Mādhyāhnika</button>
-                <button data-kala="sayam" class="px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='sayam' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">🌇 Sāyam</button>
+                <button data-kala="pratah" class="px-2.5 sm:px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='pratah' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">🌅 Prātaḥ</button>
+                <button data-kala="madhyahnika" class="px-2.5 sm:px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='madhyahnika' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">☀ Mādhyāhnika</button>
+                <button data-kala="sayam" class="px-2.5 sm:px-3 py-1.5 rounded-md font-medium ${state.sandhyaKala==='sayam' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : ''}">🌇 Sāyam</button>
               </div>
               <div class="inline-flex rounded-lg border border-[var(--border)] bg-[var(--content)] p-0.5 text-xs">
                 <button data-sview="guided" class="px-2.5 py-1.5 rounded-md ${state.sandhyaView==='guided' ? 'bg-[var(--card)] font-semibold' : ''}">Step-by-Step</button>
                 <button data-sview="all" class="px-2.5 py-1.5 rounded-md ${state.sandhyaView==='all' ? 'bg-[var(--card)] font-semibold' : ''}">Full View</button>
               </div>
-              <button onclick="window.print()" class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] text-xs hover:bg-[var(--content)]">🖨 Print</button>
+              <button onclick="window.print()" class="hidden sm:inline-flex px-2.5 py-1.5 rounded-lg border border-[var(--border)] text-xs hover:bg-[var(--content)]">🖨 Print</button>
             </div>
           </div>
           ${renderGuidedLayout(steps, state.sandhyaStep, state.sandhyaView, { prefix: "sandhya" })}
@@ -980,9 +996,11 @@
       const p = state.profile;
       const abhi = getAbhivadanam(p);
       const sutras = (VEDA_SUTRA[p.veda] || VEDA_SUTRA["Yajur"]).sutras;
+      const inpCls = "w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)] text-base sm:text-xs";
+      const inpSmCls = "w-full px-2.5 py-2 sm:py-1.5 rounded bg-[var(--content)] border border-[var(--border)] text-base sm:text-xs";
       return `
-        <div class="space-y-5">
-          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5">
+        <div class="space-y-4 sm:space-y-5">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 sm:p-5">
             <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-4 border-b border-[var(--border)]">
               <div>
                 <h2 class="text-sm font-semibold">Personal &amp; Sampradāya Profile</h2>
@@ -991,62 +1009,62 @@
               <button id="reset-profile" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs text-[var(--muted-foreground)] hover:bg-[var(--content)]">Reset Defaults</button>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
-              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Your Name (Śarmā)</span><input data-pfield="name" value="${esc(p.name)}" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]" /></label>
-              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Gotram (Auto-fills Pravaram)</span><select data-pfield="gotram" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]">${GOTRAM_TABLE.map(g => `<option value="${esc(g.gotram)}" ${p.gotram===g.gotram ? "selected" : ""}>${esc(g.gotram)} (${g.deva})</option>`).join("")}</select></label>
-              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Veda Śākhā</span><select data-pfield="veda" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]">${Object.keys(VEDA_SUTRA).map(v => `<option value="${v}" ${p.veda===v ? "selected" : ""}>${v} Veda</option>`).join("")}</select></label>
-              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Sūtram</span><select data-pfield="sutra" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]">${sutras.map(s => `<option value="${esc(s.name)}" ${p.sutra===s.name ? "selected" : ""}>${esc(s.name)} (${s.deva})</option>`).join("")}</select></label>
-              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Āśramam</span><select data-pfield="ashramam" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]"><option value="grihastha" ${p.ashramam==="grihastha" ? "selected" : ""}>Grihastha (Married — 2 Poonools)</option><option value="brahmachari" ${p.ashramam==="brahmachari" ? "selected" : ""}>Brahmachari (1 Poonool)</option></select></label>
-              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Location (Deśa)</span><select data-pfield="desha" class="w-full px-3 py-2 rounded-lg bg-[var(--content)] border border-[var(--border)]"><option value="india" ${p.desha==="india" ? "selected" : ""}>India (Jambūdvīpa)</option><option value="usa" ${p.desha==="usa" ? "selected" : ""}>USA / North America (Krauñcadvīpa)</option></select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Your Name (Śarmā)</span><input data-pfield="name" value="${esc(p.name)}" class="${inpCls}" /></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Gotram (Auto-fills Pravaram)</span><select data-pfield="gotram" class="${inpCls}">${GOTRAM_TABLE.map(g => `<option value="${esc(g.gotram)}" ${p.gotram===g.gotram ? "selected" : ""}>${esc(g.gotram)} (${g.deva})</option>`).join("")}</select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Veda Śākhā</span><select data-pfield="veda" class="${inpCls}">${Object.keys(VEDA_SUTRA).map(v => `<option value="${v}" ${p.veda===v ? "selected" : ""}>${v} Veda</option>`).join("")}</select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Sūtram</span><select data-pfield="sutra" class="${inpCls}">${sutras.map(s => `<option value="${esc(s.name)}" ${p.sutra===s.name ? "selected" : ""}>${esc(s.name)} (${s.deva})</option>`).join("")}</select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Āśramam</span><select data-pfield="ashramam" class="${inpCls}"><option value="grihastha" ${p.ashramam==="grihastha" ? "selected" : ""}>Grihastha (Married — 2 Poonools)</option><option value="brahmachari" ${p.ashramam==="brahmachari" ? "selected" : ""}>Brahmachari (1 Poonool)</option></select></label>
+              <label class="space-y-1"><span class="text-[var(--muted-foreground)] font-medium">Location (Deśa)</span><select data-pfield="desha" class="${inpCls}"><option value="india" ${p.desha==="india" ? "selected" : ""}>India (Jambūdvīpa)</option><option value="usa" ${p.desha==="usa" ? "selected" : ""}>USA / North America (Krauñcadvīpa)</option></select></label>
             </div>
             <div class="mt-4 p-3.5 rounded-lg bg-[var(--content)] border border-[var(--border)] space-y-1.5">
               <div class="text-xs font-semibold text-[var(--muted-foreground)]">Live Abhivādanam Preview:</div>
-              <div class="mantra-deva text-sm">${abhi.deva}</div>
-              <div class="mantra-kannada text-sm">${devaToKannada(abhi.deva)}</div>
-              <div class="mantra-iast text-xs text-[var(--muted-foreground)]">${abhi.iast}</div>
+              <div class="mantra-deva mantra-text text-sm">${abhi.deva}</div>
+              <div class="mantra-kannada mantra-text text-sm">${devaToKannada(abhi.deva)}</div>
+              <div class="mantra-iast mantra-text text-xs text-[var(--muted-foreground)]">${abhi.iast}</div>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3 text-xs">
-              <div class="flex items-center justify-between border-b border-[var(--border)] pb-2.5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+            <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 sm:p-5 space-y-3 text-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border)] pb-2.5">
                 <h3 class="text-sm font-semibold">Pitṛ Varga (Paternal Ancestors)</h3>
                 <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" data-pcheck="motherAlive" ${p.motherAlive ? "checked" : ""} class="accent-[var(--primary)]" /><span>Mother is Living</span></label>
               </div>
-              <div class="grid grid-cols-2 gap-2.5">
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Pitṛ Gotram (English)</span><input data-pfield="pitruGotram" value="${esc(p.pitruGotram)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Pitṛ Gotram (देवनागरी)</span><input data-pfield="pitruGotramDeva" value="${esc(p.pitruGotramDeva)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Father (Vasu)</span><input data-pfield="pMale1" value="${esc(p.pMale1)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. ${p.motherAlive ? "Pitāmahī" : "Mother (Vasupatnī)"}</span><input data-pfield="pFemale1" value="${esc(p.pFemale1)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Grandfather (Rudra)</span><input data-pfield="pMale2" value="${esc(p.pMale2)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. ${p.motherAlive ? "Pituḥ Pitāmahī" : "Pitāmahī"}</span><input data-pfield="pFemale2" value="${esc(p.pFemale2)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Great-Grandfather</span><input data-pfield="pMale3" value="${esc(p.pMale3)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. ${p.motherAlive ? "Pituḥ Prapitāmahī" : "Prapitāmahī"}</span><input data-pfield="pFemale3" value="${esc(p.pFemale3)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Pitṛ Gotram (English)</span><input data-pfield="pitruGotram" value="${esc(p.pitruGotram)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Pitṛ Gotram (देवनागरी)</span><input data-pfield="pitruGotramDeva" value="${esc(p.pitruGotramDeva)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Father (Vasu)</span><input data-pfield="pMale1" value="${esc(p.pMale1)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. ${p.motherAlive ? "Pitāmahī" : "Mother (Vasupatnī)"}</span><input data-pfield="pFemale1" value="${esc(p.pFemale1)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Grandfather (Rudra)</span><input data-pfield="pMale2" value="${esc(p.pMale2)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. ${p.motherAlive ? "Pituḥ Pitāmahī" : "Pitāmahī"}</span><input data-pfield="pFemale2" value="${esc(p.pFemale2)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Great-Grandfather</span><input data-pfield="pMale3" value="${esc(p.pMale3)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. ${p.motherAlive ? "Pituḥ Prapitāmahī" : "Prapitāmahī"}</span><input data-pfield="pFemale3" value="${esc(p.pFemale3)}" class="${inpSmCls}" /></label>
               </div>
             </div>
 
-            <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3 text-xs">
+            <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 sm:p-5 space-y-3 text-xs">
               <div class="border-b border-[var(--border)] pb-2.5"><h3 class="text-sm font-semibold">Mātāmaha Varga (Maternal Ancestors)</h3></div>
-              <div class="grid grid-cols-2 gap-2.5">
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Mātāmaha Gotram (English)</span><input data-pfield="mataGotram" value="${esc(p.mataGotram)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Mātāmaha Gotram (देवनागरी)</span><input data-pfield="mataGotramDeva" value="${esc(p.mataGotramDeva)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Mātāmaha (Vasu)</span><input data-pfield="mMale1" value="${esc(p.mMale1)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Mātāmahī</span><input data-pfield="mFemale1" value="${esc(p.mFemale1)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Mātuḥ Pitāmaha</span><input data-pfield="mMale2" value="${esc(p.mMale2)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Mātuḥ Pitāmahī</span><input data-pfield="mFemale2" value="${esc(p.mFemale2)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Mātuḥ Prapitāmaha</span><input data-pfield="mMale3" value="${esc(p.mMale3)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
-                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Mātuḥ Prapitāmahī</span><input data-pfield="mFemale3" value="${esc(p.mFemale3)}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Mātāmaha Gotram (English)</span><input data-pfield="mataGotram" value="${esc(p.mataGotram)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">Mātāmaha Gotram (देवनागरी)</span><input data-pfield="mataGotramDeva" value="${esc(p.mataGotramDeva)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Mātāmaha (Vasu)</span><input data-pfield="mMale1" value="${esc(p.mMale1)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">1. Mātāmahī</span><input data-pfield="mFemale1" value="${esc(p.mFemale1)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Mātuḥ Pitāmaha</span><input data-pfield="mMale2" value="${esc(p.mMale2)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">2. Mātuḥ Pitāmahī</span><input data-pfield="mFemale2" value="${esc(p.mFemale2)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Mātuḥ Prapitāmaha</span><input data-pfield="mMale3" value="${esc(p.mMale3)}" class="${inpSmCls}" /></label>
+                <label class="space-y-1"><span class="text-[var(--muted-foreground)]">3. Mātuḥ Prapitāmahī</span><input data-pfield="mFemale3" value="${esc(p.mFemale3)}" class="${inpSmCls}" /></label>
               </div>
             </div>
           </div>
 
-          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3 text-xs">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 sm:p-5 space-y-3 text-xs">
             <div class="border-b border-[var(--border)] pb-2.5"><h3 class="text-sm font-semibold">Today's Pañcāṅgam Details</h3></div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
-              ${[["samvatsara","Samvatsaram"],["ayanam","Ayanam"],["ritu","Ṛtu"],["masam","Māsam"],["paksham","Pakṣam"],["tithi","Tithi"],["vasaram","Vāsaram"],["nakshatram","Nakṣatram"],["punyakalam","Puṇyakālam"]].map(([k,lbl]) => `<label class="space-y-1"><span class="text-[var(--muted-foreground)]">${lbl}</span><input data-pfield="${k}" value="${esc(p[k])}" class="w-full px-2.5 py-1.5 rounded bg-[var(--content)] border border-[var(--border)]" /></label>`).join("")}
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+              ${[["samvatsara","Samvatsaram"],["ayanam","Ayanam"],["ritu","Ṛtu"],["masam","Māsam"],["paksham","Pakṣam"],["tithi","Tithi"],["vasaram","Vāsaram"],["nakshatram","Nakṣatram"],["punyakalam","Puṇyakālam"]].map(([k,lbl]) => `<label class="space-y-1"><span class="text-[var(--muted-foreground)]">${lbl}</span><input data-pfield="${k}" value="${esc(p[k])}" class="${inpSmCls}" /></label>`).join("")}
             </div>
           </div>
 
-          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 sm:p-5">
             <h3 class="text-sm font-semibold mb-3">Gotram &amp; Pravaram Directory</h3>
             <div class="overflow-x-auto">
               <table class="w-full text-xs text-left border-collapse">
@@ -1076,11 +1094,11 @@
       });
       document.querySelectorAll(".script-btn").forEach(btn => {
         const active = btn.dataset.script === state.script;
-        btn.className = `script-btn px-2.5 py-1 rounded text-xs font-medium transition ${active ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'}`;
+        btn.className = `script-btn px-2 sm:px-2.5 py-1 rounded text-xs font-medium transition ${active ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'}`;
       });
       document.querySelectorAll(".tab-btn").forEach(btn => {
         const active = btn.dataset.tab === state.tab;
-        btn.className = `tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 ${btn.dataset.tab === 'profile' ? 'ml-auto' : ''} ${active ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--content)] text-[var(--foreground)]'}`;
+        btn.className = `tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${btn.dataset.tab === 'profile' ? 'lg:ml-auto' : ''} ${active ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--content)] text-[var(--foreground)]'}`;
       });
 
       const container = document.getElementById("tab-content");
@@ -1097,6 +1115,7 @@
       document.querySelectorAll("[data-kala]").forEach(b => b.onclick = () => { state.sandhyaKala = b.dataset.kala; render(); });
       document.querySelectorAll("[data-sview]").forEach(b => b.onclick = () => { state.sandhyaView = b.dataset.sview; render(); });
       document.querySelectorAll("[data-jump-sandhya]").forEach(b => b.onclick = () => { state.sandhyaStep = Number(b.dataset.jumpSandhya); render(); });
+      document.querySelectorAll("[data-select-sandhya]").forEach(sel => sel.onchange = () => { state.sandhyaStep = Number(sel.value); render(); });
       document.querySelectorAll("[data-nav-sandhya]").forEach(b => b.onclick = () => { state.sandhyaStep += b.dataset.navSandhya === "next" ? 1 : -1; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
 
       const gInc = document.getElementById("gayatri-inc");
@@ -1113,6 +1132,7 @@
       // Tharpanam
       document.querySelectorAll("[data-tview]").forEach(b => b.onclick = () => { state.tharpView = b.dataset.tview; render(); });
       document.querySelectorAll("[data-jump-tharp]").forEach(b => b.onclick = () => { state.tharpStep = Number(b.dataset.jumpTharp); render(); });
+      document.querySelectorAll("[data-select-tharp]").forEach(sel => sel.onchange = () => { state.tharpStep = Number(sel.value); render(); });
       document.querySelectorAll("[data-nav-tharp]").forEach(b => b.onclick = () => { state.tharpStep += b.dataset.navTharp === "next" ? 1 : -1; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
       document.querySelectorAll(".tharp-tap").forEach(b => b.onclick = () => {
         const id = b.dataset.tharpId, rep = Number(b.dataset.tharpRep);
@@ -1128,6 +1148,7 @@
       // Upakarma
       document.querySelectorAll("[data-uview]").forEach(b => b.onclick = () => { state.upakView = b.dataset.uview; render(); });
       document.querySelectorAll("[data-jump-upak]").forEach(b => b.onclick = () => { state.upakStep = Number(b.dataset.jumpUpak); render(); });
+      document.querySelectorAll("[data-select-upak]").forEach(sel => sel.onchange = () => { state.upakStep = Number(sel.value); render(); });
       document.querySelectorAll("[data-nav-upak]").forEach(b => b.onclick = () => { state.upakStep += b.dataset.navUpak === "next" ? 1 : -1; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
       const qTalai = document.getElementById("quick-talai");
       if (qTalai) qTalai.onchange = () => { state.profile.talaiUpakarma = qTalai.checked; state.upakStep = 0; saveProfile(state.profile); render(); };
