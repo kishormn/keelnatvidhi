@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Keelnat Iyengar Nitya &amp; Naimittika Vidhi Companion</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Kannada:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --background: #faf7f2;
@@ -90,9 +93,10 @@
             <button data-kalai="vadakalai" class="kalai-btn px-2.5 py-1 rounded text-xs font-semibold transition">Vadakalai</button>
             <button data-kalai="thenkalai" class="kalai-btn px-2.5 py-1 rounded text-xs font-semibold transition">Thenkalai</button>
           </div>
-          <div class="inline-flex rounded-md border border-[var(--border)] bg-[var(--content)] p-0.5">
-            <button data-script="both" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">Both</button>
+          <div class="inline-flex rounded-md border border-[var(--border)] bg-[var(--content)] p-0.5" title="Choose mantra script(s)">
+            <button data-script="all" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">All</button>
             <button data-script="deva" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">देवनागरी</button>
+            <button data-script="kannada" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">ಕನ್ನಡ</button>
             <button data-script="iast" class="script-btn px-2.5 py-1 rounded text-xs font-medium transition">English</button>
           </div>
           <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] cursor-pointer select-none">
@@ -143,43 +147,48 @@
         <div class="sticky top-0 bg-[var(--card)] border-b border-[var(--border)] px-5 py-3.5 flex items-center justify-between">
           <div>
             <h2 class="text-sm font-semibold">Quick Reference: Ācamanam &amp; Prāṇāyāmam</h2>
-            <p class="text-xs text-[var(--muted-foreground)]">Yajurveda Vadakalai Sampradāya</p>
+            <p class="text-xs text-[var(--muted-foreground)]">Yajurveda Sampradāya • देवनागरी • ಕನ್ನಡ • English</p>
           </div>
           <button id="close-quickref" class="px-2.5 py-1 rounded-md border border-[var(--border)] text-xs hover:bg-[var(--content)]">Close</button>
         </div>
         <div class="p-5 space-y-5">
           <section>
-            <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">1. Ācamanam (आचमनम्)</h3>
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">1. Ācamanam (आचमनम् • ಆಚಮನಮ್)</h3>
             <p class="text-xs text-[var(--muted-foreground)] mb-2">Sip water from the base of the right thumb (Brāhma Tīrtham) three times for the first three names, then wipe lips and touch each body part with the right hand (RH):</p>
             <p class="text-xs text-[var(--muted-foreground)] mb-3 mantra-kannada"><strong class="text-[var(--foreground)]">ಕನ್ನಡ ಸೂಚನೆ:</strong> ಬಲ ಹೆಬ್ಬೆರಳಿನ ಬುಡದಿಂದ (ಬ್ರಹ್ಮ ತೀರ್ಥ) ಮೊದಲ ಮೂರು ನಾಮಗಳಿಗೆ 3 ಬಾರಿ ತೀರ್ಥವನ್ನು ಸ್ವೀಕರಿಸಿ, ತುಟಿಗಳನ್ನು ಒರೆಸಿಕೊಂಡು ಬಲಗೈಯಿಂದ ಕೆಳಗಿನ ಅಂಗಗಳನ್ನು ಸ್ಪರ್ಶಿಸಿ:</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>अच्युताय नमः</strong> (Acyutāya namaḥ)</span><span class="text-[var(--muted-foreground)]">Sip water (1)</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>अनन्ताय नमः</strong> (Anantāya namaḥ)</span><span class="text-[var(--muted-foreground)]">Sip water (2)</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>गोविन्दाय नमः</strong> (Govindāya namaḥ)</span><span class="text-[var(--muted-foreground)]">Sip water (3)</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>केशवाय नमः</strong> (Keśavāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Thumb → Right Cheek</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>नारायणाय नमः</strong> (Nārāyaṇāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Thumb → Left Cheek</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>माधवाय नमः</strong> (Mādhavāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Ring → Right Eye</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>गोविन्दाय नमः</strong> (Govindāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Ring → Left Eye</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>विष्णवे नमः</strong> (Viṣṇave namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Index → Right Nostril</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>मधुसूदनाय नमः</strong> (Madhusūdanāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Index → Left Nostril</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>त्रिविक्रमाय नमः</strong> (Trivikramāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Little → Right Ear</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>वामनाय नमः</strong> (Vāmanāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Little → Left Ear</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>श्रीधराय नमः</strong> (Śrīdharāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Index → Right Shoulder</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>हृषीकेशाय नमः</strong> (Hṛṣīkeśāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Middle → Left Shoulder</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>पद्मनाभाय नमः</strong> (Padmanābhāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Fingers → Navel</span></div>
-              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2 sm:col-span-2"><span><strong>दामोदराय नमः</strong> (Dāmodarāya namaḥ)</span><span class="text-[var(--muted-foreground)]">RH Fingers → Crown / Scalp</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>अच्युताय नमः</strong> • <strong class="mantra-kannada">ಅಚ್ಯುತಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Acyutāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (1)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>अनन्ताय नमः</strong> • <strong class="mantra-kannada">ಅನಂತಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Anantāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (2)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>गोविन्दाय नमः</strong> • <strong class="mantra-kannada">ಗೋವಿಂದಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Govindāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">Sip water (3)</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>केशवाय नमः</strong> • <strong class="mantra-kannada">ಕೇಶವಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Keśavāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Thumb → Right Cheek</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>नारायणाय नमः</strong> • <strong class="mantra-kannada">ನಾರಾಯಣಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Nārāyaṇāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Thumb → Left Cheek</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>माधवाय नमः</strong> • <strong class="mantra-kannada">ಮಾಧವಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Mādhavāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Ring → Right Eye</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>गोविन्दाय नमः</strong> • <strong class="mantra-kannada">ಗೋವಿಂದಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Govindāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Ring → Left Eye</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>विष्णवे नमः</strong> • <strong class="mantra-kannada">ವಿಷ್ಣವೇ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Viṣṇave namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Right Nostril</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>मधुसूदनाय नमः</strong> • <strong class="mantra-kannada">ಮಧುಸೂದನಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Madhusūdanāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Left Nostril</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>त्रिविक्रमाय नमः</strong> • <strong class="mantra-kannada">ತ್ರಿವಿಕ್ರಮಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Trivikramāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Little → Right Ear</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>वामनाय नमः</strong> • <strong class="mantra-kannada">ವಾಮನಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Vāmanāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Little → Left Ear</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>श्रीधराय नमः</strong> • <strong class="mantra-kannada">ಶ್ರೀಧರಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Śrīdharāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Index → Right Shoulder</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>हृषीकेशाय नमः</strong> • <strong class="mantra-kannada">ಹೃಷೀಕೇಶಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Hṛṣīkeśāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Middle → Left Shoulder</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2"><span><strong>पद्मनाभाय नमः</strong> • <strong class="mantra-kannada">ಪದ್ಮನಾಭಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Padmanābhāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Fingers → Navel</span></div>
+              <div class="p-2 rounded bg-[var(--content)] border border-[var(--border)] flex justify-between gap-2 sm:col-span-2"><span><strong>दामोदराय नमः</strong> • <strong class="mantra-kannada">ದಾಮೋದರಾಯ ನಮಃ</strong> <span class="text-[var(--muted-foreground)]">(Dāmodarāya namaḥ)</span></span><span class="text-[var(--muted-foreground)] shrink-0">RH Fingers → Crown / Scalp</span></div>
             </div>
           </section>
 
           <section>
-            <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">2. Prāṇāyāmam (प्राणायामम्)</h3>
-            <div class="p-3.5 rounded-lg bg-[var(--content)] border border-[var(--border)] space-y-2">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">2. Prāṇāyāmam (प्राणायामम् • ಪ್ರಾಣಾಯಾಮಮ್)</h3>
+            <div class="p-3.5 rounded-lg bg-[var(--content)] border border-[var(--border)] space-y-2.5">
               <p class="mantra-deva text-sm">
                 ओं भूः । ओं भुवः । ओꣳ सुवः । ओं महः । ओं जनः । ओं तपः । ओꣳ सत्यम् ।<br/>
                 ओं तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् ॥<br/>
                 ओमापो ज्योती रसोऽमृतं ब्रह्म भूर्भुवस्सुवरोम् ॥
               </p>
-              <p class="mantra-iast text-xs text-[var(--muted-foreground)]">
+              <p class="mantra-kannada text-sm border-t border-[var(--border)] pt-2">
+                ಓಂ ಭೂಃ । ಓಂ ಭುವಃ । ಓಗುಂ ಸುವಃ । ಓಂ ಮಹಃ । ಓಂ ಜನಃ । ಓಂ ತಪಃ । ಓಗುಂ ಸತ್ಯಮ್ ।<br/>
+                ಓಂ ತತ್ಸವಿತುರ್ವರೇಣ್ಯಂ ಭರ್ಗೋ ದೇವಸ್ಯ ಧೀಮಹಿ । ಧಿಯೋ ಯೋ ನಃ ಪ್ರಚೋದಯಾತ್ ॥<br/>
+                ಓಮಾಪೋ ಜ್ಯೋತೀ ರಸೋಽಮೃತಂ ಬ್ರಹ್ಮ ಭೂರ್ಭುವಸ್ಸುವರೋಮ್ ॥
+              </p>
+              <p class="mantra-iast text-xs text-[var(--muted-foreground)] border-t border-[var(--border)] pt-2">
                 oṁ bhūḥ | oṁ bhuvaḥ | oguṁ suvaḥ | oṁ mahaḥ | oṁ janaḥ | oṁ tapaḥ | oguṁ satyam |<br/>
                 oṁ tatsaviturvareṇyaṁ bhargo devasya dhīmahi | dhiyo yo naḥ pracodayāt ||<br/>
                 omāpo jyotī raso'mṛtaṁ brahma bhūrbhuvassuvarom ||
@@ -271,7 +280,7 @@
 
     const state = {
       tab: "sandhya",
-      script: "both",
+      script: "all",
       showTamil: true,
       showKannada: true,
       fontScaleIdx: 1,
@@ -306,6 +315,45 @@
     }
     function hv(val) {
       return `<span class="highlight-var">${esc(val)}</span>`;
+    }
+
+    // Scholarly Sanskrit Devanagari -> Kannada script transliterator
+    // Preserves embedded HTML (<span class="highlight-var">...) and renders
+    // Krishna Yajurveda Vedic gum (ꣳ / ँ) as ಗುಂ in traditional Kannada style.
+    const DEVA_TO_KANNADA_MAP = {
+      "अ":"ಅ", "आ":"ಆ", "इ":"ಇ", "ई":"ಈ", "उ":"ಉ", "ऊ":"ಊ",
+      "ऋ":"ಋ", "ॠ":"ೠ", "ऌ":"ಌ", "ॡ":"ೡ", "ए":"ಏ", "ऐ":"ಐ", "ओ":"ಓ", "औ":"ಔ",
+      "ा":"ಾ", "ि":"ಿ", "ी":"ೀ", "ु":"ು", "ू":"ೂ", "ृ":"ೃ", "ॄ":"ೄ",
+      "े":"ೇ", "ै":"ೈ", "ो":"ೋ", "ौ":"ೌ", "्":"್",
+      "ं":"ಂ", "ः":"ಃ", "ऽ":"ಽ", "ॐ":"ಓಂ",
+      "क":"ಕ", "ख":"ಖ", "ग":"ಗ", "घ":"ಘ", "ङ":"ಙ",
+      "च":"ಚ", "छ":"ಛ", "ज":"ಜ", "झ":"ಝ", "ञ":"ಞ",
+      "ट":"ಟ", "ठ":"ಠ", "ड":"ಡ", "ढ":"ಢ", "ण":"ಣ",
+      "त":"ತ", "थ":"ಥ", "द":"ದ", "ध":"ಧ", "न":"ನ",
+      "प":"ಪ", "फ":"ಫ", "ब":"ಬ", "भ":"ಭ", "म":"ಮ",
+      "य":"ಯ", "र":"ರ", "ल":"ಲ", "ळ":"ಳ", "व":"ವ",
+      "श":"ಶ", "ष":"ಷ", "स":"ಸ", "ह":"ಹ",
+      "०":"೦", "१":"೧", "२":"೨", "३":"೩", "४":"೪",
+      "५":"೫", "६":"೬", "७":"೭", "८":"೮", "९":"೯",
+      "\uA8F3":"ಗುಂ", // Vedic Yajurveda gum sign (ꣳ)
+      "\u0901":"ಗುಂ", // Vedic candrabindu in Yajurveda (याँश्च, मधुमाँ, अस्मिँल्लोके)
+      "\u200D":""     // Strip Devanagari ZWJ so Kannada ottaksharas form cleanly
+    };
+    function devaToKannada(htmlOrText) {
+      return String(htmlOrText || "")
+        .split(/(<[^>]+>)/g)
+        .map(part => {
+          if (part.startsWith("<")) return part;
+          let s = part.replace("கீழநத்தம் ஸ்ரீ. ஸுதர்சன சர்மா", "ಕೀಳನತ್ತಂ ಶ್ರೀ ಸುದರ್ಶನ ಶರ್ಮಾ");
+          let out = "";
+          for (const ch of s) {
+            out += Object.prototype.hasOwnProperty.call(DEVA_TO_KANNADA_MAP, ch)
+              ? DEVA_TO_KANNADA_MAP[ch]
+              : ch;
+          }
+          return out;
+        })
+        .join("");
     }
 
     function getAbhivadanam(p) {
@@ -655,11 +703,24 @@
     function renderMantraBlock(deva, iast, tamil, kannada) {
       let html = `<div class="space-y-3">`;
       html += renderNotesBlock(tamil, kannada);
-      if (state.script === "both" || state.script === "deva") {
-        html += `<div class="p-4 rounded-lg bg-[var(--content)] border border-[var(--border)] mantra-deva mantra-text whitespace-pre-line">${deva}</div>`;
+      const showLabel = state.script === "all";
+      if (state.script === "all" || state.script === "deva") {
+        html += `<div class="p-4 rounded-lg bg-[var(--content)] border border-[var(--border)]">
+          ${showLabel ? `<div class="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-1.5">देवनागरी</div>` : ""}
+          <div class="mantra-deva mantra-text whitespace-pre-line">${deva}</div>
+        </div>`;
       }
-      if (state.script === "both" || state.script === "iast") {
-        html += `<div class="p-4 rounded-lg bg-[var(--content)]/60 border border-[var(--border)] mantra-iast mantra-text text-[var(--foreground)]/90 whitespace-pre-line">${iast}</div>`;
+      if (state.script === "all" || state.script === "kannada") {
+        html += `<div class="p-4 rounded-lg bg-[var(--content)]/85 border border-[var(--border)]">
+          ${showLabel ? `<div class="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-1.5">ಕನ್ನಡ</div>` : ""}
+          <div class="mantra-kannada mantra-text whitespace-pre-line">${devaToKannada(deva)}</div>
+        </div>`;
+      }
+      if (state.script === "all" || state.script === "iast") {
+        html += `<div class="p-4 rounded-lg bg-[var(--content)]/60 border border-[var(--border)]">
+          ${showLabel ? `<div class="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted-foreground)] mb-1.5">English</div>` : ""}
+          <div class="mantra-iast mantra-text text-[var(--foreground)]/90 whitespace-pre-line">${iast}</div>
+        </div>`;
       }
       html += `</div>`;
       return html;
@@ -735,8 +796,9 @@
                   ${done ? `✓ Done (${cur}/${off.rep})` : `Offer Tilodakam (${cur}/${off.rep})`}
                 </button>
               </div>
-              ${(state.script === "both" || state.script === "deva") ? `<div class="mantra-deva mantra-text mb-1.5">${off.deva}</div>` : ""}
-              ${(state.script === "both" || state.script === "iast") ? `<div class="mantra-iast mantra-text text-[var(--foreground)]/85">${off.iast}</div>` : ""}
+              ${(state.script === "all" || state.script === "deva") ? `<div class="mantra-deva mantra-text mb-1.5">${off.deva}</div>` : ""}
+              ${(state.script === "all" || state.script === "kannada") ? `<div class="mantra-kannada mantra-text mb-1.5">${devaToKannada(off.deva)}</div>` : ""}
+              ${(state.script === "all" || state.script === "iast") ? `<div class="mantra-iast mantra-text text-[var(--foreground)]/85">${off.iast}</div>` : ""}
             </div>`;
         });
         extraHtml += `</div>`;
@@ -755,8 +817,9 @@
                   ${done ? `✓ Done (3/3)` : `Offer (${cur}/3)`}
                 </button>
               </div>
-              ${(state.script === "both" || state.script === "deva") ? `<div class="mantra-deva mantra-text">${r.deva}</div>` : ""}
-              ${(state.script === "both" || state.script === "iast") ? `<div class="mantra-iast mantra-text text-[var(--foreground)]/85">${r.iast}</div>` : ""}
+              ${(state.script === "all" || state.script === "deva") ? `<div class="mantra-deva mantra-text mb-1">${r.deva}</div>` : ""}
+              ${(state.script === "all" || state.script === "kannada") ? `<div class="mantra-kannada mantra-text mb-1">${devaToKannada(r.deva)}</div>` : ""}
+              ${(state.script === "all" || state.script === "iast") ? `<div class="mantra-iast mantra-text text-[var(--foreground)]/85">${r.iast}</div>` : ""}
             </div>`;
         });
         extraHtml += `</div>`;
@@ -938,6 +1001,7 @@
             <div class="mt-4 p-3.5 rounded-lg bg-[var(--content)] border border-[var(--border)] space-y-1.5">
               <div class="text-xs font-semibold text-[var(--muted-foreground)]">Live Abhivādanam Preview:</div>
               <div class="mantra-deva text-sm">${abhi.deva}</div>
+              <div class="mantra-kannada text-sm">${devaToKannada(abhi.deva)}</div>
               <div class="mantra-iast text-xs text-[var(--muted-foreground)]">${abhi.iast}</div>
             </div>
           </div>
@@ -988,7 +1052,7 @@
               <table class="w-full text-xs text-left border-collapse">
                 <thead><tr class="border-b border-[var(--border)] text-[var(--muted-foreground)]"><th class="py-2 pr-3">Gotram</th><th class="py-2 pr-3">Pravaram</th><th class="py-2">Ṛṣis</th></tr></thead>
                 <tbody class="divide-y divide-[var(--border)]">
-                  ${GOTRAM_TABLE.map(g => `<tr class="hover:bg-[var(--content)]/60"><td class="py-2 pr-3 font-medium">${esc(g.gotram)} <span class="text-[var(--muted-foreground)]">(${g.deva})</span></td><td class="py-2 pr-3">${esc(g.pravaram)}</td><td class="py-2 font-mono">${g.count === 5 ? "Pañcārṣeya (5)" : "Trayārṣeya (3)"}</td></tr>`).join("")}
+                  ${GOTRAM_TABLE.map(g => `<tr class="hover:bg-[var(--content)]/60"><td class="py-2 pr-3 font-medium">${esc(g.gotram)} <span class="text-[var(--muted-foreground)]">(${g.deva} / ${devaToKannada(g.deva)})</span></td><td class="py-2 pr-3">${esc(g.pravaram)}</td><td class="py-2 font-mono">${g.count === 5 ? "Pañcārṣeya (5)" : "Trayārṣeya (3)"}</td></tr>`).join("")}
                 </tbody>
               </table>
             </div>

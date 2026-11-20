@@ -4,7 +4,7 @@ An interactive, offline-friendly Nitya & Naimittika ritual companion tailored fo
 
 ## Included Vidhis
 1. **Yajurveda Kālatraya Sandhyāvandanam** (Prātaḥ, Mādhyāhnika, Sāyam)
-   - All 21 traditional steps with Devanagari, English/IAST transliteration, and toggleable **Tamil (`தமிழ்`)** & **Kannada (`ಕನ್ನಡ`)** procedural notes
+   - All 21 traditional steps with mantras in **Devanagari (`देवनागरी`)**, **Kannada (`ಕನ್ನಡ`)**, and **English/IAST**, plus toggleable **Tamil (`தமிழ்`)** & **Kannada (`ಕನ್ನಡ`)** procedural notes
    - Auto-generated personalized **Abhivādanam** (20 Gotrams & Pravarams + Veda/Sūtram)
    - Built-in **Gāyatrī** & **Aṣṭākṣara** Japa counters
 2. **Yajurvedīya Darśādi Tarpaṇa Prayogaḥ** *(Keezhanatham Śrī Sudarsana Śarmā Vidhi)*
